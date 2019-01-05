@@ -14,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.revature.koality.utility.CommonUtility;
 
 @Entity
 @Table(name = "PUBLISHER")
@@ -23,6 +26,7 @@ public class Publisher implements Serializable {
 	private PublisherDetail publisherDetail;
 	private Image image;
 	private PublisherCredentials publisherCredentials;
+	private String imageUrl;
 
 	private static final long serialVersionUID = 1L;
 
@@ -98,9 +102,33 @@ public class Publisher implements Serializable {
 		this.publisherCredentials = publisherCredentials;
 	}
 
+	@Transient
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
 	@Override
 	public String toString() {
 		return "Publisher [publisherId=" + publisherId + ", publisherDetail=" + publisherDetail + "]";
+	}
+
+	public void truncate(boolean all) {
+		this.image = null;
+		this.publisherCredentials = null;
+		if (all) {
+			this.imageUrl = null;
+		}
+	}
+
+	public void loadImageUrl() {
+		if (this.image != null) {
+			this.imageUrl = CommonUtility.encodeToBlobUrl(this.image.getImageType(), this.image.getImageData(), false);
+			this.image = null;
+		}
 	}
 
 }

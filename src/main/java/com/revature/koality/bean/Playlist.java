@@ -17,6 +17,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.LazyInitializationException;
+
 @Entity
 @Table(name = "PLAYLIST")
 public class Playlist implements Serializable {
@@ -103,6 +105,30 @@ public class Playlist implements Serializable {
 	@Override
 	public String toString() {
 		return "Playlist [playlistId=" + playlistId + ", playlistName=" + playlistName + "]";
+	}
+
+	public void truncate(boolean all) {
+		if (this.customer != null) {
+			try {
+				this.customer.truncate(true);
+			} catch (LazyInitializationException e) {
+				this.customer = null;
+			}
+		}
+		try {
+			this.trackList.forEach(t -> t.truncate(all));
+		} catch (LazyInitializationException e) {
+			this.trackList = null;
+		}
+	}
+
+	public void loadTrackUrls() {
+		if (this.trackList != null) {
+			this.trackList.forEach(t -> {
+				t.loadAudioUrl();
+				t.truncate(false);
+			});
+		}
 	}
 
 }

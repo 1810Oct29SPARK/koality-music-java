@@ -15,6 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.LazyInitializationException;
+
 @Entity
 @Table(name = "TRACK_REVIEW")
 public class TrackReview implements Serializable {
@@ -94,6 +96,23 @@ public class TrackReview implements Serializable {
 	@Override
 	public String toString() {
 		return "TrackReview [trackReviewId=" + trackReviewId + ", reviewContent=" + reviewContent + "]";
+	}
+
+	public void truncate() {
+		if (this.track != null) {
+			try {
+				this.track.truncate(true);
+			} catch (LazyInitializationException e) {
+				this.track = null;
+			}
+		}
+		if (this.customer != null) {
+			try {
+				this.customer.truncate(true);
+			} catch (LazyInitializationException e) {
+				this.customer = null;
+			}
+		}
 	}
 
 }

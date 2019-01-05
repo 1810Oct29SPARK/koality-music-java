@@ -17,6 +17,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.revature.koality.utility.CommonUtility;
 
 @Entity
 @Table(name = "CUSTOMER")
@@ -31,6 +34,7 @@ public class Customer implements Serializable {
 	private List<Publisher> publisherList;
 	private List<Track> trackList;
 	private List<Album> albumList;
+	private String imageUrl;
 
 	public Customer() {
 		super();
@@ -151,9 +155,35 @@ public class Customer implements Serializable {
 		this.albumList = albumList;
 	}
 
+	@Transient
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
 	@Override
 	public String toString() {
 		return "Customer [customerId=" + customerId + ", customerDetail=" + customerDetail + "]";
+	}
+
+	public void truncate(boolean all) {
+		this.publisherList = null;
+		this.trackList = null;
+		this.albumList = null;
+		this.image = null;
+		if (all) {
+			this.imageUrl = null;
+		}
+	}
+
+	public void loadImageUrl() {
+		if (this.image != null) {
+			this.imageUrl = CommonUtility.encodeToBlobUrl(this.image.getImageType(), this.image.getImageData(), false);
+			this.image = null;
+		}
 	}
 
 }

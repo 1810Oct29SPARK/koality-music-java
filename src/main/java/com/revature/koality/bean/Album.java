@@ -18,6 +18,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.LazyInitializationException;
+
 @Entity
 @Table(name = "ALBUM")
 public class Album implements Serializable {
@@ -156,6 +158,30 @@ public class Album implements Serializable {
 	@Override
 	public String toString() {
 		return "Album [albumId=" + albumId + ", albumName=" + albumName + "]";
+	}
+
+	public void truncate(boolean all) {
+		if (this.publisher != null) {
+			try {
+				this.publisher.truncate(true);
+			} catch (LazyInitializationException e) {
+				this.publisher = null;
+			}
+		}
+		try {
+			this.trackList.forEach(t -> t.truncate(all));
+		} catch (LazyInitializationException e) {
+			this.trackList = null;
+		}
+	}
+
+	public void loadTrackUrls() {
+		if (this.trackList != null) {
+			this.trackList.forEach(t -> {
+				t.loadAudioUrl();
+				t.truncate(false);
+			});
+		}
 	}
 
 }

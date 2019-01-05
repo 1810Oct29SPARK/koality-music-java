@@ -14,6 +14,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.hibernate.LazyInitializationException;
+
+import com.revature.koality.utility.CommonUtility;
 
 @Entity
 @Table(name = "TRACK")
@@ -30,6 +35,7 @@ public class Track implements Serializable {
 	private float unitPrice;
 	private Audio audio;
 	private Publisher publisher;
+	private String audioUrl;
 
 	public Track() {
 		super();
@@ -165,9 +171,39 @@ public class Track implements Serializable {
 		this.publisher = publisher;
 	}
 
+	@Transient
+	public String getAudioUrl() {
+		return audioUrl;
+	}
+
+	public void setAudioUrl(String audioUrl) {
+		this.audioUrl = audioUrl;
+	}
+
 	@Override
 	public String toString() {
 		return "Track [trackId=" + trackId + ", trackName=" + trackName + "]";
+	}
+
+	public void truncate(boolean all) {
+		this.audio = null;
+		if (this.publisher != null) {
+			try {
+				this.publisher.truncate(true);
+			} catch (LazyInitializationException e) {
+				this.publisher = null;
+			}
+		}
+		if (all) {
+			this.audioUrl = null;
+		}
+	}
+
+	public void loadAudioUrl() {
+		if (this.audio != null) {
+			this.audioUrl = CommonUtility.encodeToBlobUrl(this.audio.getAudioType(), this.audio.getAudioData(), true);
+			this.audio = null;
+		}
 	}
 
 }

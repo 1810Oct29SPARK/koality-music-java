@@ -4,14 +4,13 @@ import static org.junit.Assert.*;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class HibernateUtilityTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-//		HibernateUtility.getMainSessionFactory();
+		HibernateUtility.getMainSessionFactory();
 		HibernateUtility.getTestSessionFactory();
 	}
 
@@ -20,7 +19,6 @@ public class HibernateUtilityTest {
 		HibernateUtility.destroySessionFactories();
 	}
 
-	@Ignore
 	@Test
 	public void testGetMainSessionFactory() {
 		assertNotNull(HibernateUtility.getMainSessionFactory());
