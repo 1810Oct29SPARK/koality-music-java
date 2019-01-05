@@ -46,6 +46,7 @@ public class CustomerCredentials implements Serializable {
 	}
 
 	@Id
+	@Column(name = "USERNAME")
 	public String getUsername() {
 		return username;
 	}

@@ -19,16 +19,10 @@
 		<mapping class="com.revature.koality.bean.Publisher" />
 		<mapping class="com.revature.koality.bean.CustomerCredentials" />
 		<mapping class="com.revature.koality.bean.Customer" />
-		<mapping class="com.revature.koality.bean." />
-		<mapping class="com.revature.koality.bean." />
-		<mapping class="com.revature.koality.bean." />
-		<mapping class="com.revature.koality.bean." />
-		<mapping class="com.revature.koality.bean." />
-		<mapping class="com.revature.koality.bean." />
-		<mapping class="com.revature.koality.bean." />
-		<mapping class="com.revature.koality.bean." />
-		<mapping class="com.revature.koality.bean." />
-		<mapping class="com.revature.koality.bean." />
-		<mapping class="com.revature.koality.bean." />
+		<mapping class="com.revature.koality.bean.Track" />
+		<mapping class="com.revature.koality.bean.Album" />
+		<mapping class="com.revature.koality.bean.TrackReview" />
+		<mapping class="com.revature.koality.bean.AlbumReview" />
+		<mapping class="com.revature.koality.bean.Playlist" />
 	</session-factory>
 </hibernate-configuration>

@@ -29,7 +29,8 @@ public class Customer implements Serializable {
 	private Image image;
 	private CustomerCredentials customerCredentials;
 	private List<Publisher> publisherList;
-	// more
+	private List<Track> trackList;
+	private List<Album> albumList;
 
 	public Customer() {
 		super();
@@ -53,13 +54,27 @@ public class Customer implements Serializable {
 		this.customerCredentials = customerCredentials;
 	}
 
-	public Customer(int customerId, CustomerDetail customerDetail, Image image,
-			CustomerCredentials customerCredentials) {
+	public Customer(CustomerDetail customerDetail, Image image, CustomerCredentials customerCredentials,
+			List<Publisher> publisherList, List<Track> trackList, List<Album> albumList) {
+		super();
+		this.customerDetail = customerDetail;
+		this.image = image;
+		this.customerCredentials = customerCredentials;
+		this.publisherList = publisherList;
+		this.trackList = trackList;
+		this.albumList = albumList;
+	}
+
+	public Customer(int customerId, CustomerDetail customerDetail, Image image, CustomerCredentials customerCredentials,
+			List<Publisher> publisherList, List<Track> trackList, List<Album> albumList) {
 		super();
 		this.customerId = customerId;
 		this.customerDetail = customerDetail;
 		this.image = image;
 		this.customerCredentials = customerCredentials;
+		this.publisherList = publisherList;
+		this.trackList = trackList;
+		this.albumList = albumList;
 	}
 
 	@Id
@@ -104,21 +119,36 @@ public class Customer implements Serializable {
 	}
 
 	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
-	@JoinTable(
-			name = "PUBLISHER_CUSTOMER",
-			joinColumns = {
-					@JoinColumn(name = "CUSTOMER_ID")
-			},
-			inverseJoinColumns = {
-					@JoinColumn(name = "PUBLISHER_ID")
-			}
-			)
+	@JoinTable(name = "PUBLISHER_CUSTOMER", joinColumns = { @JoinColumn(name = "CUSTOMER_ID") }, inverseJoinColumns = {
+			@JoinColumn(name = "PUBLISHER_ID") })
 	public List<Publisher> getPublisherList() {
 		return publisherList;
 	}
 
 	public void setPublisherList(List<Publisher> publisherList) {
 		this.publisherList = publisherList;
+	}
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "CUSTOMER_TRACK", joinColumns = { @JoinColumn(name = "CUSTOMER_ID") }, inverseJoinColumns = {
+			@JoinColumn(name = "TRACK_ID") })
+	public List<Track> getTrackList() {
+		return trackList;
+	}
+
+	public void setTrackList(List<Track> trackList) {
+		this.trackList = trackList;
+	}
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "CUSTOMER_ALBUM", joinColumns = { @JoinColumn(name = "CUSTOMER_ID") }, inverseJoinColumns = {
+			@JoinColumn(name = "ALBUM_ID") })
+	public List<Album> getAlbumList() {
+		return albumList;
+	}
+
+	public void setAlbumList(List<Album> albumList) {
+		this.albumList = albumList;
 	}
 
 	@Override
