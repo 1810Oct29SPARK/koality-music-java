@@ -161,7 +161,7 @@ public class Track implements Serializable {
 		this.audio = audio;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PUBLISHER_ID")
 	public Publisher getPublisher() {
 		return publisher;

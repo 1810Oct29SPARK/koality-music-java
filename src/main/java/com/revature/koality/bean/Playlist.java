@@ -3,7 +3,6 @@ package com.revature.koality.bean;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -81,7 +80,7 @@ public class Playlist implements Serializable {
 		this.playlistName = playlistName;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "CUSTOMER_ID")
 	public Customer getCustomer() {
 		return customer;
@@ -91,7 +90,7 @@ public class Playlist implements Serializable {
 		this.customer = customer;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "TRACK_PLAYLIST", joinColumns = { @JoinColumn(name = "PLAYLIST_ID") }, inverseJoinColumns = {
 			@JoinColumn(name = "TRACK_ID") })
 	public List<Track> getTrackList() {

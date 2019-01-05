@@ -134,7 +134,7 @@ public class Album implements Serializable {
 		this.image = image;
 	}
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "PUBLISHER_ID")
 	public Publisher getPublisher() {
 		return publisher;
@@ -144,7 +144,7 @@ public class Album implements Serializable {
 		this.publisher = publisher;
 	}
 
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "TRACK_ALBUM", joinColumns = { @JoinColumn(name = "ALBUM_ID") }, inverseJoinColumns = {
 			@JoinColumn(name = "TRACK_ID") })
 	public List<Track> getTrackList() {

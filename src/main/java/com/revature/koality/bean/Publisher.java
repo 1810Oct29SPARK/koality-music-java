@@ -1,6 +1,7 @@
 package com.revature.koality.bean;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -27,6 +29,7 @@ public class Publisher implements Serializable {
 	private Image image;
 	private PublisherCredentials publisherCredentials;
 	private String imageUrl;
+	private List<Customer> customerList;
 
 	private static final long serialVersionUID = 1L;
 
@@ -59,6 +62,16 @@ public class Publisher implements Serializable {
 		this.publisherDetail = publisherDetail;
 		this.image = image;
 		this.publisherCredentials = publisherCredentials;
+	}
+
+	public Publisher(int publisherId, PublisherDetail publisherDetail, Image image,
+			PublisherCredentials publisherCredentials, List<Customer> customerList) {
+		super();
+		this.publisherId = publisherId;
+		this.publisherDetail = publisherDetail;
+		this.image = image;
+		this.publisherCredentials = publisherCredentials;
+		this.customerList = customerList;
 	}
 
 	@Id
@@ -102,6 +115,15 @@ public class Publisher implements Serializable {
 		this.publisherCredentials = publisherCredentials;
 	}
 
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "publisherList")
+	public List<Customer> getCustomerList() {
+		return customerList;
+	}
+
+	public void setCustomerList(List<Customer> customerList) {
+		this.customerList = customerList;
+	}
+
 	@Transient
 	public String getImageUrl() {
 		return imageUrl;
@@ -117,6 +139,7 @@ public class Publisher implements Serializable {
 	}
 
 	public void truncate(boolean all) {
+		this.customerList = null;
 		this.image = null;
 		this.publisherCredentials = null;
 		if (all) {
