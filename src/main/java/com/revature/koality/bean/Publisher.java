@@ -93,7 +93,7 @@ public class Publisher implements Serializable {
 	}
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "USERNAME")
+	@JoinColumn(name = "PUBLISHER_CREDENTIALS_ID")
 	public PublisherCredentials getPublisherCredentials() {
 		return publisherCredentials;
 	}

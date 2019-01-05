@@ -5,9 +5,12 @@ import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -16,6 +19,7 @@ public class CustomerCredentials implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
+	private int customerCredentialsId;
 	private String username;
 	private String hashSalt;
 	private String passwordHash;
@@ -45,7 +49,36 @@ public class CustomerCredentials implements Serializable {
 		this.customer = customer;
 	}
 
+	public CustomerCredentials(int customerCredentialsId, String username, String hashSalt, String passwordHash) {
+		super();
+		this.customerCredentialsId = customerCredentialsId;
+		this.username = username;
+		this.hashSalt = hashSalt;
+		this.passwordHash = passwordHash;
+	}
+
+	public CustomerCredentials(int customerCredentialsId, String username, String hashSalt, String passwordHash,
+			Customer customer) {
+		super();
+		this.customerCredentialsId = customerCredentialsId;
+		this.username = username;
+		this.hashSalt = hashSalt;
+		this.passwordHash = passwordHash;
+		this.customer = customer;
+	}
+
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customerCredIdGen")
+	@SequenceGenerator(name = "customerCredIdGen", sequenceName = "CUSTOMER_CREDENTIALS_ID_SEQ", allocationSize = 1)
+	@Column(name = "CUSTOMER_CREDENTIALS_ID")
+	public int getCustomerCredentialsId() {
+		return customerCredentialsId;
+	}
+
+	public void setCustomerCredentialsId(int customerCredentialsId) {
+		this.customerCredentialsId = customerCredentialsId;
+	}
+
 	@Column(name = "USERNAME")
 	public String getUsername() {
 		return username;
@@ -74,7 +107,7 @@ public class CustomerCredentials implements Serializable {
 	}
 
 	@OneToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "USERNAME")
+	@JoinColumn(name = "CUSTOMER_CREDENTIALS_ID")
 	public Customer getCustomer() {
 		return customer;
 	}

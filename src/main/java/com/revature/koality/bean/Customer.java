@@ -113,7 +113,7 @@ public class Customer implements Serializable {
 	}
 
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "USERNAME")
+	@JoinColumn(name = "CUSTOMER_CREDENTIALS_ID")
 	public CustomerCredentials getCustomerCredentials() {
 		return customerCredentials;
 	}
