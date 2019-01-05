@@ -17,8 +17,8 @@
 		<mapping class="com.revature.koality.bean.Audio" />
 		<mapping class="com.revature.koality.bean.PublisherCredentials" />
 		<mapping class="com.revature.koality.bean.Publisher" />
-		<mapping class="com.revature.koality.bean." />
-		<mapping class="com.revature.koality.bean." />
+		<mapping class="com.revature.koality.bean.CustomerCredentials" />
+		<mapping class="com.revature.koality.bean.Customer" />
 		<mapping class="com.revature.koality.bean." />
 		<mapping class="com.revature.koality.bean." />
 		<mapping class="com.revature.koality.bean." />

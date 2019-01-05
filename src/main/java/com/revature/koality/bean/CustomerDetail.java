@@ -6,32 +6,32 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class PublisherDetail implements Serializable {
+public class CustomerDetail implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private String firstName;
 	private String lastName;
 	private String email;
-	private String companyName;
+	private String favoriteGenre;
 
-	public PublisherDetail() {
+	public CustomerDetail() {
 		super();
 	}
 
-	public PublisherDetail(String firstName, String lastName, String email) {
+	public CustomerDetail(String firstName, String lastName, String email) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 	}
 
-	public PublisherDetail(String firstName, String lastName, String email, String companyName) {
+	public CustomerDetail(String firstName, String lastName, String email, String favoriteGenre) {
 		super();
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.companyName = companyName;
+		this.favoriteGenre = favoriteGenre;
 	}
 
 	@Column(name = "FIRST_NAME")
@@ -61,19 +61,19 @@ public class PublisherDetail implements Serializable {
 		this.email = email;
 	}
 
-	@Column(name = "COMPANY_NAME")
-	public String getCompanyName() {
-		return companyName;
+	@Column(name = "FAVORITE_GENRE")
+	public String getFavoriteGenre() {
+		return favoriteGenre;
 	}
 
-	public void setCompanyName(String companyName) {
-		this.companyName = companyName;
+	public void setFavoriteGenre(String favoriteGenre) {
+		this.favoriteGenre = favoriteGenre;
 	}
 
 	@Override
 	public String toString() {
-		return "PublisherDetail [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
-				+ ", companyName=" + companyName + "]";
+		return "CustomerDetail [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
+				+ ", favoriteGenre=" + favoriteGenre + "]";
 	}
 
 }

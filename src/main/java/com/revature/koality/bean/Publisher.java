@@ -2,6 +2,7 @@ package com.revature.koality.bean;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -32,6 +33,12 @@ public class Publisher implements Serializable {
 	public Publisher(PublisherDetail publisherDetail) {
 		super();
 		this.publisherDetail = publisherDetail;
+	}
+
+	public Publisher(PublisherDetail publisherDetail, Image image) {
+		super();
+		this.publisherDetail = publisherDetail;
+		this.image = image;
 	}
 
 	public Publisher(PublisherDetail publisherDetail, Image image, PublisherCredentials publisherCredentials) {
@@ -71,7 +78,7 @@ public class Publisher implements Serializable {
 		this.publisherDetail = publisherDetail;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "IMAGE_ID")
 	public Image getImage() {
 		return image;
@@ -81,7 +88,7 @@ public class Publisher implements Serializable {
 		this.image = image;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "USERNAME")
 	public PublisherCredentials getPublisherCredentials() {
 		return publisherCredentials;
