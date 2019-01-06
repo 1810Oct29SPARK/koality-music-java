@@ -179,7 +179,6 @@ public class Album implements Serializable {
 		if (this.trackList != null) {
 			this.trackList.forEach(t -> {
 				t.loadAudioUrl();
-				t.truncate(false);
 			});
 		}
 	}

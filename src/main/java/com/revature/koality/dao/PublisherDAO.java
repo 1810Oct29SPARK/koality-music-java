@@ -12,7 +12,7 @@ import com.revature.koality.bean.Track;
 
 public interface PublisherDAO {
 
-	boolean addPublisher(Publisher publisher);
+	int addPublisher(Publisher publisher);
 
 	PublisherCredentials getPublisherCredentialsByUsername(String username);
 

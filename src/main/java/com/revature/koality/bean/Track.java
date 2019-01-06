@@ -202,7 +202,6 @@ public class Track implements Serializable {
 	public void loadAudioUrl() {
 		if (this.audio != null) {
 			this.audioUrl = CommonUtility.encodeToBlobUrl(this.audio.getAudioType(), this.audio.getAudioData(), true);
-			this.audio = null;
 		}
 	}
 

@@ -52,11 +52,11 @@ public class Image implements Serializable {
 
 	@Column(name = "IMAGE_TYPE")
 	public String getImageType() {
-		return imageType;
+		return imageType.toUpperCase();
 	}
 
 	public void setImageType(String imageType) {
-		this.imageType = imageType;
+		this.imageType = imageType.toUpperCase();
 	}
 
 	@Lob

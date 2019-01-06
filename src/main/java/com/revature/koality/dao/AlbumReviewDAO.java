@@ -5,7 +5,7 @@ import com.revature.koality.bean.ReviewContent;
 
 public interface AlbumReviewDAO {
 
-	boolean addAlbumReview(ReviewContent reviewContent, int albumId, int customerId);
+	int addAlbumReview(ReviewContent reviewContent, int albumId, int customerId);
 
 	AlbumReview getAlbumReviewById(int albumReviewId);
 

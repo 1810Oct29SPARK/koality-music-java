@@ -12,7 +12,7 @@ import com.revature.koality.bean.Track;
 
 public interface CustomerDAO {
 
-	boolean addCustomer(Customer customer);
+	int addCustomer(Customer customer);
 
 	CustomerCredentials getCustomerCredentialsByUsername(String username);
 

@@ -182,7 +182,6 @@ public class Customer implements Serializable {
 	public void loadImageUrl() {
 		if (this.image != null) {
 			this.imageUrl = CommonUtility.encodeToBlobUrl(this.image.getImageType(), this.image.getImageData(), false);
-			this.image = null;
 		}
 	}
 

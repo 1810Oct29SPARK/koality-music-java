@@ -3,6 +3,7 @@ package com.revature.koality.utility;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.Random;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
@@ -45,6 +46,21 @@ public class CommonUtility {
 	public static String generateRandomString(int length) {
 
 		return RandomStringUtils.randomAlphanumeric(length);
+
+	}
+
+	/**
+	 * 
+	 * Generate a random integer between 1 and the specified max value (inclusive)
+	 * 
+	 * @param maxValue
+	 * @return the generated random integer
+	 */
+	public static int generateRandomInteger(int maxValue) {
+
+		Random rand = new Random();
+
+		return rand.nextInt(maxValue) + 1;
 
 	}
 

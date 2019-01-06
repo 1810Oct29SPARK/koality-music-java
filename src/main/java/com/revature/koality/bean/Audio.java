@@ -52,11 +52,11 @@ public class Audio implements Serializable {
 
 	@Column(name = "AUDIO_TYPE")
 	public String getAudioType() {
-		return audioType;
+		return audioType.toUpperCase();
 	}
 
 	public void setAudioType(String audioType) {
-		this.audioType = audioType;
+		this.audioType = audioType.toUpperCase();
 	}
 
 	@Lob

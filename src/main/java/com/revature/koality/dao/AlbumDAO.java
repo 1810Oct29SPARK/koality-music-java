@@ -8,13 +8,13 @@ import com.revature.koality.bean.Track;
 
 public interface AlbumDAO {
 
-	boolean addAlbum(Album album, int publisherId, List<Integer> trackIdList);
+	int addAlbum(Album album, int publisherId, List<Integer> trackIdList);
 
 	Album getAlbumById(int albumId);
 
 	List<Album> getAllAlbums();
 
-	boolean updateAlbumPrice(int albumId, float unitPrice);
+	float updateAlbumPrice(int albumId, float unitPrice);
 
 	List<Track> getAllTracksByAlbumId(int albumId);
 

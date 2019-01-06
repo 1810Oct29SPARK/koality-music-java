@@ -105,7 +105,7 @@ public class Publisher implements Serializable {
 		this.image = image;
 	}
 
-	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, optional = false)
 	@JoinColumn(name = "PUBLISHER_CREDENTIALS_ID")
 	public PublisherCredentials getPublisherCredentials() {
 		return publisherCredentials;
@@ -150,7 +150,6 @@ public class Publisher implements Serializable {
 	public void loadImageUrl() {
 		if (this.image != null) {
 			this.imageUrl = CommonUtility.encodeToBlobUrl(this.image.getImageType(), this.image.getImageData(), false);
-			this.image = null;
 		}
 	}
 
