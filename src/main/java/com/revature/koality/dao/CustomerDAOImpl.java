@@ -7,22 +7,22 @@ import org.hibernate.SessionFactory;
 
 import com.revature.koality.bean.Album;
 import com.revature.koality.bean.Customer;
+import com.revature.koality.bean.CustomerCredentials;
+import com.revature.koality.bean.CustomerDetail;
 import com.revature.koality.bean.Image;
 import com.revature.koality.bean.Publisher;
-import com.revature.koality.bean.PublisherCredentials;
-import com.revature.koality.bean.PublisherDetail;
 import com.revature.koality.bean.Track;
 import com.revature.koality.utility.HibernateUtility;
 
-public class PublisherDAOImpl implements PublisherDAO {
+public class CustomerDAOImpl implements CustomerDAO {
 
 	private SessionFactory sessionFactory;
 
-	public PublisherDAOImpl() {
+	public CustomerDAOImpl() {
 		this.sessionFactory = HibernateUtility.getMainSessionFactory();
 	}
 
-	public PublisherDAOImpl(boolean isTest) {
+	public CustomerDAOImpl(boolean isTest) {
 		if (isTest) {
 			this.sessionFactory = HibernateUtility.getTestSessionFactory();
 		} else {
@@ -39,7 +39,7 @@ public class PublisherDAOImpl implements PublisherDAO {
 	}
 
 	@Override
-	public int addPublisher(Publisher publisher) {
+	public int addCustomer(Customer customer) {
 
 		int id = -1;
 		Session session = null;
@@ -48,7 +48,7 @@ public class PublisherDAOImpl implements PublisherDAO {
 			try {
 				session = this.sessionFactory.getCurrentSession();
 				session.beginTransaction();
-				id = (int) session.save(publisher);
+				id = (int) session.save(customer);
 				session.getTransaction().commit();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -64,17 +64,17 @@ public class PublisherDAOImpl implements PublisherDAO {
 	}
 
 	@Override
-	public PublisherCredentials getPublisherCredentialsByUsername(String username) {
+	public CustomerCredentials getCustomerCredentialsByUsername(String username) {
 
-		PublisherCredentials publisherCredentials = null;
+		CustomerCredentials customerCredentials = null;
 		Session session = null;
 
 		if (this.sessionFactory != null) {
-			String hql = "FROM PublisherCredentials pc WHERE pc.username = :username";
+			String hql = "FROM CustomerCredentials cc WHERE cc.username = :username";
 			try {
 				session = this.sessionFactory.getCurrentSession();
 				session.beginTransaction();
-				publisherCredentials = session.createQuery(hql, PublisherCredentials.class)
+				customerCredentials = session.createQuery(hql, CustomerCredentials.class)
 						.setParameter("username", username).getSingleResult();
 				session.getTransaction().commit();
 			} catch (Exception e) {
@@ -85,22 +85,22 @@ public class PublisherDAOImpl implements PublisherDAO {
 			}
 		}
 
-		return publisherCredentials;
+		return customerCredentials;
 
 	}
 
 	@Override
-	public Publisher getPublisherById(int publisherId) {
+	public Customer getCustomerById(int customerId) {
 
-		Publisher publisher = null;
+		Customer customer = null;
 		Session session = null;
 
 		if (this.sessionFactory != null) {
 			try {
 				session = this.sessionFactory.getCurrentSession();
 				session.beginTransaction();
-				publisher = session.get(Publisher.class, publisherId);
-				publisher.loadImageUrl();
+				customer = session.get(Customer.class, customerId);
+				customer.loadImageUrl();
 				session.getTransaction().commit();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -110,22 +110,22 @@ public class PublisherDAOImpl implements PublisherDAO {
 			}
 		}
 
-		return publisher;
+		return customer;
 
 	}
 
 	@Override
-	public List<Publisher> getAllPublishers() {
+	public List<Customer> getAllCustomers() {
 
-		List<Publisher> publisherList = null;
+		List<Customer> customerList = null;
 		Session session = null;
 
 		if (this.sessionFactory != null) {
 			try {
-				String hql = "FROM Publisher p ORDER BY p.publisherId ASC";
+				String hql = "FROM Customer c ORDER BY c.customerId ASC";
 				session = this.sessionFactory.getCurrentSession();
 				session.beginTransaction();
-				publisherList = session.createQuery(hql, Publisher.class).getResultList();
+				customerList = session.createQuery(hql, Customer.class).getResultList();
 				session.getTransaction().commit();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -135,12 +135,12 @@ public class PublisherDAOImpl implements PublisherDAO {
 			}
 		}
 
-		return publisherList;
+		return customerList;
 
 	}
 
 	@Override
-	public boolean updatePublisherDetail(int publisherId, PublisherDetail publisherDetail) {
+	public boolean updateCustomerDetail(int customerId, CustomerDetail customerDetail) {
 
 		Session session = null;
 
@@ -148,34 +148,8 @@ public class PublisherDAOImpl implements PublisherDAO {
 			try {
 				session = this.sessionFactory.getCurrentSession();
 				session.beginTransaction();
-				Publisher publisher = session.get(Publisher.class, publisherId);
-				publisher.setPublisherDetail(publisherDetail);
-				session.getTransaction().commit();
-				return true;
-			} catch (Exception e) {
-				e.printStackTrace();
-				session.getTransaction().rollback();
-			} finally {
-				session.close();
-			}
-		}
-
-		return false;
-
-	}
-
-	@Override
-	public boolean updatePublisherImage(int publisherId, Image image) {
-
-		Session session = null;
-
-		if (this.sessionFactory != null) {
-			try {
-				session = this.sessionFactory.getCurrentSession();
-				session.beginTransaction();
-				Publisher publisher = session.get(Publisher.class, publisherId);
-				publisher.getImage().setImageType(image.getImageType());
-				publisher.getImage().setImageData(image.getImageData());
+				Customer customer = session.get(Customer.class, customerId);
+				customer.setCustomerDetail(customerDetail);
 				session.getTransaction().commit();
 				return true;
 			} catch (Exception e) {
@@ -191,7 +165,7 @@ public class PublisherDAOImpl implements PublisherDAO {
 	}
 
 	@Override
-	public boolean updatePublisherCredentials(int publisherId, PublisherCredentials publisherCredentials) {
+	public boolean updateCustomerImage(int customerId, Image image) {
 
 		Session session = null;
 
@@ -199,10 +173,9 @@ public class PublisherDAOImpl implements PublisherDAO {
 			try {
 				session = this.sessionFactory.getCurrentSession();
 				session.beginTransaction();
-				Publisher publisher = session.get(Publisher.class, publisherId);
-				publisher.getPublisherCredentials().setUsername(publisherCredentials.getUsername());
-				publisher.getPublisherCredentials().setHashSalt(publisherCredentials.getHashSalt());
-				publisher.getPublisherCredentials().setPasswordHash(publisherCredentials.getPasswordHash());
+				Customer customer = session.get(Customer.class, customerId);
+				customer.getImage().setImageType(image.getImageType());
+				customer.getImage().setImageData(image.getImageData());
 				session.getTransaction().commit();
 				return true;
 			} catch (Exception e) {
@@ -218,21 +191,60 @@ public class PublisherDAOImpl implements PublisherDAO {
 	}
 
 	@Override
-	public List<Customer> getAllSubscribersByPublisherId(int publisherId) {
+	public boolean updateCustomerCredentials(int customerId, CustomerCredentials customerCredentials) {
+
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Customer customer = session.get(Customer.class, customerId);
+				customer.getCustomerCredentials().setUsername(customerCredentials.getUsername());
+				customer.getCustomerCredentials().setHashSalt(customerCredentials.getHashSalt());
+				customer.getCustomerCredentials().setPasswordHash(customerCredentials.getPasswordHash());
+				session.getTransaction().commit();
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return false;
+
+	}
+
+	@Override
+	public List<Publisher> getAllSubscribeeByCustomerId(int customerId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Track> getAllTracksByPublisherId(int publisherId) {
+	public List<Track> getAllTracksByCustomerId(int customerId) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Album> getAllAlbumsByPublisherId(int publisherId) {
+	public List<Album> getAllAlbumsByCustomerId(int customerId) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean subscribeToPublisher(int customerId, int publisherId) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean unsubscribeFromPublisher(int customerId, int publisherId) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
