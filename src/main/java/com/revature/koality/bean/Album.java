@@ -17,8 +17,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.LazyInitializationException;
+
+import com.revature.koality.utility.CommonUtility;
 
 @Entity
 @Table(name = "ALBUM")
@@ -33,6 +36,7 @@ public class Album implements Serializable {
 	private Image image;
 	private Publisher publisher;
 	private List<Track> trackList;
+	private String imageUrl;
 
 	public Album() {
 		super();
@@ -155,6 +159,15 @@ public class Album implements Serializable {
 		this.trackList = trackList;
 	}
 
+	@Transient
+	public String getImageUrl() {
+		return imageUrl;
+	}
+
+	public void setImageUrl(String imageUrl) {
+		this.imageUrl = imageUrl;
+	}
+
 	@Override
 	public String toString() {
 		return "Album [albumId=" + albumId + ", albumName=" + albumName + "]";
@@ -172,6 +185,12 @@ public class Album implements Serializable {
 			this.trackList.forEach(t -> t.truncate(all));
 		} catch (LazyInitializationException e) {
 			this.trackList = null;
+		}
+	}
+
+	public void loadImageUrl() {
+		if (this.image != null) {
+			this.imageUrl = CommonUtility.encodeToBlobUrl(this.image.getImageType(), this.image.getImageData(), false);
 		}
 	}
 

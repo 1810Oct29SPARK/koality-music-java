@@ -28,8 +28,8 @@ public class Publisher implements Serializable {
 	private PublisherDetail publisherDetail;
 	private Image image;
 	private PublisherCredentials publisherCredentials;
-	private String imageUrl;
 	private List<Customer> customerList;
+	private String imageUrl;
 
 	private static final long serialVersionUID = 1L;
 
