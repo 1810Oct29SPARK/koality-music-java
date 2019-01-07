@@ -1,0 +1,28 @@
+<?xml version = "1.0" encoding = "utf-8"?>
+<!DOCTYPE hibernate-configuration SYSTEM 
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<!-- Properties -->
+		<property name="hibernate.dialect">org.hibernate.dialect.Oracle12cDialect</property>
+		<property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
+		<property name="hibernate.show_sql">true</property>
+		<property name="hibernate.connection.pool_size">1</property>
+		<property name="hibernate.current_session_context_class">thread</property>
+		<property name="hibernate.connection.autocommit">false</property>
+		<property name="hibernate.hbm2ddl.auto">validate</property>
+		<!-- Mappings -->
+		<mapping package="com.revature.koality.bean" />
+		<mapping class="com.revature.koality.bean.Image" />
+		<mapping class="com.revature.koality.bean.Audio" />
+		<mapping class="com.revature.koality.bean.PublisherCredentials" />
+		<mapping class="com.revature.koality.bean.Publisher" />
+		<mapping class="com.revature.koality.bean.CustomerCredentials" />
+		<mapping class="com.revature.koality.bean.Customer" />
+		<mapping class="com.revature.koality.bean.Track" />
+		<mapping class="com.revature.koality.bean.Album" />
+		<mapping class="com.revature.koality.bean.TrackReview" />
+		<mapping class="com.revature.koality.bean.AlbumReview" />
+		<mapping class="com.revature.koality.bean.Playlist" />
+	</session-factory>
+</hibernate-configuration>
