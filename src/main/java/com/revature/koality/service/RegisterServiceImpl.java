@@ -17,13 +17,32 @@ public class RegisterServiceImpl implements RegisterService {
 
 	public RegisterServiceImpl() {
 		super();
+		pd = new PublisherDAOImpl();
+		cd = new CustomerDAOImpl();
+	}
+	
+	private PublisherDAO pd;
+	private CustomerDAO cd;
+
+	public PublisherDAO getPd() {
+		return pd;
+	}
+
+	public void setPd(PublisherDAO pd) {
+		this.pd = pd;
+	}
+
+	public CustomerDAO getCd() {
+		return cd;
+	}
+
+	public void setCd(CustomerDAO cd) {
+		this.cd = cd;
 	}
 
 	@Override
 	public int registerCustomer(String firstName, String lastName, String email, String favoriteGenre, String username,
 			String password) {
-
-		CustomerDAO cd = new CustomerDAOImpl();
 
 		CustomerDetail customerDetail = new CustomerDetail(firstName, lastName, email, favoriteGenre);
 		String hashSalt = CommonUtility.generateRandomString(4);
@@ -44,8 +63,7 @@ public class RegisterServiceImpl implements RegisterService {
 	@Override
 	public int registerPublisher(String firstName, String lastName, String email, String companyName, String username,
 			String password) {
-		PublisherDAO pd = new PublisherDAOImpl();
-
+		
 		PublisherDetail publisherDetail = new PublisherDetail(firstName, lastName, email, companyName);
 		String hashSalt = CommonUtility.generateRandomString(4);
 
