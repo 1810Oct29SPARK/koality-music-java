@@ -2,6 +2,7 @@ package com.revature.koality.dao;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -219,32 +220,187 @@ public class CustomerDAOImpl implements CustomerDAO {
 
 	@Override
 	public List<Publisher> getAllSubscribeeByCustomerId(int customerId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<Publisher> publisherList = null;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Customer customer = session.get(Customer.class, customerId);
+				publisherList = customer.getPublisherList();
+				Hibernate.initialize(publisherList);
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return publisherList;
+
 	}
 
 	@Override
 	public List<Track> getAllTracksByCustomerId(int customerId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<Track> trackList = null;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Customer customer = session.get(Customer.class, customerId);
+				trackList = customer.getTrackList();
+				Hibernate.initialize(trackList);
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return trackList;
+
 	}
 
 	@Override
 	public List<Album> getAllAlbumsByCustomerId(int customerId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<Album> albumList = null;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Customer customer = session.get(Customer.class, customerId);
+				albumList = customer.getAlbumList();
+				Hibernate.initialize(albumList);
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return albumList;
+
 	}
 
 	@Override
 	public boolean subscribeToPublisher(int customerId, int publisherId) {
-		// TODO Auto-generated method stub
+
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Customer customer = session.get(Customer.class, customerId);
+				customer.getPublisherList().add(session.load(Publisher.class, publisherId));
+				session.getTransaction().commit();
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
 		return false;
+
 	}
 
 	@Override
 	public boolean unsubscribeFromPublisher(int customerId, int publisherId) {
-		// TODO Auto-generated method stub
+
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Customer customer = session.get(Customer.class, customerId);
+				customer.getPublisherList().removeIf(p -> p.getPublisherId() == publisherId);
+				session.getTransaction().commit();
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
 		return false;
+
+	}
+
+	@Override
+	public boolean purchaseTrack(int customerId, int trackId) {
+
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Customer customer = session.get(Customer.class, customerId);
+				customer.getTrackList().add(session.load(Track.class, trackId));
+				session.getTransaction().commit();
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return false;
+
+	}
+
+	@Override
+	public boolean purchaseAlbum(int customerId, int albumId) {
+
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Customer customer = session.get(Customer.class, customerId);
+				Album album = session.get(Album.class, albumId);
+				customer.getAlbumList().add(album);
+
+				List<Track> oldTrackList = customer.getTrackList();
+				List<Track> newTrackList = album.getTrackList();
+				for (Track t : newTrackList) {
+					if (!oldTrackList.contains(t)) {
+						oldTrackList.add(t);
+					}
+				}
+				session.getTransaction().commit();
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			}
+		}
+
+		return false;
+
 	}
 
 }

@@ -1,5 +1,6 @@
 package com.revature.koality.dao;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -151,20 +152,81 @@ public class AlbumDAOImpl implements AlbumDAO {
 
 	@Override
 	public List<Track> getAllTracksByAlbumId(int albumId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<Track> trackList = null;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Album album = session.get(Album.class, albumId);
+				trackList = album.getTrackList();
+				Hibernate.initialize(trackList);
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return trackList;
+
 	}
 
 	@Override
 	public List<AlbumReview> getAllAlbumReviewsByAlbumId(int albumId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<AlbumReview> albumReviewList = null;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				String hql = "FROM AlbumReview ar WHERE ar.album.albumId = :albumId";
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				albumReviewList = session.createQuery(hql, AlbumReview.class).setParameter("albumId", albumId)
+						.getResultList();
+				albumReviewList.forEach(ar -> Hibernate.initialize(ar.getCustomer()));
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return albumReviewList;
+
 	}
 
 	@Override
 	public int getAlbumPurchaseCount(int albumId) {
-		// TODO Auto-generated method stub
-		return 0;
+
+		int count = -1;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				String sql = "SELECT COUNT(1) FROM CUSTOMER_ALBUM\r\n" + "WHERE ALBUM_ID = " + albumId;
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				count = ((BigDecimal) session.createNativeQuery(sql).getSingleResult()).intValue();
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+				count = -1;
+			} finally {
+				session.close();
+			}
+		}
+
+		return count;
+
 	}
 
 }

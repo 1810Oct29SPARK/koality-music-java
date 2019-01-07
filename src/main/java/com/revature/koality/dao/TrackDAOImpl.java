@@ -1,7 +1,9 @@
 package com.revature.koality.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -140,14 +142,55 @@ public class TrackDAOImpl implements TrackDAO {
 
 	@Override
 	public List<TrackReview> getAllTrackReviewsByTrackId(int trackId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<TrackReview> trackReviewList = null;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				String hql = "FROM TrackReview tr WHERE tr.track.trackId = :trackId";
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				trackReviewList = session.createQuery(hql, TrackReview.class).setParameter("trackId", trackId)
+						.getResultList();
+				trackReviewList.forEach(tr -> Hibernate.initialize(tr.getCustomer()));
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return trackReviewList;
+
 	}
 
 	@Override
 	public int getTrackPurchaseCount(int trackId) {
-		// TODO Auto-generated method stub
-		return 0;
+
+		int count = -1;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				String sql = "SELECT COUNT(1) FROM CUSTOMER_TRACK\r\n" + "WHERE TRACK_ID = " + trackId;
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				count = ((BigDecimal) session.createNativeQuery(sql).getSingleResult()).intValue();
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+				count = -1;
+			} finally {
+				session.close();
+			}
+		}
+
+		return count;
+
 	}
 
 }

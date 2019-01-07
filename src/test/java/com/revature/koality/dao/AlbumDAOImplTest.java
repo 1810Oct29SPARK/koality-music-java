@@ -2,8 +2,7 @@ package com.revature.koality.dao;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.fail;
-
+import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.revature.koality.bean.AlbumReview;
 import com.revature.koality.utility.CommonUtility;
 import com.revature.koality.utility.HibernateUtility;
 import com.revature.koality.utility.MockUtility;
@@ -67,22 +67,21 @@ public class AlbumDAOImplTest {
 		assertNotEquals(-1F, ad.updateAlbumPrice(6, CommonUtility.generateRandomInteger(200)));
 	}
 
-	@Ignore
 	@Test
 	public void testGetAllTracksByAlbumId() {
-		fail("Not yet implemented");
+		assertTrue(ad.getAllTracksByAlbumId(1).size() > 0);
 	}
 
-	@Ignore
 	@Test
 	public void testGetAllAlbumReviewsByAlbumId() {
-		fail("Not yet implemented");
+		List<AlbumReview> albumReviewList = ad.getAllAlbumReviewsByAlbumId(1);
+		albumReviewList.removeIf(ar -> ar.getCustomer().getCustomerId() != 3);
+		assertEquals(1, albumReviewList.get(0).getReviewContent().getRating());
 	}
 
-	@Ignore
 	@Test
 	public void testGetAlbumPurchaseCount() {
-		fail("Not yet implemented");
+		assertEquals(1, ad.getAlbumPurchaseCount(8));
 	}
 
 }

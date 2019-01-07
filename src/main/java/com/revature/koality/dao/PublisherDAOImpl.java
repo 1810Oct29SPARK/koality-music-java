@@ -2,6 +2,7 @@ package com.revature.koality.dao;
 
 import java.util.List;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -219,20 +220,80 @@ public class PublisherDAOImpl implements PublisherDAO {
 
 	@Override
 	public List<Customer> getAllSubscribersByPublisherId(int publisherId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<Customer> customerList = null;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Publisher publisher = session.get(Publisher.class, publisherId);
+				customerList = publisher.getCustomerList();
+				Hibernate.initialize(customerList);
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return customerList;
+
 	}
 
 	@Override
 	public List<Track> getAllTracksByPublisherId(int publisherId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<Track> trackList = null;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				String hql = "FROM Track t WHERE t.publisher.publisherId = :publisherId";
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				trackList = session.createQuery(hql, Track.class).setParameter("publisherId", publisherId)
+						.getResultList();
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return trackList;
+
 	}
 
 	@Override
 	public List<Album> getAllAlbumsByPublisherId(int publisherId) {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<Album> albumList = null;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				String hql = "FROM Album a WHERE a.publisher.publisherId = :publisherId";
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				albumList = session.createQuery(hql, Album.class).setParameter("publisherId", publisherId)
+						.getResultList();
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return albumList;
+
 	}
 
 }

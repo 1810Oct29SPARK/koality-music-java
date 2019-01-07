@@ -3,7 +3,6 @@ package com.revature.koality.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -80,22 +79,19 @@ public class PublisherDAOImplTest {
 		assertTrue(pd.updatePublisherCredentials(6, MockUtility.getMockPublisherCredentials()));
 	}
 
-	@Ignore
 	@Test
 	public void testGetAllSubscribersByPublisherId() {
-		fail("Not yet implemented");
+		assertEquals(1, pd.getAllSubscribersByPublisherId(4).size());
 	}
 
-	@Ignore
 	@Test
 	public void testGetAllTracksByPublisherId() {
-		fail("Not yet implemented");
+		assertEquals(5, pd.getAllTracksByPublisherId(1).size());
 	}
 
-	@Ignore
 	@Test
 	public void testGetAllAlbumsByPublisherId() {
-		fail("Not yet implemented");
+		assertEquals(2, pd.getAllAlbumsByPublisherId(2));
 	}
 
 }
