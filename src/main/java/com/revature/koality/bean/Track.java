@@ -185,6 +185,28 @@ public class Track implements Serializable {
 		return "Track [trackId=" + trackId + ", trackName=" + trackName + "]";
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + trackId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Track other = (Track) obj;
+		if (trackId != other.trackId)
+			return false;
+		return true;
+	}
+
 	public void truncate(boolean all) {
 		this.audio = null;
 		if (this.publisher != null) {

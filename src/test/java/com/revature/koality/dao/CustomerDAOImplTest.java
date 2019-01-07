@@ -1,6 +1,8 @@
 package com.revature.koality.dao;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -24,6 +26,7 @@ public class CustomerDAOImplTest {
 		HibernateUtility.destroySessionFactories();
 	}
 
+	@Ignore
 	@Test
 	public void testAddCustomer() {
 		assertNotEquals(-1, cd.addCustomer(MockUtility.getMockCustomer()));
@@ -62,34 +65,61 @@ public class CustomerDAOImplTest {
 		assertTrue(cd.updateCustomerCredentials(4, MockUtility.getMockCustomerCredentials()));
 	}
 
-	@Ignore
 	@Test
 	public void testGetAllSubscribeeByCustomerId() {
-		fail("Not yet implemented");
+		assertEquals(2, cd.getAllSubscribeeByCustomerId(2).size());
 	}
 
-	@Ignore
 	@Test
 	public void testGetAllTracksByCustomerId() {
-		fail("Not yet implemented");
+		assertEquals(2, cd.getAllTracksByCustomerId(1).size());
 	}
 
-	@Ignore
 	@Test
 	public void testGetAllAlbumsByCustomerId() {
-		fail("Not yet implemented");
+		assertEquals(1, cd.getAllAlbumsByCustomerId(1).size());
 	}
 
 	@Ignore
 	@Test
 	public void testSubscribeToPublisher() {
-		fail("Not yet implemented");
+		assertTrue(cd.subscribeToPublisher(5, 2));
+	}
+
+	@Ignore
+	@Test
+	public void testSubscribeToPublisher2() {
+		assertTrue(cd.subscribeToPublisher(5, 4));
+	}
+
+	@Ignore
+	@Test
+	public void testSubscribeToPublisher3() {
+		assertTrue(cd.subscribeToPublisher(6, 5));
 	}
 
 	@Ignore
 	@Test
 	public void testUnsubscribeFromPublisher() {
-		fail("Not yet implemented");
+		assertTrue(cd.unsubscribeFromPublisher(2, 4));
+	}
+
+	@Ignore
+	@Test
+	public void testPurchaseTrack() {
+		assertTrue(cd.purchaseTrack(3, 9));
+	}
+
+	@Ignore
+	@Test
+	public void testPurchaseTrack2() {
+		assertTrue(cd.purchaseTrack(6, 5));
+	}
+
+	@Ignore
+	@Test
+	public void testPurchaseAlbum() {
+		assertTrue(cd.purchaseAlbum(2, 7));
 	}
 
 }

@@ -36,4 +36,8 @@ public interface CustomerDAO {
 
 	boolean unsubscribeFromPublisher(int customerId, int publisherId);
 
+	boolean purchaseTrack(int customerId, int trackId);
+
+	boolean purchaseAlbum(int customerId, int albumId);
+
 }

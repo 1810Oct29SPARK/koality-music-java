@@ -2,11 +2,14 @@ package com.revature.koality.dao;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import com.revature.koality.bean.TrackReview;
 import com.revature.koality.utility.CommonUtility;
 import com.revature.koality.utility.HibernateUtility;
 import com.revature.koality.utility.MockUtility;
@@ -70,16 +73,22 @@ public class TrackDAOImplTest {
 		assertNotEquals(-1F, td.updateTrackPrice(3, CommonUtility.generateRandomInteger(10)));
 	}
 
-	@Ignore
 	@Test
 	public void testGetAllTrackReviewsByTrackId() {
-		fail("Not yet implemented");
+		List<TrackReview> trackReviewList = td.getAllTrackReviewsByTrackId(1);
+		assertEquals("zbU81jAFYrBxjKKixTZ8dzPhe9SvFcmC1AsPT9OO8U4iBWEES5",
+				trackReviewList.get(0).getReviewContent().getReviewComment());
 	}
 
-	@Ignore
+	@Test
+	public void testGetAllTrackReviewsByTrackIdWithCustomer() {
+		List<TrackReview> trackReviewList = td.getAllTrackReviewsByTrackId(1);
+		assertEquals(5, trackReviewList.get(0).getCustomer().getCustomerId());
+	}
+
 	@Test
 	public void testGetTrackPurchaseCount() {
-		fail("Not yet implemented");
+		assertEquals(3, td.getTrackPurchaseCount(2));
 	}
 
 }

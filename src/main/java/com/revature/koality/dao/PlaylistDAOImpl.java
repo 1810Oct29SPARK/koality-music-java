@@ -1,26 +1,24 @@
 package com.revature.koality.dao;
 
-import java.math.BigDecimal;
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
-import com.revature.koality.bean.Publisher;
+import com.revature.koality.bean.Customer;
+import com.revature.koality.bean.Playlist;
 import com.revature.koality.bean.Track;
-import com.revature.koality.bean.TrackReview;
 import com.revature.koality.utility.HibernateUtility;
 
-public class TrackDAOImpl implements TrackDAO {
+public class PlaylistDAOImpl implements PlaylistDAO {
 
 	private SessionFactory sessionFactory;
 
-	public TrackDAOImpl() {
+	public PlaylistDAOImpl() {
 		this.sessionFactory = HibernateUtility.getMainSessionFactory();
 	}
 
-	public TrackDAOImpl(boolean isTest) {
+	public PlaylistDAOImpl(boolean isTest) {
 		if (isTest) {
 			this.sessionFactory = HibernateUtility.getTestSessionFactory();
 		} else {
@@ -37,7 +35,7 @@ public class TrackDAOImpl implements TrackDAO {
 	}
 
 	@Override
-	public int addTrack(Track track, int publisherId) {
+	public int addPlaylist(String playlistName, int customerId) {
 
 		int id = -1;
 		Session session = null;
@@ -46,9 +44,9 @@ public class TrackDAOImpl implements TrackDAO {
 			try {
 				session = this.sessionFactory.getCurrentSession();
 				session.beginTransaction();
-				Publisher publisher = session.load(Publisher.class, publisherId);
-				track.setPublisher(publisher);
-				id = (int) session.save(track);
+				Playlist playlist = new Playlist(playlistName);
+				playlist.setCustomer(session.load(Customer.class, customerId));
+				id = (int) session.save(playlist);
 				session.getTransaction().commit();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -64,17 +62,17 @@ public class TrackDAOImpl implements TrackDAO {
 	}
 
 	@Override
-	public Track getTrackById(int trackId) {
+	public Playlist getPlaylistById(int playlistId) {
 
-		Track track = null;
+		Playlist playlist = null;
 		Session session = null;
 
 		if (this.sessionFactory != null) {
 			try {
 				session = this.sessionFactory.getCurrentSession();
 				session.beginTransaction();
-				track = session.get(Track.class, trackId);
-				track.loadAudioUrl();
+				playlist = session.get(Playlist.class, playlistId);
+				playlist.loadTrackUrls();
 				session.getTransaction().commit();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -84,76 +82,23 @@ public class TrackDAOImpl implements TrackDAO {
 			}
 		}
 
-		return track;
+		return playlist;
 
 	}
 
 	@Override
-	public List<Track> getAllTracks() {
+	public List<Playlist> getAllPlaylistsByCustomerId(int customerId) {
 
-		List<Track> trackList = null;
+		List<Playlist> playlistList = null;
 		Session session = null;
 
 		if (this.sessionFactory != null) {
 			try {
-				String hql = "FROM Track t ORDER BY t.trackId ASC";
+				String hql = "FROM Playlist pl WHERE pl.customer.customerId = :customerId";
 				session = this.sessionFactory.getCurrentSession();
 				session.beginTransaction();
-				trackList = session.createQuery(hql, Track.class).getResultList();
-				session.getTransaction().commit();
-			} catch (Exception e) {
-				e.printStackTrace();
-				session.getTransaction().rollback();
-			} finally {
-				session.close();
-			}
-		}
-
-		return trackList;
-
-	}
-
-	@Override
-	public float updateTrackPrice(int trackId, float unitPrice) {
-
-		float price = -1F;
-		Session session = null;
-
-		if (this.sessionFactory != null) {
-			try {
-				session = this.sessionFactory.getCurrentSession();
-				session.beginTransaction();
-				Track track = session.get(Track.class, trackId);
-				track.setUnitPrice(unitPrice);
-				price = unitPrice;
-				session.getTransaction().commit();
-			} catch (Exception e) {
-				e.printStackTrace();
-				session.getTransaction().rollback();
-				price = -1F;
-			} finally {
-				session.close();
-			}
-		}
-
-		return price;
-
-	}
-
-	@Override
-	public List<TrackReview> getAllTrackReviewsByTrackId(int trackId) {
-
-		List<TrackReview> trackReviewList = null;
-		Session session = null;
-
-		if (this.sessionFactory != null) {
-			try {
-				String hql = "FROM TrackReview tr WHERE tr.track.trackId = :trackId";
-				session = this.sessionFactory.getCurrentSession();
-				session.beginTransaction();
-				trackReviewList = session.createQuery(hql, TrackReview.class).setParameter("trackId", trackId)
+				playlistList = session.createQuery(hql, Playlist.class).setParameter("customerId", customerId)
 						.getResultList();
-				trackReviewList.forEach(tr -> Hibernate.initialize(tr.getCustomer()));
 				session.getTransaction().commit();
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -163,33 +108,85 @@ public class TrackDAOImpl implements TrackDAO {
 			}
 		}
 
-		return trackReviewList;
+		return playlistList;
 
 	}
 
 	@Override
-	public int getTrackPurchaseCount(int trackId) {
+	public int addTracksToPlaylist(int playlistId, List<Integer> trackIdList) {
 
-		int count = -1;
 		Session session = null;
 
 		if (this.sessionFactory != null) {
 			try {
-				String sql = "SELECT COUNT(1) FROM CUSTOMER_TRACK\r\n" + "WHERE TRACK_ID = " + trackId;
 				session = this.sessionFactory.getCurrentSession();
 				session.beginTransaction();
-				count = ((BigDecimal) session.createNativeQuery(sql).getSingleResult()).intValue();
+				Playlist playlist = session.get(Playlist.class, playlistId);
+
+				for (int ti : trackIdList) {
+					playlist.getTrackList().add(session.load(Track.class, ti));
+				}
 				session.getTransaction().commit();
+				return trackIdList.size();
 			} catch (Exception e) {
 				e.printStackTrace();
 				session.getTransaction().rollback();
-				count = -1;
 			} finally {
 				session.close();
 			}
 		}
 
-		return count;
+		return -1;
+
+	}
+
+	@Override
+	public int removeTracksFromPlaylist(int playlistId, List<Integer> trackIdList) {
+
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Playlist playlist = session.get(Playlist.class, playlistId);
+				playlist.getTrackList().removeIf(t -> trackIdList.indexOf(t.getTrackId()) != -1);
+				session.getTransaction().commit();
+				return trackIdList.size();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return -1;
+
+	}
+
+	@Override
+	public boolean deletePlaylist(int playlistId) {
+
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Playlist playlist = session.load(Playlist.class, playlistId);
+				session.delete(playlist);
+				session.getTransaction().commit();
+				return true;
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return false;
 
 	}
 
