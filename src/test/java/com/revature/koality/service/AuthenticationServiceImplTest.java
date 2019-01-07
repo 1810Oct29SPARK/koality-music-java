@@ -7,12 +7,12 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 public class AuthenticationServiceImplTest {
-	
-	AuthenticationService as = new AuthenticationServiceImpl(true); 
+
+	AuthenticationService as = new AuthenticationServiceImpl();
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		
+
 	}
 
 	@AfterClass

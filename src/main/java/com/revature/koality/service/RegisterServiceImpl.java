@@ -16,13 +16,13 @@ import com.revature.koality.utility.CommonUtility;
 public class RegisterServiceImpl implements RegisterService {
 
 	public RegisterServiceImpl() {
-		// TODO Auto-generated constructor stub
+		super();
 	}
 
 	@Override
-	public int RegisterCustomer(String firstName, String lastName, String email, String favoriteGenre, String username,
+	public int registerCustomer(String firstName, String lastName, String email, String favoriteGenre, String username,
 			String password) {
-		
+
 		CustomerDAO cd = new CustomerDAOImpl();
 
 		CustomerDetail customerDetail = new CustomerDetail(firstName, lastName, email, favoriteGenre);
@@ -31,18 +31,18 @@ public class RegisterServiceImpl implements RegisterService {
 		String createHash = password + hashSalt;
 
 		String passwordHash = CommonUtility.digestSHA256(createHash);
-		
-		CustomerCredentials customerCredentials = new CustomerCredentials(username,hashSalt,passwordHash); 
-		
-		Image image = null; 
-		
-		Customer customer = new Customer(customerDetail, image , customerCredentials); 
-		
-		return cd.addCustomer(customer); 
+
+		CustomerCredentials customerCredentials = new CustomerCredentials(username, hashSalt, passwordHash);
+
+		Image image = null;
+
+		Customer customer = new Customer(customerDetail, image, customerCredentials);
+
+		return cd.addCustomer(customer);
 	}
 
 	@Override
-	public int RegisterPublisher(String firstName, String lastName, String email, String companyName, String username,
+	public int registerPublisher(String firstName, String lastName, String email, String companyName, String username,
 			String password) {
 		PublisherDAO pd = new PublisherDAOImpl();
 

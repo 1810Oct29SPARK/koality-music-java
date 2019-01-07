@@ -12,16 +12,14 @@ import com.revature.koality.utility.CommonUtility;
 
 public class AuthenticationServiceImpl implements AuthenticationService {
 
-	private boolean isTest;
-
-	public AuthenticationServiceImpl(boolean isTest) {
-		this.isTest = isTest;
+	public AuthenticationServiceImpl() {
+		super();
 	}
 
 	@Override
 	public Publisher isValidPublisher(String username, String password) {
 
-		PublisherDAO pd = new PublisherDAOImpl(isTest);
+		PublisherDAO pd = new PublisherDAOImpl();
 
 		PublisherCredentials credentials = pd.getPublisherCredentialsByUsername(username);
 
@@ -39,7 +37,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	@Override
 	public Customer isValidCustomer(String username, String password) {
 
-		CustomerDAO cd = new CustomerDAOImpl(isTest);
+		CustomerDAO cd = new CustomerDAOImpl();
 
 		CustomerCredentials credentials = cd.getCustomerCredentialsByUsername(username);
 
