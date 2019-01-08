@@ -1,5 +1,7 @@
 package com.revature.koality.service;
 
+import java.util.List;
+
 import com.revature.koality.bean.Audio;
 import com.revature.koality.bean.Track;
 import com.revature.koality.dao.TrackDAO;
@@ -23,8 +25,8 @@ public class PublishServiceImpl implements PublishService {
 	}
 
 	@Override
-	public int publishTrack(int id, String trackName, String genre, String composer, String artist, int trackLength,
-			float unitPrice, String audioType, byte[] audioData) {
+	public int publishTrack(int publisherId, String trackName, String genre, String composer, String artist,
+			int trackLength, float unitPrice, String audioType, byte[] audioData) {
 
 		Audio audio = new Audio(audioType, audioData);
 
@@ -32,9 +34,16 @@ public class PublishServiceImpl implements PublishService {
 
 			Track track = new Track(trackName, genre, composer, artist, trackLength, unitPrice, audio, null);
 
-			return td.addTrack(track, id);
+			return td.addTrack(track, publisherId);
 		}
 
+		return 0;
+	}
+
+	@Override
+	public int publishAlbum(int publisherId, String albumName, String genre, float unitPrice, String imageType,
+			byte[] imageData, List<Integer> trackIdList) {
+		// TODO Auto-generated method stub
 		return 0;
 	}
 

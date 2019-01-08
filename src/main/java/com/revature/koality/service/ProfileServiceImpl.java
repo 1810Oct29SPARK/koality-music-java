@@ -132,7 +132,7 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Override
 	public boolean updateCustomerImage(int id, String imageType, byte[] imageData) {
-		
+
 		Image image = new Image(imageType, imageData);
 
 		return cd.updateCustomerImage(id, image);
