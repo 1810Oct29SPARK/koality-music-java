@@ -14,12 +14,31 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	public AuthenticationServiceImpl() {
 		super();
+		pd = new PublisherDAOImpl();
+		cd = new CustomerDAOImpl();
+	}
+
+	private PublisherDAO pd;
+	private CustomerDAO cd;
+
+	public PublisherDAO getPd() {
+		return pd;
+	}
+
+	public void setPd(PublisherDAO pd) {
+		this.pd = pd;
+	}
+
+	public CustomerDAO getCd() {
+		return cd;
+	}
+
+	public void setCd(CustomerDAO cd) {
+		this.cd = cd;
 	}
 
 	@Override
 	public Publisher isValidPublisher(String username, String password) {
-
-		PublisherDAO pd = new PublisherDAOImpl();
 
 		PublisherCredentials credentials = pd.getPublisherCredentialsByUsername(username);
 
@@ -36,8 +55,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	@Override
 	public Customer isValidCustomer(String username, String password) {
-
-		CustomerDAO cd = new CustomerDAOImpl();
 
 		CustomerCredentials credentials = cd.getCustomerCredentialsByUsername(username);
 
