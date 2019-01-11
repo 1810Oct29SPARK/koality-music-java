@@ -53,14 +53,15 @@ public class RegisterController {
 			String password = jo.getString("password");
 
 			id = rs.registerPublisher(firstName, lastName, email, companyName, username, password);
-			if (id > 0) {
-				status = HttpStatus.OK;
-				HttpSession session = request.getSession(true);
-				session.setAttribute("publisherId", id);
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			status = HttpStatus.BAD_REQUEST;
+		}
+
+		if (id > 0) {
+			status = HttpStatus.OK;
+			HttpSession session = request.getSession(true);
+			session.setAttribute("publisherId", id);
 		}
 
 		return new ResponseEntity<Integer>(id, status);
@@ -85,14 +86,15 @@ public class RegisterController {
 			String password = jo.getString("password");
 
 			id = rs.registerCustomer(firstName, lastName, email, favoriteGenre, username, password);
-			if (id > 0) {
-				status = HttpStatus.OK;
-				HttpSession session = request.getSession(true);
-				session.setAttribute("publisherId", id);
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			status = HttpStatus.BAD_REQUEST;
+		}
+
+		if (id > 0) {
+			status = HttpStatus.OK;
+			HttpSession session = request.getSession(true);
+			session.setAttribute("customerId", id);
 		}
 
 		return new ResponseEntity<Integer>(id, status);

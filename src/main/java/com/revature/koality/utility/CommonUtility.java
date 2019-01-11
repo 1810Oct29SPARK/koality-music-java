@@ -9,6 +9,9 @@ import java.util.Random;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 public class CommonUtility {
 
 	/**
@@ -114,6 +117,26 @@ public class CommonUtility {
 		} else {
 			return new String(requestBody);
 		}
+
+	}
+
+	/**
+	 * 
+	 * Convert a java object into a json string using Jackson databind
+	 * 
+	 * @param pojo
+	 * @return the formatted json string
+	 */
+	public static String toJsonStringJackson(Object pojo) {
+
+		ObjectMapper jacksonMapper = new ObjectMapper();
+		try {
+			return jacksonMapper.writeValueAsString(pojo);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 
 	}
 

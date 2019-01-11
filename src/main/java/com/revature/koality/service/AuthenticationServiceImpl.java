@@ -92,7 +92,12 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 			String hash = CommonUtility.digestSHA256(createHash);
 
 			if (credentials.getPasswordHash().equals(hash)) {
-				return credentials.getCustomer();
+
+				Customer customer = credentials.getCustomer();
+
+				customer.truncate(true);
+
+				return customer;
 			}
 		}
 
