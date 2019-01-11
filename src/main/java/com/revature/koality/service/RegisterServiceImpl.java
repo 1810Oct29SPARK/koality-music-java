@@ -1,5 +1,9 @@
 package com.revature.koality.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import com.revature.koality.bean.Customer;
 import com.revature.koality.bean.CustomerCredentials;
 import com.revature.koality.bean.CustomerDetail;
@@ -13,6 +17,7 @@ import com.revature.koality.dao.PublisherDAO;
 import com.revature.koality.dao.PublisherDAOImpl;
 import com.revature.koality.utility.CommonUtility;
 
+@Service("registerServiceImpl")
 public class RegisterServiceImpl implements RegisterService {
 
 	private PublisherDAO pd;
@@ -38,6 +43,8 @@ public class RegisterServiceImpl implements RegisterService {
 		return pd;
 	}
 
+	@Autowired
+	@Qualifier("publisherDAOImpl")
 	public void setPd(PublisherDAO pd) {
 		this.pd = pd;
 	}
@@ -46,6 +53,8 @@ public class RegisterServiceImpl implements RegisterService {
 		return cd;
 	}
 
+	@Autowired
+	@Qualifier("customerDAOImpl")
 	public void setCd(CustomerDAO cd) {
 		this.cd = cd;
 	}
@@ -68,6 +77,7 @@ public class RegisterServiceImpl implements RegisterService {
 		Customer customer = new Customer(customerDetail, image, customerCredentials);
 
 		return cd.addCustomer(customer);
+
 	}
 
 	@Override
@@ -88,6 +98,7 @@ public class RegisterServiceImpl implements RegisterService {
 		Publisher publisher = new Publisher(publisherDetail, image, publisherCredentials);
 
 		return pd.addPublisher(publisher);
+
 	}
 
 }

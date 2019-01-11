@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import com.revature.koality.bean.Album;
 import com.revature.koality.bean.AlbumReview;
@@ -14,6 +15,7 @@ import com.revature.koality.bean.Publisher;
 import com.revature.koality.bean.Track;
 import com.revature.koality.utility.HibernateUtility;
 
+@Repository("albumDAOImpl")
 public class AlbumDAOImpl implements AlbumDAO {
 
 	private SessionFactory sessionFactory;

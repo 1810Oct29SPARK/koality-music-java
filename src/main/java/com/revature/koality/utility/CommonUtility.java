@@ -1,11 +1,16 @@
 package com.revature.koality.utility;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Random;
 
 import org.apache.commons.lang3.RandomStringUtils;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class CommonUtility {
 
@@ -84,6 +89,54 @@ public class CommonUtility {
 		String base64Data = Base64.getEncoder().encodeToString(blobData);
 
 		return prefix + base64Data;
+
+	}
+
+	/**
+	 * 
+	 * Read the servlet request body and produce a string representation
+	 * 
+	 * @param br
+	 * @return the parsed request body in string format
+	 */
+	public static String readRequest(BufferedReader br) {
+
+		StringBuilder requestBody = new StringBuilder("");
+		String buffer = null;
+
+		try {
+			while ((buffer = br.readLine()) != null) {
+				requestBody.append(buffer);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (requestBody.length() == 0) {
+			return null;
+		} else {
+			return new String(requestBody);
+		}
+
+	}
+
+	/**
+	 * 
+	 * Convert a java object into a json string using Jackson databind
+	 * 
+	 * @param pojo
+	 * @return the formatted json string
+	 */
+	public static String toJsonStringJackson(Object pojo) {
+
+		ObjectMapper jacksonMapper = new ObjectMapper();
+		try {
+			return jacksonMapper.writeValueAsString(pojo);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+
+		return null;
 
 	}
 

@@ -6,12 +6,14 @@ import java.util.List;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import com.revature.koality.bean.Publisher;
 import com.revature.koality.bean.Track;
 import com.revature.koality.bean.TrackReview;
 import com.revature.koality.utility.HibernateUtility;
 
+@Repository("trackDAOImpl")
 public class TrackDAOImpl implements TrackDAO {
 
 	private SessionFactory sessionFactory;
