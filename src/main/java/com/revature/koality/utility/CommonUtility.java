@@ -1,5 +1,7 @@
 package com.revature.koality.utility;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
@@ -84,6 +86,34 @@ public class CommonUtility {
 		String base64Data = Base64.getEncoder().encodeToString(blobData);
 
 		return prefix + base64Data;
+
+	}
+
+	/**
+	 * 
+	 * Read the servlet request body and produce a string representation
+	 * 
+	 * @param br
+	 * @return the parsed request body in string format
+	 */
+	public static String readRequest(BufferedReader br) {
+
+		StringBuilder requestBody = new StringBuilder("");
+		String buffer = null;
+
+		try {
+			while ((buffer = br.readLine()) != null) {
+				requestBody.append(buffer);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		if (requestBody.length() == 0) {
+			return null;
+		} else {
+			return new String(requestBody);
+		}
 
 	}
 

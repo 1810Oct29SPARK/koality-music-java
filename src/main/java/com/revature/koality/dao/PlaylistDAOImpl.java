@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import com.revature.koality.bean.Customer;
 import com.revature.koality.bean.Playlist;
 import com.revature.koality.bean.Track;
 import com.revature.koality.utility.HibernateUtility;
 
+@Repository("playlistDAOImpl")
 public class PlaylistDAOImpl implements PlaylistDAO {
 
 	private SessionFactory sessionFactory;

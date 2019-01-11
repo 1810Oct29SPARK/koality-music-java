@@ -1,5 +1,9 @@
 package com.revature.koality.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import com.revature.koality.bean.Customer;
 import com.revature.koality.bean.CustomerCredentials;
 import com.revature.koality.bean.Publisher;
@@ -10,6 +14,7 @@ import com.revature.koality.dao.PublisherDAO;
 import com.revature.koality.dao.PublisherDAOImpl;
 import com.revature.koality.utility.CommonUtility;
 
+@Service("authenticationServiceImpl")
 public class AuthenticationServiceImpl implements AuthenticationService {
 
 	private PublisherDAO pd;
@@ -35,6 +40,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		return pd;
 	}
 
+	@Autowired
+	@Qualifier("publisherDAOImpl")
 	public void setPd(PublisherDAO pd) {
 		this.pd = pd;
 	}
@@ -43,6 +50,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		return cd;
 	}
 
+	@Autowired
+	@Qualifier("customerDAOImpl")
 	public void setCd(CustomerDAO cd) {
 		this.cd = cd;
 	}
@@ -66,7 +75,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				return publisher;
 			}
 		}
+
 		return null;
+
 	}
 
 	@Override
@@ -84,7 +95,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 				return credentials.getCustomer();
 			}
 		}
+
 		return null;
+
 	}
 
 }
