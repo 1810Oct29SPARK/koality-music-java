@@ -5,8 +5,8 @@ import java.util.List;
 import com.revature.koality.bean.Track;
 
 public interface PurchaseService {
-	
-	List<Track> viewAllTracks(); 
+
+	List<Track> viewAllTracks();
 
 	boolean purchaseTrack(int customerId, int trackId);
 

@@ -1,9 +1,6 @@
 package com.revature.koality.service;
 
-import org.mockito.InjectMocks;
-
 import com.revature.koality.bean.Customer;
-
 import com.revature.koality.bean.CustomerCredentials;
 import com.revature.koality.bean.Publisher;
 import com.revature.koality.bean.PublisherCredentials;
@@ -16,12 +13,10 @@ import com.revature.koality.utility.CommonUtility;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
 	private PublisherDAO pd;
-
 	private CustomerDAO cd;
 
 	public AuthenticationServiceImpl() {
 		super();
-
 		pd = new PublisherDAOImpl();
 		cd = new CustomerDAOImpl();
 	}
@@ -31,9 +26,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		this.pd = publisherDAOMock;
 	}
 
-	public AuthenticationServiceImpl(CustomerDAOImpl cdI) {
+	public AuthenticationServiceImpl(CustomerDAO customerDAOMock) {
 		super();
-		this.cd = cdI;
+		this.cd = customerDAOMock;
 	}
 
 	public PublisherDAO getPd() {

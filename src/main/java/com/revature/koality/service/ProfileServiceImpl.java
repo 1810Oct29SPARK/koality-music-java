@@ -15,14 +15,24 @@ import com.revature.koality.utility.CommonUtility;
 
 public class ProfileServiceImpl implements ProfileService {
 
+	private PublisherDAO pd;
+	private CustomerDAO cd;
+
 	public ProfileServiceImpl() {
 		super();
 		pd = new PublisherDAOImpl();
 		cd = new CustomerDAOImpl();
 	}
 
-	private PublisherDAO pd;
-	private CustomerDAO cd;
+	public ProfileServiceImpl(PublisherDAO publisherDAOMock) {
+		super();
+		this.pd = publisherDAOMock;
+	}
+
+	public ProfileServiceImpl(CustomerDAO customerDAOMock) {
+		super();
+		this.cd = customerDAOMock;
+	}
 
 	public PublisherDAO getPd() {
 		return pd;

@@ -19,7 +19,17 @@ public class PublishServiceImpl implements PublishService {
 	public PublishServiceImpl() {
 		super();
 		td = new TrackDAOImpl();
-		ad = new AlbumDAOImpl(); 
+		ad = new AlbumDAOImpl();
+	}
+
+	public PublishServiceImpl(TrackDAO trackDAOMock) {
+		super();
+		this.td = trackDAOMock;
+	}
+
+	public PublishServiceImpl(AlbumDAO albumDAOMock) {
+		super();
+		this.ad = albumDAOMock;
 	}
 
 	public TrackDAO getTd() {
@@ -29,7 +39,7 @@ public class PublishServiceImpl implements PublishService {
 	public void setTd(TrackDAO td) {
 		this.td = td;
 	}
-	
+
 	public AlbumDAO getAd() {
 		return ad;
 	}

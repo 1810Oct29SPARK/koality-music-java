@@ -15,14 +15,24 @@ import com.revature.koality.utility.CommonUtility;
 
 public class RegisterServiceImpl implements RegisterService {
 
+	private PublisherDAO pd;
+	private CustomerDAO cd;
+
 	public RegisterServiceImpl() {
 		super();
 		pd = new PublisherDAOImpl();
 		cd = new CustomerDAOImpl();
 	}
-	
-	private PublisherDAO pd;
-	private CustomerDAO cd;
+
+	public RegisterServiceImpl(PublisherDAO publisherDAOMock) {
+		super();
+		this.pd = publisherDAOMock;
+	}
+
+	public RegisterServiceImpl(CustomerDAO customerDAOMock) {
+		super();
+		this.cd = customerDAOMock;
+	}
 
 	public PublisherDAO getPd() {
 		return pd;
@@ -63,7 +73,7 @@ public class RegisterServiceImpl implements RegisterService {
 	@Override
 	public int registerPublisher(String firstName, String lastName, String email, String companyName, String username,
 			String password) {
-		
+
 		PublisherDetail publisherDetail = new PublisherDetail(firstName, lastName, email, companyName);
 		String hashSalt = CommonUtility.generateRandomString(4);
 
