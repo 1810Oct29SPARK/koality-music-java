@@ -140,4 +140,18 @@ public class CommonUtility {
 
 	}
 
+	/**
+	 * 
+	 * Decode a Base64 data URL string into a byte array after truncating the prefix
+	 * 
+	 * @param blobUrl
+	 * @return the decoded byte data
+	 */
+	public byte[] decodeBlobUrl(String blobUrl) {
+
+		String blobData = blobUrl.substring(blobUrl.indexOf("base64,") + 7);
+		return Base64.getDecoder().decode(blobData);
+
+	}
+
 }
