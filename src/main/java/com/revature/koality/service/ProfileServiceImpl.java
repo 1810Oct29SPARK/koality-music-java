@@ -114,8 +114,6 @@ public class ProfileServiceImpl implements ProfileService {
 
 		if (credentials.getPasswordHash().equals(passwordHash)) {
 
-			credentials = pd.getPublisherCredentialsByUsername(oldUsername);
-
 			createHash = newPassword + credentials.getHashSalt();
 
 			passwordHash = CommonUtility.digestSHA256(createHash);
