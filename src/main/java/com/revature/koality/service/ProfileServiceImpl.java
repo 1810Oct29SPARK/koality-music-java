@@ -1,5 +1,9 @@
 package com.revature.koality.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import com.revature.koality.bean.Customer;
 import com.revature.koality.bean.CustomerCredentials;
 import com.revature.koality.bean.CustomerDetail;
@@ -13,6 +17,7 @@ import com.revature.koality.dao.PublisherDAO;
 import com.revature.koality.dao.PublisherDAOImpl;
 import com.revature.koality.utility.CommonUtility;
 
+@Service("profileServiceImpl")
 public class ProfileServiceImpl implements ProfileService {
 
 	private PublisherDAO pd;
@@ -20,8 +25,6 @@ public class ProfileServiceImpl implements ProfileService {
 
 	public ProfileServiceImpl() {
 		super();
-		pd = new PublisherDAOImpl();
-		cd = new CustomerDAOImpl();
 	}
 
 	public ProfileServiceImpl(PublisherDAO publisherDAOMock) {
@@ -48,6 +51,8 @@ public class ProfileServiceImpl implements ProfileService {
 		return pd;
 	}
 
+	@Autowired
+	@Qualifier("publisherDAOImpl")
 	public void setPd(PublisherDAO pd) {
 		this.pd = pd;
 	}
@@ -56,6 +61,8 @@ public class ProfileServiceImpl implements ProfileService {
 		return cd;
 	}
 
+	@Autowired
+	@Qualifier("customerDAOImpl")
 	public void setCd(CustomerDAO cd) {
 		this.cd = cd;
 	}
@@ -71,45 +78,46 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	@Override
-	public boolean updatePublisherDetails(int publisherId, String firstName, String lastName, String email, String companyName) {
-		
-		Publisher publisher = pd.getPublisherById(publisherId); 
-		
-		if (publisher!=null) {
-		
-			PublisherDetail publisherDetail = publisher.getPublisherDetail(); 
-			
+	public boolean updatePublisherDetails(int publisherId, String firstName, String lastName, String email,
+			String companyName) {
+
+		Publisher publisher = pd.getPublisherById(publisherId);
+
+		if (publisher != null) {
+
+			PublisherDetail publisherDetail = publisher.getPublisherDetail();
+
 			publisherDetail.setCompanyName(companyName);
 			publisherDetail.setEmail(email);
 			publisherDetail.setFirstName(firstName);
 			publisherDetail.setLastName(lastName);
-					
-			return pd.updatePublisherDetail(publisherId, publisherDetail); 
+
+			return pd.updatePublisherDetail(publisherId, publisherDetail);
 		}
-		
-		return false; 
-		 
+
+		return false;
+
 	}
 
 	@Override
 	public boolean updateCustomerDetails(int customerId, String firstName, String lastName, String email,
-			String favoriteGenre) { 
-		
-		Customer customer = cd.getCustomerById(customerId); 
-		
-		if (customer!=null) {
-		
-				CustomerDetail customerDetail = customer.getCustomerDetail(); 
-		
-				customerDetail.setFavoriteGenre(favoriteGenre);
-				customerDetail.setEmail(email);
-				customerDetail.setFirstName(firstName);
-				customerDetail.setLastName(lastName);
-				
-				return cd.updateCustomerDetail(customerId, customerDetail); 
-		} 
-		
-		return false; 
+			String favoriteGenre) {
+
+		Customer customer = cd.getCustomerById(customerId);
+
+		if (customer != null) {
+
+			CustomerDetail customerDetail = customer.getCustomerDetail();
+
+			customerDetail.setFavoriteGenre(favoriteGenre);
+			customerDetail.setEmail(email);
+			customerDetail.setFirstName(firstName);
+			customerDetail.setLastName(lastName);
+
+			return cd.updateCustomerDetail(customerId, customerDetail);
+		}
+
+		return false;
 	}
 
 	@Override

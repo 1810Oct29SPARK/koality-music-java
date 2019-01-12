@@ -8,17 +8,17 @@ import com.revature.koality.bean.Track;
 import com.revature.koality.bean.TrackReview;
 
 public interface DisplayService {
-	
-	List<Track> viewAllTracks(); 
-	
-	List<Album> viewAllAlbums(); 
-	
-	List<Track> getPublisherTracks(int publisherId); 
-	
-	List<Album> getPublisherAlbums(int publisherId); 
-	
-	List<TrackReview> viewTrackReviews(int trackId); 
-	
-	List<AlbumReview> viewAlbumReviews(int albumId); 
+
+	List<Track> viewAllTracks();
+
+	List<Album> viewAllAlbums();
+
+	List<Track> getPublisherTracks(int publisherId);
+
+	List<Album> getPublisherAlbums(int publisherId);
+
+	List<TrackReview> viewTrackReviews(int trackId, int publisherId);
+
+	List<AlbumReview> viewAlbumReviews(int albumId, int publisherId);
 
 }

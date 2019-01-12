@@ -38,7 +38,7 @@ public class InventoryController {
 
 	}
 
-	@GetMapping("/purchased-tracks")
+	@GetMapping("/purchased-albums")
 	public void getPurchasedAlbums(HttpServletRequest request, HttpServletResponse response) {
 
 		//

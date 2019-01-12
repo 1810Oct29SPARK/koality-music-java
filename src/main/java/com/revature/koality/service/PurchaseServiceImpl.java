@@ -2,6 +2,10 @@ package com.revature.koality.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import com.revature.koality.bean.Album;
 import com.revature.koality.bean.Track;
 import com.revature.koality.dao.AlbumDAO;
@@ -11,17 +15,19 @@ import com.revature.koality.dao.CustomerDAOImpl;
 import com.revature.koality.dao.TrackDAO;
 import com.revature.koality.dao.TrackDAOImpl;
 
+@Service("purchaseServiceImpl")
 public class PurchaseServiceImpl implements PurchaseService {
 
 	private CustomerDAO cd;
 	private TrackDAO td;
-	private AlbumDAO ad; 
+	private AlbumDAO ad;
 
 	public PurchaseServiceImpl() {
 		super();
-		cd = new CustomerDAOImpl();
-		td = new TrackDAOImpl();
-		ad = new AlbumDAOImpl(); 
+	}
+
+	public CustomerDAO getCd() {
+		return cd;
 	}
 
 	public PurchaseServiceImpl(CustomerDAOImpl cd) {
@@ -33,9 +39,35 @@ public class PurchaseServiceImpl implements PurchaseService {
 		super();
 		this.td = td;
 	}
-	
+
 	public PurchaseServiceImpl(AlbumDAOImpl ad) {
 		super();
+		this.ad = ad;
+	}
+
+	@Autowired
+	@Qualifier("customerDAOImpl")
+	public void setCd(CustomerDAO cd) {
+		this.cd = cd;
+	}
+
+	public TrackDAO getTd() {
+		return td;
+	}
+
+	@Autowired
+	@Qualifier("trackDAOImpl")
+	public void setTd(TrackDAO td) {
+		this.td = td;
+	}
+
+	public AlbumDAO getAd() {
+		return ad;
+	}
+
+	@Autowired
+	@Qualifier("albumDAOImpl")
+	public void setAd(AlbumDAO ad) {
 		this.ad = ad;
 	}
 
@@ -43,7 +75,7 @@ public class PurchaseServiceImpl implements PurchaseService {
 	public List<Track> viewAllTracks() {
 		return td.getAllTracks();
 	}
-	
+
 	@Override
 	public List<Album> viewAllAlbums() {
 		return ad.getAllAlbums();
@@ -58,7 +90,5 @@ public class PurchaseServiceImpl implements PurchaseService {
 	public boolean purchaseAlbum(int customerId, int albumId) {
 		return cd.purchaseAlbum(customerId, albumId);
 	}
-
-	
 
 }

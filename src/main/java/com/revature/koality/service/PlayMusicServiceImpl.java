@@ -2,6 +2,10 @@ package com.revature.koality.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import com.revature.koality.bean.Album;
 import com.revature.koality.bean.Track;
 import com.revature.koality.dao.AlbumDAO;
@@ -11,6 +15,7 @@ import com.revature.koality.dao.CustomerDAOImpl;
 import com.revature.koality.dao.TrackDAO;
 import com.revature.koality.dao.TrackDAOImpl;
 
+@Service("playMusicServiceImpl")
 public class PlayMusicServiceImpl implements PlayMusicService {
 
 	private CustomerDAO cd;
@@ -19,9 +24,6 @@ public class PlayMusicServiceImpl implements PlayMusicService {
 
 	public PlayMusicServiceImpl() {
 		super();
-		cd = new CustomerDAOImpl();
-		td = new TrackDAOImpl();
-		ad = new AlbumDAOImpl();
 	}
 
 	public PlayMusicServiceImpl(CustomerDAOImpl cd) {
@@ -39,10 +41,41 @@ public class PlayMusicServiceImpl implements PlayMusicService {
 		this.ad = ad;
 	}
 
+	public CustomerDAO getCd() {
+		return cd;
+	}
+
+	@Autowired
+	@Qualifier("customerDAOImpl")
+	public void setCd(CustomerDAO cd) {
+		this.cd = cd;
+	}
+
+	public TrackDAO getTd() {
+		return td;
+	}
+
+	@Autowired
+	@Qualifier("trackDAOImpl")
+	public void setTd(TrackDAO td) {
+		this.td = td;
+	}
+
+	public AlbumDAO getAd() {
+		return ad;
+	}
+
+	@Autowired
+	@Qualifier("albumDAOImpl")
+	public void setAd(AlbumDAO ad) {
+		this.ad = ad;
+	}
+
 	@Override
 	public List<Track> getPurchasedTracks(int customerId) {
 
 		return cd.getAllTracksByCustomerId(customerId);
+
 	}
 
 	@Override
@@ -59,7 +92,9 @@ public class PlayMusicServiceImpl implements PlayMusicService {
 
 	@Override
 	public List<Album> getPurchasedAlbums(int customerId) {
+
 		return cd.getAllAlbumsByCustomerId(customerId);
+
 	}
 
 	@Override
@@ -75,12 +110,11 @@ public class PlayMusicServiceImpl implements PlayMusicService {
 	}
 
 	@Override
-	public List<Track> getAlbumTracks(int customerId, int albumId) {
+	public List<Track> getAlbumTracks(int albumId) {
 
 		List<Track> tracks = ad.getAllTracksByAlbumId(albumId);
 
-		if (tracks != null && ad.hasAccessAsCustomer(albumId, customerId)) {
-
+		if (tracks != null) {
 			return tracks;
 		}
 

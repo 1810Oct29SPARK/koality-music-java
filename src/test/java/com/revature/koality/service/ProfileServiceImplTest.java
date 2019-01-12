@@ -225,24 +225,24 @@ public class ProfileServiceImplTest {
 
 	@Test
 	public void testUpdatePublisherCredentials() {
-		
+
 		PublisherCredentials credentials = MockUtility.getMockPublisherCredentials();
 
 		String oldUsername = credentials.getUsername();
-		String newUsername = "newUser"; 
+		String newUsername = "newUser";
 		String oldPassword = "password";
 		String newPassword = oldPassword;
 		int publisherId = 12;
-		
-		// This creates password hash for old credentials 
+
+		// This creates password hash for old credentials
 		String createHash = oldPassword + credentials.getHashSalt();
 
 		String hash = CommonUtility.digestSHA256(createHash);
 
 		credentials.setPasswordHash(hash);
-		
+
 		// This creates new updated credentials for mocking
-		PublisherCredentials newCredentials = credentials; 
+		PublisherCredentials newCredentials = credentials;
 
 		String createNewHash = newPassword + credentials.getHashSalt();
 
@@ -257,10 +257,11 @@ public class ProfileServiceImplTest {
 		ProfileService profileService = new ProfileServiceImpl(publisherDAOMock);
 
 		when(publisherDAOMock.getPublisherCredentialsByUsername(oldUsername)).thenReturn(credentials);
-		
-		when(publisherDAOMock.updatePublisherCredentials(publisherId, newCredentials)).thenReturn(true); 
 
-		Boolean actual = profileService.updatePublisherCredentials(publisherId, oldUsername, newUsername, oldPassword, newPassword);
+		when(publisherDAOMock.updatePublisherCredentials(publisherId, newCredentials)).thenReturn(true);
+
+		Boolean actual = profileService.updatePublisherCredentials(publisherId, oldUsername, newUsername, oldPassword,
+				newPassword);
 
 		assertTrue(actual);
 	}

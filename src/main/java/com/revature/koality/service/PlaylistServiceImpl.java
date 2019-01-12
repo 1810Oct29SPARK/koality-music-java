@@ -2,6 +2,10 @@ package com.revature.koality.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import com.revature.koality.bean.Playlist;
 import com.revature.koality.bean.Track;
 import com.revature.koality.dao.CustomerDAO;
@@ -9,67 +13,86 @@ import com.revature.koality.dao.CustomerDAOImpl;
 import com.revature.koality.dao.PlaylistDAO;
 import com.revature.koality.dao.PlaylistDAOImpl;
 
+@Service("playlistServiceImpl")
 public class PlaylistServiceImpl implements PlaylistService {
-	
-	private CustomerDAO cd; 
-	private PlaylistDAO pd; 
+
+	private CustomerDAO cd;
+	private PlaylistDAO pld;
 
 	public PlaylistServiceImpl() {
-		super(); 
-		cd = new CustomerDAOImpl(); 
-		pd = new PlaylistDAOImpl(); 
-		
+		super();
+
 	}
-	
+
 	public PlaylistServiceImpl(CustomerDAOImpl cd) {
-		super(); 
+		super();
 		this.cd = cd;
 	}
-	
-	public PlaylistServiceImpl(PlaylistDAOImpl pd) {
-		super(); 
-		this.pd = pd;
+
+	public PlaylistServiceImpl(PlaylistDAOImpl pld) {
+		super();
+		this.pld = pld;
 	}
-	
-	public PlaylistServiceImpl(PlaylistDAOImpl pd, CustomerDAOImpl cd) {
-		super(); 
+
+	public PlaylistServiceImpl(PlaylistDAOImpl pld, CustomerDAOImpl cd) {
+		super();
 		this.cd = cd;
-		this.pd = pd; 
+		this.pld = pld;
+	}
+
+	public CustomerDAO getCd() {
+		return cd;
+	}
+
+	@Autowired
+	@Qualifier("customerDAOImpl")
+	public void setCd(CustomerDAO cd) {
+		this.cd = cd;
+	}
+
+	public PlaylistDAO getPld() {
+		return pld;
+	}
+
+	@Autowired
+	@Qualifier("playlistDAOImpl")
+	public void setPld(PlaylistDAO pld) {
+		this.pld = pld;
 	}
 
 	@Override
-	public List<Track> getPurchasedSongs(int customerId) {
-		return cd.getAllTracksByCustomerId(customerId); 
+	public List<Track> getPurchasedTracks(int customerId) {
+		return cd.getAllTracksByCustomerId(customerId);
 	}
 
 	@Override
 	public int createPlaylist(String playlistName, int customerId) {
-		return pd.addPlaylist(playlistName, customerId); 
+		return pld.addPlaylist(playlistName, customerId);
 	}
 
 	@Override
 	public boolean deletePlaylist(int playlistId) {
-		return pd.deletePlaylist(playlistId); 
+		return pld.deletePlaylist(playlistId);
 	}
 
 	@Override
 	public int addTracksToPlaylist(int playlistId, List<Integer> trackIdList) {
-		return pd.addTracksToPlaylist(playlistId, trackIdList); 
+		return pld.addTracksToPlaylist(playlistId, trackIdList);
 	}
 
 	@Override
 	public int removeTracksFromPlaylist(int playlistId, List<Integer> trackIdList) {
-		return pd.removeTracksFromPlaylist(playlistId, trackIdList); 
+		return pld.removeTracksFromPlaylist(playlistId, trackIdList);
 	}
 
 	@Override
 	public List<Playlist> getAllPlaylists(int customerId) {
-		return pd.getAllPlaylistsByCustomerId(customerId); 
+		return pld.getAllPlaylistsByCustomerId(customerId);
 	}
 
 	@Override
 	public Playlist selectPlaylist(int playlistId) {
-		return pd.getPlaylistById(playlistId); 
+		return pld.getPlaylistById(playlistId);
 	}
 
 }

@@ -12,9 +12,7 @@ import com.revature.koality.bean.Publisher;
 import com.revature.koality.bean.PublisherCredentials;
 import com.revature.koality.bean.PublisherDetail;
 import com.revature.koality.dao.CustomerDAO;
-import com.revature.koality.dao.CustomerDAOImpl;
 import com.revature.koality.dao.PublisherDAO;
-import com.revature.koality.dao.PublisherDAOImpl;
 import com.revature.koality.utility.CommonUtility;
 
 @Service("registerServiceImpl")
@@ -25,8 +23,6 @@ public class RegisterServiceImpl implements RegisterService {
 
 	public RegisterServiceImpl() {
 		super();
-		pd = new PublisherDAOImpl();
-		cd = new CustomerDAOImpl();
 	}
 
 	public RegisterServiceImpl(PublisherDAO publisherDAOMock) {

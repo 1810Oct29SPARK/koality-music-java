@@ -2,15 +2,18 @@ package com.revature.koality.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import com.revature.koality.bean.Album;
 import com.revature.koality.bean.Audio;
 import com.revature.koality.bean.Image;
 import com.revature.koality.bean.Track;
 import com.revature.koality.dao.AlbumDAO;
-import com.revature.koality.dao.AlbumDAOImpl;
 import com.revature.koality.dao.TrackDAO;
-import com.revature.koality.dao.TrackDAOImpl;
 
+@Service("publishServiceImpl")
 public class PublishServiceImpl implements PublishService {
 
 	private TrackDAO td;
@@ -18,8 +21,6 @@ public class PublishServiceImpl implements PublishService {
 
 	public PublishServiceImpl() {
 		super();
-		td = new TrackDAOImpl();
-		ad = new AlbumDAOImpl();
 	}
 
 	public PublishServiceImpl(TrackDAO trackDAOMock) {
@@ -36,6 +37,8 @@ public class PublishServiceImpl implements PublishService {
 		return td;
 	}
 
+	@Autowired
+	@Qualifier("trackDAOImpl")
 	public void setTd(TrackDAO td) {
 		this.td = td;
 	}
@@ -44,6 +47,8 @@ public class PublishServiceImpl implements PublishService {
 		return ad;
 	}
 
+	@Autowired
+	@Qualifier("albumDAOImpl")
 	public void setAd(AlbumDAO ad) {
 		this.ad = ad;
 	}

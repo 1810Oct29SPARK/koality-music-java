@@ -9,9 +9,7 @@ import com.revature.koality.bean.CustomerCredentials;
 import com.revature.koality.bean.Publisher;
 import com.revature.koality.bean.PublisherCredentials;
 import com.revature.koality.dao.CustomerDAO;
-import com.revature.koality.dao.CustomerDAOImpl;
 import com.revature.koality.dao.PublisherDAO;
-import com.revature.koality.dao.PublisherDAOImpl;
 import com.revature.koality.utility.CommonUtility;
 
 @Service("authenticationServiceImpl")
@@ -22,8 +20,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	public AuthenticationServiceImpl() {
 		super();
-		pd = new PublisherDAOImpl();
-		cd = new CustomerDAOImpl();
 	}
 
 	public AuthenticationServiceImpl(PublisherDAO publisherDAOMock) {
