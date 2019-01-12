@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.koality.utility.CommonUtility;
 
-@RestController
+@RestController("credentialsController")
 public class CredentialsController {
 
 	// SERVICE DECLARATION

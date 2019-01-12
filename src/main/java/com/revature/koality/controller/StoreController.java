@@ -17,7 +17,7 @@ import com.revature.koality.bean.Album;
 import com.revature.koality.bean.Track;
 import com.revature.koality.utility.CommonUtility;
 
-@RestController
+@RestController("storeController")
 public class StoreController {
 
 	// SERVICE DECLARATION
