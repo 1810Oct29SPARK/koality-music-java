@@ -285,7 +285,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 				session.beginTransaction();
 				Customer customer = session.get(Customer.class, customerId);
 				albumList = customer.getAlbumList();
-				Hibernate.initialize(albumList);
+				albumList.forEach(a -> a.loadImageUrl());
 				session.getTransaction().commit();
 			} catch (Exception e) {
 				e.printStackTrace();

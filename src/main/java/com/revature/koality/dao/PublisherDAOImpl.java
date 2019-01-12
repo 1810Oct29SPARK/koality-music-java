@@ -287,6 +287,7 @@ public class PublisherDAOImpl implements PublisherDAO {
 				session.beginTransaction();
 				albumList = session.createQuery(hql, Album.class).setParameter("publisherId", publisherId)
 						.getResultList();
+				albumList.forEach(a -> a.loadImageUrl());
 				session.getTransaction().commit();
 			} catch (Exception e) {
 				e.printStackTrace();
