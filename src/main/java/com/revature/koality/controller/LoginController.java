@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +37,11 @@ public class LoginController {
 		this.as = as;
 	}
 
-	@PostMapping("login-publisher")
+	@PostMapping("/login-publisher")
 	public void loginPublisher(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
-		Publisher publisher = null;
+		Publisher publisher = new Publisher();
 
 		try (BufferedReader br = request.getReader()) {
 			String requestBody = CommonUtility.readRequest(br);
@@ -55,9 +56,12 @@ public class LoginController {
 			status = 400;
 		}
 
-		if (publisher != null) {
+		if (publisher.getPublisherId() != 0) {
 			status = 200;
-			request.getSession(true).setAttribute("publisherId", publisher.getPublisherId());
+			HttpSession session = request.getSession(true);
+			session.setAttribute("publisherId", publisher.getPublisherId());
+			session.setAttribute("customerId", null);
+			session.setMaxInactiveInterval(600);
 		} else {
 			status = 401;
 		}
@@ -67,11 +71,11 @@ public class LoginController {
 
 	}
 
-	@PostMapping("login-customer")
+	@PostMapping("/login-customer")
 	public void loginCustomer(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
-		Customer customer = null;
+		Customer customer = new Customer();
 
 		try (BufferedReader br = request.getReader()) {
 			String requestBody = CommonUtility.readRequest(br);
@@ -86,9 +90,12 @@ public class LoginController {
 			status = 400;
 		}
 
-		if (customer != null) {
+		if (customer.getCustomerId() != 0) {
 			status = 200;
-			request.getSession(true).setAttribute("customerId", customer.getCustomerId());
+			HttpSession session = request.getSession(true);
+			session.setAttribute("customerId", customer.getCustomerId());
+			session.setAttribute("publisherId", null);
+			session.setMaxInactiveInterval(600);
 		} else {
 			status = 401;
 		}

@@ -62,6 +62,8 @@ public class RegisterController {
 			status = HttpStatus.OK;
 			HttpSession session = request.getSession(true);
 			session.setAttribute("publisherId", id);
+			session.setAttribute("customerId", null);
+			session.setMaxInactiveInterval(600);
 		}
 
 		return new ResponseEntity<Integer>(id, status);
@@ -95,6 +97,8 @@ public class RegisterController {
 			status = HttpStatus.OK;
 			HttpSession session = request.getSession(true);
 			session.setAttribute("customerId", id);
+			session.setAttribute("publisherId", null);
+			session.setMaxInactiveInterval(600);
 		}
 
 		return new ResponseEntity<Integer>(id, status);
