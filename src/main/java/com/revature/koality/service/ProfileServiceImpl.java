@@ -34,6 +34,16 @@ public class ProfileServiceImpl implements ProfileService {
 		this.cd = customerDAOMock;
 	}
 
+	public ProfileServiceImpl(PublisherDAOImpl pd) {
+		super();
+		this.pd = pd;
+	}
+
+	public ProfileServiceImpl(CustomerDAOImpl cd) {
+		super();
+		this.cd = cd;
+	}
+
 	public PublisherDAO getPd() {
 		return pd;
 	}
@@ -61,19 +71,45 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	@Override
-	public boolean updatePublisherDetails(int id, String firstName, String lastName, String email, String companyName) {
-
-		PublisherDetail publisherDetail = new PublisherDetail(firstName, lastName, email, companyName);
-
-		return pd.updatePublisherDetail(id, publisherDetail);
+	public boolean updatePublisherDetails(int publisherId, String firstName, String lastName, String email, String companyName) {
+		
+		Publisher publisher = pd.getPublisherById(publisherId); 
+		
+		if (publisher!=null) {
+		
+			PublisherDetail publisherDetail = publisher.getPublisherDetail(); 
+			
+			publisherDetail.setCompanyName(companyName);
+			publisherDetail.setEmail(email);
+			publisherDetail.setFirstName(firstName);
+			publisherDetail.setLastName(lastName);
+					
+			return pd.updatePublisherDetail(publisherId, publisherDetail); 
+		}
+		
+		return false; 
+		 
 	}
 
 	@Override
-	public boolean updateCustomerDetails(int id, String firstName, String lastName, String email,
-			String favoriteGenre) {
-		CustomerDetail customerDetail = new CustomerDetail(firstName, lastName, email, favoriteGenre);
-
-		return cd.updateCustomerDetail(id, customerDetail);
+	public boolean updateCustomerDetails(int customerId, String firstName, String lastName, String email,
+			String favoriteGenre) { 
+		
+		Customer customer = cd.getCustomerById(customerId); 
+		
+		if (customer!=null) {
+		
+				CustomerDetail customerDetail = customer.getCustomerDetail(); 
+		
+				customerDetail.setFavoriteGenre(favoriteGenre);
+				customerDetail.setEmail(email);
+				customerDetail.setFirstName(firstName);
+				customerDetail.setLastName(lastName);
+				
+				return cd.updateCustomerDetail(customerId, customerDetail); 
+		} 
+		
+		return false; 
 	}
 
 	@Override
@@ -87,8 +123,6 @@ public class ProfileServiceImpl implements ProfileService {
 		String passwordHash = CommonUtility.digestSHA256(createHash);
 
 		if (credentials.getPasswordHash().equals(passwordHash)) {
-
-			credentials = pd.getPublisherCredentialsByUsername(oldUsername);
 
 			createHash = newPassword + credentials.getHashSalt();
 
