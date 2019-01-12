@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.revature.koality.bean.Album;
 import com.revature.koality.bean.Customer;
 import com.revature.koality.bean.CustomerCredentials;
+import com.revature.koality.bean.CustomerData;
 import com.revature.koality.bean.CustomerDetail;
 import com.revature.koality.bean.Image;
 import com.revature.koality.bean.Publisher;
@@ -402,6 +403,33 @@ public class CustomerDAOImpl implements CustomerDAO {
 		}
 
 		return false;
+
+	}
+
+	@Override
+	public CustomerData getCustomerDataById(int customerId) {
+
+		CustomerData customerData = new CustomerData();
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Customer customer = session.get(Customer.class, customerId);
+				customerData.setNumberOfTracksBought(customer.getTrackList().size());
+				customerData.setNumberOfAlbumsBought(customer.getAlbumList().size());
+				customerData.setNumberOfSubscribees(customer.getPublisherList().size());
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return customerData;
 
 	}
 

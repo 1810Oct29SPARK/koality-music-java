@@ -1,5 +1,6 @@
 package com.revature.koality.dao;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.hibernate.Hibernate;
@@ -12,6 +13,7 @@ import com.revature.koality.bean.Customer;
 import com.revature.koality.bean.Image;
 import com.revature.koality.bean.Publisher;
 import com.revature.koality.bean.PublisherCredentials;
+import com.revature.koality.bean.PublisherData;
 import com.revature.koality.bean.PublisherDetail;
 import com.revature.koality.bean.Track;
 import com.revature.koality.utility.HibernateUtility;
@@ -295,6 +297,44 @@ public class PublisherDAOImpl implements PublisherDAO {
 		}
 
 		return albumList;
+
+	}
+
+	@Override
+	public PublisherData getPublisherDataById(int publisherId) {
+
+		PublisherData publisherData = new PublisherData();
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				String sqlTracks = "SELECT COUNT(1) FROM CUSTOMER_TRACK\r\n" + "WHERE TRACK_ID IN (\r\n"
+						+ "	SELECT TRACK_ID FROM TRACK\r\n" + "	WHERE PUBLISHER_ID = " + publisherId + " )";
+
+				String sqlAlbums = "SELECT COUNT(1) FROM CUSTOMER_ALBUM\r\n" + "WHERE ALBUM_ID IN (\r\n"
+						+ "	SELECT ALBUM_ID FROM ALBUM\r\n" + "	WHERE PUBLISHER_ID = " + publisherId + " )";
+
+				String sqlSubs = "SELECT COUNT(1) FROM PUBLISHER_CUSTOMER\r\n" + "WHERE PUBLISHER_ID = " + publisherId;
+
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				publisherData.setNumberOfTracksSold(
+						((BigDecimal) session.createNativeQuery(sqlTracks).getSingleResult()).intValue());
+				publisherData.setNumberOfAlbumsSold(
+						((BigDecimal) session.createNativeQuery(sqlAlbums).getSingleResult()).intValue());
+				publisherData.setNumberOfSubscribers(
+						((BigDecimal) session.createNativeQuery(sqlSubs).getSingleResult()).intValue());
+
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return publisherData;
 
 	}
 

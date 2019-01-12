@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import com.revature.koality.bean.Album;
 import com.revature.koality.bean.AlbumReview;
+import com.revature.koality.bean.Customer;
 import com.revature.koality.bean.Publisher;
 import com.revature.koality.bean.Track;
 import com.revature.koality.utility.HibernateUtility;
@@ -228,6 +229,62 @@ public class AlbumDAOImpl implements AlbumDAO {
 		}
 
 		return count;
+
+	}
+
+	@Override
+	public boolean hasAccessAsPublisher(int albumId, int publisherId) {
+
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				String hql = "FROM Album a WHERE a.albumId = :albumId AND a.publisher.publisherId = :publisherId";
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				List<Album> albumList = session.createQuery(hql, Album.class).setParameter("albumId", albumId)
+						.setParameter("publisherId", publisherId).getResultList();
+				session.getTransaction().commit();
+				if (!albumList.isEmpty()) {
+					return true;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return false;
+
+	}
+
+	@Override
+	public boolean hasAccessAsCustomer(int albumId, int customerId) {
+
+		boolean hasAccess = false;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Customer customer = session.get(Customer.class, customerId);
+				Album album = session.get(Album.class, albumId);
+				if (customer.getAlbumList().contains(album)) {
+					hasAccess = true;
+				}
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return hasAccess;
 
 	}
 
