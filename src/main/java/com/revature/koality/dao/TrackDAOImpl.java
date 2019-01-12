@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.stereotype.Repository;
 
+import com.revature.koality.bean.Customer;
 import com.revature.koality.bean.Publisher;
 import com.revature.koality.bean.Track;
 import com.revature.koality.bean.TrackReview;
@@ -192,6 +193,62 @@ public class TrackDAOImpl implements TrackDAO {
 		}
 
 		return count;
+
+	}
+
+	@Override
+	public boolean hasAccessAsPublisher(int trackId, int publisherId) {
+
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				String hql = "FROM Track t WHERE t.trackId = :trackId AND t.publisher.publisherId = :publisherId";
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				List<Track> trackList = session.createQuery(hql, Track.class).setParameter("trackId", trackId)
+						.setParameter("publisherId", publisherId).getResultList();
+				session.getTransaction().commit();
+				if (!trackList.isEmpty()) {
+					return true;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return false;
+
+	}
+
+	@Override
+	public boolean hasAccessAsCustomer(int trackId, int customerId) {
+
+		boolean hasAccess = false;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Customer customer = session.get(Customer.class, customerId);
+				Track track = session.get(Track.class, trackId);
+				if (customer.getTrackList().contains(track)) {
+					hasAccess = true;
+				}
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return hasAccess;
 
 	}
 

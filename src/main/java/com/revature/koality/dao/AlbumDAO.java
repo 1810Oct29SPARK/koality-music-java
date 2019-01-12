@@ -22,4 +22,8 @@ public interface AlbumDAO {
 
 	int getAlbumPurchaseCount(int albumId);
 
+	boolean hasAccessAsPublisher(int albumId, int publisherId);
+
+	boolean hasAccessAsCustomer(int albumId, int customerId);
+
 }

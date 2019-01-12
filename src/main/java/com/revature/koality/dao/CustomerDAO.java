@@ -5,6 +5,7 @@ import java.util.List;
 import com.revature.koality.bean.Album;
 import com.revature.koality.bean.Customer;
 import com.revature.koality.bean.CustomerCredentials;
+import com.revature.koality.bean.CustomerData;
 import com.revature.koality.bean.CustomerDetail;
 import com.revature.koality.bean.Image;
 import com.revature.koality.bean.Publisher;
@@ -39,5 +40,7 @@ public interface CustomerDAO {
 	boolean purchaseTrack(int customerId, int trackId);
 
 	boolean purchaseAlbum(int customerId, int albumId);
+
+	CustomerData getCustomerDataById(int customerId);
 
 }

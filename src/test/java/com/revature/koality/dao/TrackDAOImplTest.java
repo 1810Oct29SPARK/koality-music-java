@@ -91,4 +91,24 @@ public class TrackDAOImplTest {
 		assertEquals(3, td.getTrackPurchaseCount(2));
 	}
 
+	@Test
+	public void testHasAccessAsPublisherValid() {
+		assertTrue(td.hasAccessAsPublisher(7, 1));
+	}
+
+	@Test
+	public void testHasAccessAsPublisherInvalid() {
+		assertFalse(td.hasAccessAsPublisher(2, 3));
+	}
+
+	@Test
+	public void testHasAccessAsCustomerValid() {
+		assertTrue(td.hasAccessAsCustomer(4, 5));
+	}
+
+	@Test
+	public void testHasAccessAsCustomerInvalid() {
+		assertFalse(td.hasAccessAsCustomer(7, 3));
+	}
+
 }
