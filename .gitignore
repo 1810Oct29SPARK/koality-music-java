@@ -97,3 +97,4 @@ local.properties
 ### Custom ###
 *.properties
 properties/
+!log4j.properties

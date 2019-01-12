@@ -1,5 +1,9 @@
 package com.revature.koality.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
+
 import com.revature.koality.bean.Customer;
 import com.revature.koality.bean.CustomerCredentials;
 import com.revature.koality.bean.CustomerDetail;
@@ -13,21 +17,34 @@ import com.revature.koality.dao.PublisherDAO;
 import com.revature.koality.dao.PublisherDAOImpl;
 import com.revature.koality.utility.CommonUtility;
 
+@Service("registerServiceImpl")
 public class RegisterServiceImpl implements RegisterService {
+
+	private PublisherDAO pd;
+	private CustomerDAO cd;
 
 	public RegisterServiceImpl() {
 		super();
 		pd = new PublisherDAOImpl();
 		cd = new CustomerDAOImpl();
 	}
-	
-	private PublisherDAO pd;
-	private CustomerDAO cd;
+
+	public RegisterServiceImpl(PublisherDAO publisherDAOMock) {
+		super();
+		this.pd = publisherDAOMock;
+	}
+
+	public RegisterServiceImpl(CustomerDAO customerDAOMock) {
+		super();
+		this.cd = customerDAOMock;
+	}
 
 	public PublisherDAO getPd() {
 		return pd;
 	}
 
+	@Autowired
+	@Qualifier("publisherDAOImpl")
 	public void setPd(PublisherDAO pd) {
 		this.pd = pd;
 	}
@@ -36,6 +53,8 @@ public class RegisterServiceImpl implements RegisterService {
 		return cd;
 	}
 
+	@Autowired
+	@Qualifier("customerDAOImpl")
 	public void setCd(CustomerDAO cd) {
 		this.cd = cd;
 	}
@@ -58,12 +77,13 @@ public class RegisterServiceImpl implements RegisterService {
 		Customer customer = new Customer(customerDetail, image, customerCredentials);
 
 		return cd.addCustomer(customer);
+
 	}
 
 	@Override
 	public int registerPublisher(String firstName, String lastName, String email, String companyName, String username,
 			String password) {
-		
+
 		PublisherDetail publisherDetail = new PublisherDetail(firstName, lastName, email, companyName);
 		String hashSalt = CommonUtility.generateRandomString(4);
 
@@ -78,6 +98,7 @@ public class RegisterServiceImpl implements RegisterService {
 		Publisher publisher = new Publisher(publisherDetail, image, publisherCredentials);
 
 		return pd.addPublisher(publisher);
+
 	}
 
 }

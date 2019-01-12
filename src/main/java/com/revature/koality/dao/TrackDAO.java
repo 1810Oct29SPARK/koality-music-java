@@ -19,4 +19,8 @@ public interface TrackDAO {
 
 	int getTrackPurchaseCount(int trackId);
 
+	boolean hasAccessAsPublisher(int trackId, int publisherId);
+
+	boolean hasAccessAsCustomer(int trackId, int customerId);
+
 }
