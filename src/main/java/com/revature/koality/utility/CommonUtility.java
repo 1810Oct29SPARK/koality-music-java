@@ -147,7 +147,7 @@ public class CommonUtility {
 	 * @param blobUrl
 	 * @return the decoded byte data
 	 */
-	public byte[] decodeBlobUrl(String blobUrl) {
+	public static byte[] decodeBlobUrl(String blobUrl) {
 
 		String blobData = blobUrl.substring(blobUrl.indexOf("base64,") + 7);
 		return Base64.getDecoder().decode(blobData);
