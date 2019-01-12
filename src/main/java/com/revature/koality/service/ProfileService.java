@@ -5,22 +5,24 @@ import com.revature.koality.bean.Publisher;
 
 public interface ProfileService {
 
-	Publisher getPublisherProfile(int id);
+	Publisher getPublisherProfile(int publisherId);
 
-	Customer getCustomerProfile(int id);
+	Customer getCustomerProfile(int customerId);
 
-	boolean updatePublisherDetails(int id, String firstName, String lastName, String email, String companyName);
+	boolean updatePublisherDetails(int publisherId, String firstName, String lastName, String email,
+			String companyName);
 
-	boolean updateCustomerDetails(int id, String firstName, String lastName, String email, String favoriteGenre);
+	boolean updateCustomerDetails(int customerId, String firstName, String lastName, String email,
+			String favoriteGenre);
 
-	boolean updatePublisherCredentials(int id, String oldUsername, String newUsername, String oldPassword,
+	boolean updatePublisherCredentials(int publisherId, String oldUsername, String newUsername, String oldPassword,
 			String newPassword);
 
-	boolean updateCustomerCredentials(int id, String oldUsername, String newUsername, String oldPassword,
+	boolean updateCustomerCredentials(int customerId, String oldUsername, String newUsername, String oldPassword,
 			String newPassword);
 
-	boolean updatePublisherImage(int id, String imageType, byte[] imageData);
+	boolean updatePublisherImage(int publisherId, String imageType, byte[] imageData);
 
-	boolean updateCustomerImage(int id, String imageType, byte[] imageData);
+	boolean updateCustomerImage(int customerId, String imageType, byte[] imageData);
 
 }

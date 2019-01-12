@@ -68,13 +68,13 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	@Override
-	public Publisher getPublisherProfile(int id) {
-		return pd.getPublisherById(id);
+	public Publisher getPublisherProfile(int publisherId) {
+		return pd.getPublisherById(publisherId);
 	}
 
 	@Override
-	public Customer getCustomerProfile(int id) {
-		return cd.getCustomerById(id);
+	public Customer getCustomerProfile(int customerId) {
+		return cd.getCustomerById(customerId);
 	}
 
 	@Override
@@ -121,8 +121,8 @@ public class ProfileServiceImpl implements ProfileService {
 	}
 
 	@Override
-	public boolean updatePublisherCredentials(int id, String oldUsername, String newUsername, String oldPassword,
-			String newPassword) {
+	public boolean updatePublisherCredentials(int publisherId, String oldUsername, String newUsername,
+			String oldPassword, String newPassword) {
 
 		PublisherCredentials credentials = pd.getPublisherCredentialsByUsername(oldUsername);
 
@@ -140,14 +140,14 @@ public class ProfileServiceImpl implements ProfileService {
 
 			credentials.setUsername(newUsername);
 
-			return pd.updatePublisherCredentials(id, credentials);
+			return pd.updatePublisherCredentials(publisherId, credentials);
 		}
 
 		return false;
 	}
 
 	@Override
-	public boolean updateCustomerCredentials(int id, String oldUsername, String newUsername, String oldPassword,
+	public boolean updateCustomerCredentials(int customerId, String oldUsername, String newUsername, String oldPassword,
 			String newPassword) {
 
 		CustomerCredentials credentials = cd.getCustomerCredentialsByUsername(oldUsername);
@@ -168,26 +168,26 @@ public class ProfileServiceImpl implements ProfileService {
 
 			credentials.setUsername(newUsername);
 
-			return cd.updateCustomerCredentials(id, credentials);
+			return cd.updateCustomerCredentials(customerId, credentials);
 		}
 
 		return false;
 	}
 
 	@Override
-	public boolean updatePublisherImage(int id, String imageType, byte[] imageData) {
+	public boolean updatePublisherImage(int publisherId, String imageType, byte[] imageData) {
 
 		Image image = new Image(imageType, imageData);
 
-		return pd.updatePublisherImage(id, image);
+		return pd.updatePublisherImage(publisherId, image);
 	}
 
 	@Override
-	public boolean updateCustomerImage(int id, String imageType, byte[] imageData) {
+	public boolean updateCustomerImage(int customerId, String imageType, byte[] imageData) {
 
 		Image image = new Image(imageType, imageData);
 
-		return cd.updateCustomerImage(id, image);
+		return cd.updateCustomerImage(customerId, image);
 	}
 
 }
