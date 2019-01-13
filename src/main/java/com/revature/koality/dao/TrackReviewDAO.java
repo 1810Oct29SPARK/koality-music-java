@@ -13,4 +13,6 @@ public interface TrackReviewDAO {
 
 	boolean deleteTrackReview(int trackReviewId);
 
+	boolean isOwner(int trackReviewId, int customerId);
+
 }

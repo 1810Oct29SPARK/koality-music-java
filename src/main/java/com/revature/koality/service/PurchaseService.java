@@ -8,7 +8,7 @@ import com.revature.koality.bean.Track;
 public interface PurchaseService {
 
 	List<Track> viewAllTracks();
-	
+
 	List<Album> viewAllAlbums();
 
 	boolean purchaseTrack(int customerId, int trackId);

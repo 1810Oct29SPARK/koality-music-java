@@ -69,12 +69,16 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Override
 	public Publisher getPublisherProfile(int publisherId) {
-		return pd.getPublisherById(publisherId);
+		Publisher publisher = pd.getPublisherById(publisherId);
+		publisher.truncate(false);
+		return publisher;
 	}
 
 	@Override
 	public Customer getCustomerProfile(int customerId) {
-		return cd.getCustomerById(customerId);
+		Customer customer = cd.getCustomerById(customerId);
+		customer.truncate(false);
+		return customer;
 	}
 
 	@Override
@@ -132,12 +136,13 @@ public class ProfileServiceImpl implements ProfileService {
 
 		if (credentials.getPasswordHash().equals(passwordHash)) {
 
-			createHash = newPassword + credentials.getHashSalt();
+			String newHashSalt = CommonUtility.generateRandomString(4);
+			createHash = newPassword + newHashSalt;
 
 			passwordHash = CommonUtility.digestSHA256(createHash);
 
 			credentials.setPasswordHash(passwordHash);
-
+			credentials.setHashSalt(newHashSalt);
 			credentials.setUsername(newUsername);
 
 			return pd.updatePublisherCredentials(publisherId, credentials);
@@ -158,14 +163,13 @@ public class ProfileServiceImpl implements ProfileService {
 
 		if (credentials.getPasswordHash().equals(passwordHash)) {
 
-			credentials = cd.getCustomerCredentialsByUsername(oldUsername);
-
-			createHash = newPassword + credentials.getHashSalt();
+			String newHashSalt = CommonUtility.generateRandomString(4);
+			createHash = newPassword + newHashSalt;
 
 			passwordHash = CommonUtility.digestSHA256(createHash);
 
 			credentials.setPasswordHash(passwordHash);
-
+			credentials.setHashSalt(newHashSalt);
 			credentials.setUsername(newUsername);
 
 			return cd.updateCustomerCredentials(customerId, credentials);

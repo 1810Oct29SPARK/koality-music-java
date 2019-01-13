@@ -8,37 +8,49 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.koality.bean.Customer;
 import com.revature.koality.bean.Publisher;
+import com.revature.koality.service.ProfileService;
 import com.revature.koality.utility.CommonUtility;
 
 @RestController("profileController")
 public class ProfileController {
 
-	// SERVICES DECLARATION
+	private ProfileService profileService;
 
 	public ProfileController() {
 		super();
 	}
 
-	// SERVICE SETTER
+	public ProfileService getProfileService() {
+		return profileService;
+	}
+
+	@Autowired
+	@Qualifier("profileServiceImpl")
+	public void setProfileService(ProfileService profileService) {
+		this.profileService = profileService;
+	}
 
 	@GetMapping("/profile-publisher")
 	public void getPublisherProfile(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
-		Publisher publisher = new Publisher();
+		Publisher publisher = null;
 
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			try {
 				int publisherId = Integer.parseInt(session.getAttribute("publisherId").toString());
-				// SERVICE
-				if (publisher.getPublisherId() != 0) {
+
+				publisher = profileService.getPublisherProfile(publisherId);
+				if (publisher != null && publisher.getPublisherId() != 0) {
 					status = 200;
 				} else {
 					status = 400;
@@ -60,14 +72,15 @@ public class ProfileController {
 	public void getCustomerProfile(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
-		Customer customer = new Customer();
+		Customer customer = null;
 
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			try {
 				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
-				// SERVICE
-				if (customer.getCustomerId() != 0) {
+
+				customer = profileService.getCustomerProfile(customerId);
+				if (customer != null && customer.getCustomerId() != 0) {
 					status = 200;
 				} else {
 					status = 400;
@@ -103,7 +116,11 @@ public class ProfileController {
 				String email = jo.getString("email");
 				String companyName = jo.getString("companyName");
 
-				// SERVICE
+				if (profileService.updatePublisherDetails(publisherId, firstName, lastName, email, companyName)) {
+					status = 200;
+				} else {
+					status = 400;
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				status = 400;
@@ -134,7 +151,11 @@ public class ProfileController {
 				String email = jo.getString("email");
 				String favoriteGenre = jo.getString("favoriteGenre");
 
-				// SERVICE
+				if (profileService.updateCustomerDetails(customerId, firstName, lastName, email, favoriteGenre)) {
+					status = 200;
+				} else {
+					status = 400;
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				status = 400;

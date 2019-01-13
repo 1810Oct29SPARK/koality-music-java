@@ -59,4 +59,14 @@ public class AlbumReviewDAOImplTest {
 		assertTrue(ard.deleteAlbumReview(10));
 	}
 
+	@Test
+	public void testIsOwnerTrue() {
+		assertTrue(ard.isOwner(4, 2));
+	}
+
+	@Test
+	public void testIsOwnerFalse() {
+		assertFalse(ard.isOwner(11, 2));
+	}
+
 }

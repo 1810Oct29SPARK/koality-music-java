@@ -143,4 +143,31 @@ public class TrackReviewDAOImpl implements TrackReviewDAO {
 
 	}
 
+	@Override
+	public boolean isOwner(int trackReviewId, int customerId) {
+
+		Session session = null;
+		boolean owner = false;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				TrackReview trackReview = session.get(TrackReview.class, trackReviewId);
+				if (trackReview.getCustomer().getCustomerId() == customerId) {
+					owner = true;
+				}
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return owner;
+
+	}
+
 }

@@ -3,9 +3,9 @@ package com.revature.koality.dao;
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.stereotype.Repository;
 
 import com.revature.koality.bean.Customer;
@@ -156,7 +156,8 @@ public class TrackDAOImpl implements TrackDAO {
 				session.beginTransaction();
 				trackReviewList = session.createQuery(hql, TrackReview.class).setParameter("trackId", trackId)
 						.getResultList();
-				trackReviewList.forEach(tr -> Hibernate.initialize(tr.getCustomer()));
+				trackReviewList.forEach(tr -> tr.setCustomer((Customer) ((HibernateProxy) tr.getCustomer())
+						.getHibernateLazyInitializer().getImplementation()));
 				session.getTransaction().commit();
 			} catch (Exception e) {
 				e.printStackTrace();

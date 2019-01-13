@@ -13,4 +13,6 @@ public interface AlbumReviewDAO {
 
 	boolean deleteAlbumReview(int albumReviewId);
 
+	boolean isOwner(int albumReviewId, int customerId);
+
 }

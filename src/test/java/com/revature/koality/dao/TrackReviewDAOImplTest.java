@@ -74,4 +74,14 @@ public class TrackReviewDAOImplTest {
 		assertTrue(trd.deleteTrackReview(7));
 	}
 
+	@Test
+	public void testIsOwnerTrue() {
+		assertTrue(trd.isOwner(5, 5));
+	}
+
+	@Test
+	public void testIsOwnerFalse() {
+		assertFalse(trd.isOwner(8, 3));
+	}
+
 }

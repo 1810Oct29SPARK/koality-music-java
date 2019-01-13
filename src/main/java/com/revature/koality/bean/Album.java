@@ -208,6 +208,10 @@ public class Album implements Serializable {
 		} catch (LazyInitializationException e) {
 			this.trackList = null;
 		}
+		this.image = null;
+		if (all) {
+			this.imageUrl = null;
+		}
 	}
 
 	public void loadImageUrl() {

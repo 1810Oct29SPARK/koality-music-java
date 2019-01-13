@@ -179,8 +179,13 @@ public class PublisherDAOImpl implements PublisherDAO {
 				session = this.sessionFactory.getCurrentSession();
 				session.beginTransaction();
 				Publisher publisher = session.get(Publisher.class, publisherId);
-				publisher.getImage().setImageType(image.getImageType());
-				publisher.getImage().setImageData(image.getImageData());
+				if (publisher.getImage() != null) {
+					publisher.getImage().setImageType(image.getImageType());
+					publisher.getImage().setImageData(image.getImageData());
+				} else {
+					session.save(image);
+					publisher.setImage(image);
+				}
 				session.getTransaction().commit();
 				return true;
 			} catch (Exception e) {

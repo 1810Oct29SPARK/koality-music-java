@@ -12,21 +12,32 @@ import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.revature.koality.service.PublishService;
 import com.revature.koality.utility.CommonUtility;
 
 @RestController("publishController")
 public class PublishController {
 
-	// SERVICE DECLARATION
+	private PublishService publishService;
 
 	public PublishController() {
 		super();
 	}
 
-	// SERVICE SETTER
+	public PublishService getPublishService() {
+		return publishService;
+	}
+
+	@Autowired
+	@Qualifier("publishServiceImpl")
+	public void setPublishService(PublishService publishService) {
+		this.publishService = publishService;
+	}
 
 	@PostMapping("/publish-track")
 	public void publishTrack(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -51,7 +62,8 @@ public class PublishController {
 				String audioType = jo.getString("audioType");
 				byte[] audioData = CommonUtility.decodeBlobUrl(jo.getString("audioData"));
 
-				// SERVICE
+				id = publishService.publishTrack(publisherId, trackName, genre, composer, artist, trackLength,
+						unitPrice, audioType, audioData);
 				if (id != -1) {
 					status = 200;
 				} else {
@@ -97,7 +109,8 @@ public class PublishController {
 					trackIdList.add(Integer.parseInt(iter.next().toString()));
 				}
 
-				// SERVICE
+				id = publishService.publishAlbum(publisherId, albumName, genre, unitPrice, imageType, imageData,
+						trackIdList);
 				if (id != -1) {
 					status = 200;
 				} else {
