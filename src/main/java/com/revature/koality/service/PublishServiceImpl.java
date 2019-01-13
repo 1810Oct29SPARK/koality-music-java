@@ -72,14 +72,17 @@ public class PublishServiceImpl implements PublishService {
 	@Override
 	public int publishAlbum(int publisherId, String albumName, String genre, float unitPrice, String imageType,
 			byte[] imageData, List<Integer> trackIdList) {
+		
+		if (trackIdList!=null) {
 
-		Image image = new Image(imageType, imageData);
-
-		if (unitPrice > 0) {
-
-			Album album = new Album(albumName, genre, unitPrice, image);
-
-			return ad.addAlbum(album, publisherId, trackIdList);
+				Image image = new Image(imageType, imageData);
+		
+				if (unitPrice > 0) {
+		
+					Album album = new Album(albumName, genre, unitPrice, image);
+		
+					return ad.addAlbum(album, publisherId, trackIdList);
+				}
 		}
 
 		return 0;
