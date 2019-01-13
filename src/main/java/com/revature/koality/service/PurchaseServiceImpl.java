@@ -95,4 +95,24 @@ public class PurchaseServiceImpl implements PurchaseService {
 		return cd.purchaseAlbum(customerId, albumId);
 	}
 
+	@Override
+	public List<Track> viewRecommendedTracks(String genre) {
+
+		List<Track> trackList = this.viewAllTracks();
+		trackList.removeIf(t -> !t.getGenre().toLowerCase().equals(genre.toLowerCase()));
+
+		return trackList;
+
+	}
+
+	@Override
+	public List<Album> viewRecommendedAlbums(String genre) {
+
+		List<Album> albumList = this.viewAllAlbums();
+		albumList.removeIf(a -> !a.getGenre().toLowerCase().equals(genre.toLowerCase()));
+
+		return albumList;
+
+	}
+
 }

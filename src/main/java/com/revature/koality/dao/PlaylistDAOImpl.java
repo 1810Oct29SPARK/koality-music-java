@@ -89,6 +89,31 @@ public class PlaylistDAOImpl implements PlaylistDAO {
 	}
 
 	@Override
+	public List<Track> getTracksFromPlaylist(int playlistId) {
+
+		List<Track> trackList = null;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				trackList = session.get(Playlist.class, playlistId).getTrackList();
+				trackList.forEach(t -> t.loadAudioUrl());
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().commit();
+			} finally {
+				session.close();
+			}
+		}
+
+		return trackList;
+
+	}
+
+	@Override
 	public List<Playlist> getAllPlaylistsByCustomerId(int customerId) {
 
 		List<Playlist> playlistList = null;
@@ -189,6 +214,33 @@ public class PlaylistDAOImpl implements PlaylistDAO {
 		}
 
 		return false;
+
+	}
+
+	@Override
+	public boolean isOwner(int playlistId, int customerId) {
+
+		boolean owner = false;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Playlist playlist = session.get(Playlist.class, playlistId);
+				if (playlist.getCustomer().getCustomerId() == customerId) {
+					owner = true;
+				}
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return owner;
 
 	}
 

@@ -429,6 +429,7 @@ public class CustomerDAOImpl implements CustomerDAO {
 			} catch (Exception e) {
 				e.printStackTrace();
 				session.getTransaction().rollback();
+				customerData = null;
 			} finally {
 				session.close();
 			}
