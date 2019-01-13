@@ -74,7 +74,10 @@ public class PlayMusicServiceImpl implements PlayMusicService {
 	@Override
 	public List<Track> getPurchasedTracks(int customerId) {
 
-		return cd.getAllTracksByCustomerId(customerId);
+		List<Track> trackList = cd.getAllTracksByCustomerId(customerId);
+		trackList.forEach(t -> t.truncate(true));
+
+		return trackList;
 
 	}
 
@@ -84,6 +87,7 @@ public class PlayMusicServiceImpl implements PlayMusicService {
 		Track track = td.getTrackById(trackId);
 
 		if (track != null && td.hasAccessAsCustomer(trackId, customerId)) {
+			track.truncate(false);
 			return track;
 		}
 
@@ -93,7 +97,10 @@ public class PlayMusicServiceImpl implements PlayMusicService {
 	@Override
 	public List<Album> getPurchasedAlbums(int customerId) {
 
-		return cd.getAllAlbumsByCustomerId(customerId);
+		List<Album> albumList = cd.getAllAlbumsByCustomerId(customerId);
+		albumList.forEach(a -> a.truncate(false));
+
+		return albumList;
 
 	}
 
@@ -103,6 +110,7 @@ public class PlayMusicServiceImpl implements PlayMusicService {
 		Album album = ad.getAlbumById(albumId);
 
 		if (album != null && ad.hasAccessAsCustomer(albumId, customerId)) {
+			album.truncate(false);
 			return album;
 		}
 
@@ -115,6 +123,7 @@ public class PlayMusicServiceImpl implements PlayMusicService {
 		List<Track> tracks = ad.getAllTracksByAlbumId(albumId);
 
 		if (tracks != null) {
+			tracks.forEach(t -> t.truncate(true));
 			return tracks;
 		}
 

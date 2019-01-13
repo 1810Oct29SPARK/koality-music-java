@@ -23,7 +23,7 @@ import com.revature.koality.utility.CommonUtility;
 @RestController("publishController")
 public class PublishController {
 
-	PublishService publishService;
+	private PublishService publishService;
 
 	public PublishController() {
 		super();

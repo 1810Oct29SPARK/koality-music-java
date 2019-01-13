@@ -9,10 +9,6 @@ import com.revature.koality.bean.TrackReview;
 
 public interface DisplayService {
 
-	List<Track> viewAllTracks();
-
-	List<Album> viewAllAlbums();
-
 	List<Track> getPublisherTracks(int publisherId);
 
 	List<Album> getPublisherAlbums(int publisherId);

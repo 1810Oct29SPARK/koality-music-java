@@ -22,7 +22,7 @@ import com.revature.koality.utility.CommonUtility;
 @RestController("profileController")
 public class ProfileController {
 
-	ProfileService profileService;
+	private ProfileService profileService;
 
 	public ProfileController() {
 		super();

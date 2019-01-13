@@ -76,43 +76,47 @@ public class DisplayServiceImpl implements DisplayService {
 	@Override
 	public List<TrackReview> viewTrackReviews(int trackId, int publisherId) {
 
+		List<TrackReview> trackReviewList = null;
+
 		if (td.hasAccessAsPublisher(trackId, publisherId)) {
-			return td.getAllTrackReviewsByTrackId(trackId);
-		} else {
-			return null;
+			trackReviewList = td.getAllTrackReviewsByTrackId(trackId);
+			trackReviewList.forEach(tr -> tr.truncate());
 		}
+
+		return trackReviewList;
 
 	}
 
 	@Override
 	public List<AlbumReview> viewAlbumReviews(int albumId, int publisherId) {
 
+		List<AlbumReview> albumReviewList = null;
+
 		if (ad.hasAccessAsPublisher(albumId, publisherId)) {
-			return ad.getAllAlbumReviewsByAlbumId(albumId);
-		} else {
-			return null;
+			albumReviewList = ad.getAllAlbumReviewsByAlbumId(albumId);
+			albumReviewList.forEach(ar -> ar.truncate());
 		}
 
-	}
+		return albumReviewList;
 
-	@Override
-	public List<Track> viewAllTracks() {
-		return td.getAllTracks();
-	}
-
-	@Override
-	public List<Album> viewAllAlbums() {
-		return ad.getAllAlbums();
 	}
 
 	@Override
 	public List<Track> getPublisherTracks(int publisherId) {
-		return pd.getAllTracksByPublisherId(publisherId);
+
+		List<Track> trackList = pd.getAllTracksByPublisherId(publisherId);
+		trackList.forEach(t -> t.truncate(true));
+		return trackList;
+
 	}
 
 	@Override
 	public List<Album> getPublisherAlbums(int publisherId) {
-		return pd.getAllAlbumsByPublisherId(publisherId);
+
+		List<Album> albumList = pd.getAllAlbumsByPublisherId(publisherId);
+		albumList.forEach(a -> a.truncate(false));
+		return albumList;
+
 	}
 
 }

@@ -23,7 +23,7 @@ import com.revature.koality.utility.CommonUtility;
 @RestController("storeController")
 public class StoreController {
 
-	PurchaseService purchaseService;
+	private PurchaseService purchaseService;
 
 	public StoreController() {
 		super();

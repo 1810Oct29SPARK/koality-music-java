@@ -18,7 +18,7 @@ import com.revature.koality.utility.CommonUtility;
 @RestController("profileImageController")
 public class ProfileImageController {
 
-	ProfileService profileService;
+	private ProfileService profileService;
 
 	public ProfileImageController() {
 		super();

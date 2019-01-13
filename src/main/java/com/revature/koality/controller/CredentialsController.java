@@ -18,7 +18,7 @@ import com.revature.koality.utility.CommonUtility;
 @RestController("credentialsController")
 public class CredentialsController {
 
-	ProfileService profileService;
+	private ProfileService profileService;
 
 	public CredentialsController() {
 		super();

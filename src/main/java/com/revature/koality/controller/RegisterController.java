@@ -19,7 +19,7 @@ import com.revature.koality.utility.CommonUtility;
 @RestController("registerController")
 public class RegisterController {
 
-	RegisterService registerService;
+	private RegisterService registerService;
 
 	public RegisterController() {
 		super();
