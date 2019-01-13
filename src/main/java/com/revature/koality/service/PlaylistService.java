@@ -7,18 +7,18 @@ import com.revature.koality.bean.Track;
 
 public interface PlaylistService {
 
-	List<Track> getPurchasedTracks(int customerId);
-
 	int createPlaylist(String playlistName, int customerId);
 
-	boolean deletePlaylist(int playlistId);
+	boolean deletePlaylist(int playlistId, int customerId);
 
-	int addTracksToPlaylist(int playlistId, List<Integer> trackIdList);
+	int addTracksToPlaylist(int playlistId, List<Integer> trackIdList, int customerId);
 
-	int removeTracksFromPlaylist(int playlistId, List<Integer> trackIdList);
+	int removeTracksFromPlaylist(int playlistId, List<Integer> trackIdList, int customerId);
 
 	List<Playlist> getAllPlaylists(int customerId);
 
-	Playlist selectPlaylist(int playlistId);
+	Playlist selectPlaylist(int playlistId, int customerId);
+
+	List<Track> getPlaylistTracks(int playlistId, int customerId);
 
 }

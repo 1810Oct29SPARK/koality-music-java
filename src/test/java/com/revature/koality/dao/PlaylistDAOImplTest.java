@@ -55,6 +55,22 @@ public class PlaylistDAOImplTest {
 	}
 
 	@Test
+	public void testGetTracksFromPlaylistName() {
+		List<Track> trackList = pld.getTracksFromPlaylist(1);
+		trackList.removeIf(t -> t.getTrackId() != 12);
+		assertEquals("9eEiXs", trackList.get(0).getTrackName());
+	}
+
+	@Test
+	public void testGetTracksFromPlaylistUrl() {
+		List<Track> trackList = pld.getTracksFromPlaylist(8);
+		trackList.removeIf(t -> t.getTrackId() != 5);
+		assertEquals(
+				"data:audio/xny;base64,empPcjRidDVsMjhpSTZkVUQ3RzJnOUVDUnFtcU1BRG9tT1N6MHhRV2p0TU9yUktPbmVKazgzUkVzZUk1WTNDelpLRmxsbTZaZTdDcEVXSmVBNVRNa0hoS3NNNDFkNjhTOXlsQg==",
+				trackList.get(0).getAudioUrl());
+	}
+
+	@Test
 	public void testGetAllPlaylistsByCustomerId() {
 		assertTrue(pld.getAllPlaylistsByCustomerId(1).size() > 0);
 	}

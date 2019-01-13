@@ -107,6 +107,11 @@ public class Playlist implements Serializable {
 	}
 
 	public void truncate(boolean all) {
+		if (all) {
+			this.customer = null;
+			this.trackList = null;
+			return;
+		}
 		if (this.customer != null) {
 			try {
 				this.customer.truncate(true);
@@ -116,7 +121,7 @@ public class Playlist implements Serializable {
 		}
 		try {
 			this.trackList.forEach(t -> t.truncate(all));
-		} catch (LazyInitializationException e) {
+		} catch (Exception e) {
 			this.trackList = null;
 		}
 	}
