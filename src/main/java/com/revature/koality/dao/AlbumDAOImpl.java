@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.stereotype.Repository;
 
 import com.revature.koality.bean.Album;
@@ -192,7 +193,8 @@ public class AlbumDAOImpl implements AlbumDAO {
 				session.beginTransaction();
 				albumReviewList = session.createQuery(hql, AlbumReview.class).setParameter("albumId", albumId)
 						.getResultList();
-				albumReviewList.forEach(ar -> Hibernate.initialize(ar.getCustomer()));
+				albumReviewList.forEach(ar -> ar.setCustomer((Customer) ((HibernateProxy) ar.getCustomer())
+						.getHibernateLazyInitializer().getImplementation()));
 				session.getTransaction().commit();
 			} catch (Exception e) {
 				e.printStackTrace();

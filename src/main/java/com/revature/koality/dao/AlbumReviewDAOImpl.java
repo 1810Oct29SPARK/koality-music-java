@@ -143,4 +143,31 @@ public class AlbumReviewDAOImpl implements AlbumReviewDAO {
 
 	}
 
+	@Override
+	public boolean isOwner(int albumReviewId, int customerId) {
+
+		Session session = null;
+		boolean owner = false;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				AlbumReview albumReview = session.get(AlbumReview.class, albumReviewId);
+				if (albumReview.getCustomer().getCustomerId() == customerId) {
+					owner = true;
+				}
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return owner;
+
+	}
+
 }
