@@ -39,7 +39,7 @@ public class StoreController {
 		this.purchaseService = purchaseService;
 	}
 
-	@GetMapping("store-tracks-all")
+	@GetMapping("/store-tracks-all")
 	public void displayAllTracks(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
@@ -58,7 +58,7 @@ public class StoreController {
 
 	}
 
-	@GetMapping("store-albums-all")
+	@GetMapping("/store-albums-all")
 	public void displayAllAlbums(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
@@ -77,7 +77,7 @@ public class StoreController {
 
 	}
 
-	@PostMapping("purchase-track")
+	@PostMapping("/purchase-track")
 	public void purchaseTrack(HttpServletRequest request, HttpServletResponse response) {
 
 		int status = 418;
@@ -109,7 +109,7 @@ public class StoreController {
 
 	}
 
-	@PostMapping("purchase-album")
+	@PostMapping("/purchase-album")
 	public void purchaseAlbum(HttpServletRequest request, HttpServletResponse response) {
 
 		int status = 418;
@@ -138,6 +138,62 @@ public class StoreController {
 		}
 
 		response.setStatus(status);
+
+	}
+
+	@GetMapping("/tracks-recommended/{genre}")
+	public void displayRecommendedTracks(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		int status = 418;
+		List<Track> trackList = null;
+
+		try {
+			String uri = request.getRequestURI();
+			String genre = uri.substring(uri.lastIndexOf('/') + 1);
+
+			trackList = purchaseService.viewRecommendedTracks(genre);
+			if (trackList == null) {
+				status = 400;
+			} else if (trackList.isEmpty()) {
+				status = 404;
+			} else {
+				status = 200;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = 400;
+		}
+
+		response.setStatus(status);
+		response.getWriter().write(CommonUtility.toJsonStringJackson(trackList));
+
+	}
+
+	@GetMapping("/albums-recommended/{genre}")
+	public void displayRecommendedAlbums(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+		int status = 418;
+		List<Album> albumList = null;
+
+		try {
+			String uri = request.getRequestURI();
+			String genre = uri.substring(uri.lastIndexOf('/') + 1);
+
+			albumList = purchaseService.viewRecommendedAlbums(genre);
+			if (albumList == null) {
+				status = 400;
+			} else if (albumList.isEmpty()) {
+				status = 404;
+			} else {
+				status = 200;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = 400;
+		}
+
+		response.setStatus(status);
+		response.getWriter().write(CommonUtility.toJsonStringJackson(albumList));
 
 	}
 

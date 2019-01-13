@@ -15,4 +15,8 @@ public interface PurchaseService {
 
 	boolean purchaseAlbum(int customerId, int albumId);
 
+	List<Track> viewRecommendedTracks(String genre);
+
+	List<Album> viewRecommendedAlbums(String genre);
+
 }
