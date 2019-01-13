@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import com.revature.koality.bean.Customer;
+import com.revature.koality.bean.CustomerCredentials;
 import com.revature.koality.bean.CustomerDetail;
 import com.revature.koality.bean.Image;
 import com.revature.koality.bean.Publisher;
@@ -222,6 +223,37 @@ public class ProfileServiceImplTest {
 
 		assertTrue(actual);
 	}
+	
+	@Test
+	public void testInvalidUpdateCustomerDetails() {
+
+		int customerId = 10;
+		String firstName = "John";
+		String lastName = "Doe";
+		String email = "JohnDoe@email.com";
+		String favoriteGenre = "Rock";
+
+		Customer customer = MockUtility.getMockCustomer();
+
+		CustomerDetail customerDetail = customer.getCustomerDetail();
+
+		customerDetail.setFavoriteGenre(favoriteGenre);
+		customerDetail.setEmail(email);
+		customerDetail.setFirstName(firstName);
+		customerDetail.setLastName(lastName);
+
+		customerDAOMock = mock(CustomerDAOImpl.class);
+
+		ProfileService profileService = new ProfileServiceImpl(customerDAOMock);
+
+		when(customerDAOMock.getCustomerById(customerId)).thenReturn(customer);
+
+		when(customerDAOMock.updateCustomerDetail(customerId, customerDetail)).thenReturn(true);
+
+		boolean actual = profileService.updateCustomerDetails(0, firstName, lastName, email, favoriteGenre);
+
+		assertFalse(actual);
+	}
 
 	@Test
 	public void testUpdatePublisherCredentials() {
@@ -266,28 +298,68 @@ public class ProfileServiceImplTest {
 		assertTrue(actual);
 	}
 
-	@Ignore
+	
 	@Test
 	public void testUpdateCustomerCredentials() {
-		fail("Not yet implemented");
+		
+		CustomerCredentials credentials = MockUtility.getMockCustomerCredentials();
+
+		String oldUsername = credentials.getUsername();
+		String newUsername = "newUser";
+		String oldPassword = "password";
+		String newPassword = oldPassword;
+		int customerId = 12;
+
+		// This creates password hash for old credentials
+		String createHash = oldPassword + credentials.getHashSalt();
+
+		String hash = CommonUtility.digestSHA256(createHash);
+
+		credentials.setPasswordHash(hash);
+
+		// This creates new updated credentials for mocking
+		CustomerCredentials newCredentials = credentials;
+
+		String createNewHash = newPassword + credentials.getHashSalt();
+
+		String newPasswordHash = CommonUtility.digestSHA256(createNewHash);
+
+		newCredentials.setPasswordHash(newPasswordHash);
+
+		newCredentials.setUsername(newUsername);
+
+		customerDAOMock = mock(CustomerDAOImpl.class);
+
+		ProfileService profileService = new ProfileServiceImpl(customerDAOMock);
+
+		when(customerDAOMock.getCustomerCredentialsByUsername(oldUsername)).thenReturn(credentials);
+
+		when(customerDAOMock.updateCustomerCredentials(customerId, newCredentials)).thenReturn(true);
+
+		Boolean actual = profileService.updateCustomerCredentials(customerId, oldUsername, newUsername, oldPassword,
+				newPassword);
+
+		assertTrue(actual);
 	}
 
 	@Test
 	public void testUpdatePublisherImage() {
 
-		Image image = MockUtility.getMockImage();
+		Publisher publisher = MockUtility.getMockPublisher(); 
+
+		Image image = publisher.getImage(); 
 
 		String imageType = image.getImageType();
 
 		byte[] imageData = image.getImageData();
 
-		int publisherId = 12;
-
-		System.out.println(publisherId);
+		int publisherId = 11;
 
 		publisherDAOMock = mock(PublisherDAOImpl.class);
 
 		ProfileService profileService = new ProfileServiceImpl(publisherDAOMock);
+		
+		when(publisherDAOMock.getPublisherById(publisherId)).thenReturn(publisher); 
 
 		when(publisherDAOMock.updatePublisherImage(publisherId, image)).thenReturn(true);
 
@@ -295,25 +367,54 @@ public class ProfileServiceImplTest {
 
 		assertTrue(actual);
 	}
+	
+	@Test
+	public void testInvalidPublisherImage() {
+
+		Publisher publisher = MockUtility.getMockPublisher(); 
+
+		Image image = publisher.getImage(); 
+
+		String imageType = image.getImageType();
+
+		byte[] imageData = image.getImageData();
+
+		int publisherId = 11;
+
+		publisherDAOMock = mock(PublisherDAOImpl.class);
+
+		ProfileService profileService = new ProfileServiceImpl(publisherDAOMock);
+		
+		when(publisherDAOMock.getPublisherById(publisherId)).thenReturn(publisher); 
+
+		when(publisherDAOMock.updatePublisherImage(publisherId, image)).thenReturn(true);
+
+		boolean actual = profileService.updatePublisherImage(publisherId, imageType, imageData);
+
+		assertTrue(actual);
+	}
+	
 
 	@Test
 	public void testUpdateCustomerImage() {
+		
+		Customer customer = MockUtility.getMockCustomer(); 
 
-		Image imageMock = MockUtility.getMockImage();
+		Image image = customer.getImage(); 
 
-		String imageType = imageMock.getImageType();
+		String imageType = image.getImageType();
 
-		byte[] imageData = imageMock.getImageData();
+		byte[] imageData = image.getImageData();
 
 		int customerId = 11;
-
-		Image image = new Image(imageType, imageData);
 
 		System.out.println(customerId);
 
 		customerDAOMock = mock(CustomerDAOImpl.class);
 
 		ProfileService profileService = new ProfileServiceImpl(customerDAOMock);
+		
+		when(customerDAOMock.getCustomerById(customerId)).thenReturn(customer); 
 
 		when(customerDAOMock.updateCustomerImage(customerId, image)).thenReturn(true);
 
