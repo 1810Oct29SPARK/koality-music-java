@@ -19,20 +19,20 @@ import com.revature.koality.utility.CommonUtility;
 @RestController("registerController")
 public class RegisterController {
 
-	RegisterService rs;
+	RegisterService registerService;
 
 	public RegisterController() {
 		super();
 	}
 
-	public RegisterService getRs() {
-		return rs;
+	public RegisterService getRegisterService() {
+		return registerService;
 	}
 
 	@Autowired
 	@Qualifier("registerServiceImpl")
-	public void setRs(RegisterService rs) {
-		this.rs = rs;
+	public void setRegisterService(RegisterService registerService) {
+		this.registerService = registerService;
 	}
 
 	@PostMapping("/register-publisher")
@@ -52,7 +52,7 @@ public class RegisterController {
 			String username = jo.getString("username");
 			String password = jo.getString("password");
 
-			id = rs.registerPublisher(firstName, lastName, email, companyName, username, password);
+			id = registerService.registerPublisher(firstName, lastName, email, companyName, username, password);
 		} catch (Exception e) {
 			e.printStackTrace();
 			status = HttpStatus.BAD_REQUEST;
@@ -87,7 +87,7 @@ public class RegisterController {
 			String username = jo.getString("username");
 			String password = jo.getString("password");
 
-			id = rs.registerCustomer(firstName, lastName, email, favoriteGenre, username, password);
+			id = registerService.registerCustomer(firstName, lastName, email, favoriteGenre, username, password);
 		} catch (Exception e) {
 			e.printStackTrace();
 			status = HttpStatus.BAD_REQUEST;

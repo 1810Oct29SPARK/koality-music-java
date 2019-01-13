@@ -21,27 +21,27 @@ import com.revature.koality.utility.CommonUtility;
 @RestController("loginController")
 public class LoginController {
 
-	private AuthenticationService as;
+	private AuthenticationService authenticationService;
 
 	public LoginController() {
 		super();
 	}
 
-	public AuthenticationService getAs() {
-		return as;
+	public AuthenticationService getAuthenticationService() {
+		return authenticationService;
 	}
 
 	@Autowired
 	@Qualifier("authenticationServiceImpl")
-	public void setAs(AuthenticationService as) {
-		this.as = as;
+	public void setAuthenticationService(AuthenticationService authenticationService) {
+		this.authenticationService = authenticationService;
 	}
 
 	@PostMapping("/login-publisher")
 	public void loginPublisher(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
-		Publisher publisher = new Publisher();
+		Publisher publisher = null;
 
 		try (BufferedReader br = request.getReader()) {
 			String requestBody = CommonUtility.readRequest(br);
@@ -50,13 +50,13 @@ public class LoginController {
 			String username = jo.getString("username");
 			String password = jo.getString("password");
 
-			publisher = as.isValidPublisher(username, password);
+			publisher = authenticationService.isValidPublisher(username, password);
 		} catch (Exception e) {
 			e.printStackTrace();
 			status = 400;
 		}
 
-		if (publisher.getPublisherId() != 0) {
+		if (publisher != null && publisher.getPublisherId() != 0) {
 			status = 200;
 			HttpSession session = request.getSession(true);
 			session.setAttribute("publisherId", publisher.getPublisherId());
@@ -75,7 +75,7 @@ public class LoginController {
 	public void loginCustomer(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
-		Customer customer = new Customer();
+		Customer customer = null;
 
 		try (BufferedReader br = request.getReader()) {
 			String requestBody = CommonUtility.readRequest(br);
@@ -84,13 +84,13 @@ public class LoginController {
 			String username = jo.getString("username");
 			String password = jo.getString("password");
 
-			customer = as.isValidCustomer(username, password);
+			customer = authenticationService.isValidCustomer(username, password);
 		} catch (Exception e) {
 			e.printStackTrace();
 			status = 400;
 		}
 
-		if (customer.getCustomerId() != 0) {
+		if (customer != null && customer.getCustomerId() != 0) {
 			status = 200;
 			HttpSession session = request.getSession(true);
 			session.setAttribute("customerId", customer.getCustomerId());
