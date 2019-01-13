@@ -9,24 +9,35 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.koality.bean.Album;
 import com.revature.koality.bean.Track;
+import com.revature.koality.service.PurchaseService;
 import com.revature.koality.utility.CommonUtility;
 
 @RestController("storeController")
 public class StoreController {
 
-	// SERVICE DECLARATION
+	PurchaseService purchaseService;
 
 	public StoreController() {
 		super();
 	}
 
-	// SERVICE SETTER
+	public PurchaseService getPurchaseService() {
+		return purchaseService;
+	}
+
+	@Autowired
+	@Qualifier("purchaseServiceImpl")
+	public void setPurchaseService(PurchaseService purchaseService) {
+		this.purchaseService = purchaseService;
+	}
 
 	@GetMapping("store-tracks-all")
 	public void displayAllTracks(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -34,7 +45,7 @@ public class StoreController {
 		int status = 418;
 		List<Track> trackList = null;
 
-		// SERVICE
+		trackList = purchaseService.viewAllTracks();
 
 		if (trackList != null && !trackList.isEmpty()) {
 			status = 200;
@@ -53,7 +64,7 @@ public class StoreController {
 		int status = 418;
 		List<Album> albumList = null;
 
-		// SERVICE
+		albumList = purchaseService.viewAllAlbums();
 
 		if (albumList != null && !albumList.isEmpty()) {
 			status = 200;
@@ -81,7 +92,11 @@ public class StoreController {
 
 				int trackId = jo.getInt("trackId");
 
-				// SERVICE
+				if (purchaseService.purchaseTrack(customerId, trackId)) {
+					status = 200;
+				} else {
+					status = 400;
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				status = 400;
@@ -109,7 +124,11 @@ public class StoreController {
 
 				int albumId = jo.getInt("albumId");
 
-				// SERVICE
+				if (purchaseService.purchaseAlbum(customerId, albumId)) {
+					status = 200;
+				} else {
+					status = 400;
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 				status = 400;
