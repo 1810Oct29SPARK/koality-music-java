@@ -18,4 +18,6 @@ public interface PlaylistDAO {
 
 	boolean deletePlaylist(int playlistId);
 
+	boolean isOwner(int playlistId, int customerId);
+
 }

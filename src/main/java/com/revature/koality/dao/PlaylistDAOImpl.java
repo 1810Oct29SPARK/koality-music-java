@@ -192,4 +192,31 @@ public class PlaylistDAOImpl implements PlaylistDAO {
 
 	}
 
+	@Override
+	public boolean isOwner(int playlistId, int customerId) {
+
+		boolean owner = false;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Playlist playlist = session.get(Playlist.class, playlistId);
+				if (playlist.getCustomer().getCustomerId() == customerId) {
+					owner = true;
+				}
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return owner;
+
+	}
+
 }

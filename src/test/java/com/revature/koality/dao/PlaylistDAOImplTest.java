@@ -1,6 +1,7 @@
 package com.revature.koality.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -97,6 +98,16 @@ public class PlaylistDAOImplTest {
 	@Test
 	public void testDeletePlaylist() {
 		assertTrue(pld.deletePlaylist(10));
+	}
+
+	@Test
+	public void testIsOwnerTrue() {
+		assertTrue(pld.isOwner(3, 4));
+	}
+
+	@Test
+	public void testIsOwnerFalse() {
+		assertFalse(pld.isOwner(3, 5));
 	}
 
 }
