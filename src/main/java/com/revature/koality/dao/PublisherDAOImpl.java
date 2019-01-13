@@ -335,6 +335,7 @@ public class PublisherDAOImpl implements PublisherDAO {
 			} catch (Exception e) {
 				e.printStackTrace();
 				session.getTransaction().rollback();
+				publisherData = null;
 			} finally {
 				session.close();
 			}
