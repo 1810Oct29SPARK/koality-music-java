@@ -178,8 +178,13 @@ public class CustomerDAOImpl implements CustomerDAO {
 				session = this.sessionFactory.getCurrentSession();
 				session.beginTransaction();
 				Customer customer = session.get(Customer.class, customerId);
-				customer.getImage().setImageType(image.getImageType());
-				customer.getImage().setImageData(image.getImageData());
+				if (customer.getImage() != null) {
+					customer.getImage().setImageType(image.getImageType());
+					customer.getImage().setImageData(image.getImageData());
+				} else {
+					session.save(image);
+					customer.setImage(image);
+				}
 				session.getTransaction().commit();
 				return true;
 			} catch (Exception e) {
