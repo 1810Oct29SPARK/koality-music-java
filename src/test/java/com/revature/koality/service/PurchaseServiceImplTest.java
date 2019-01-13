@@ -13,7 +13,7 @@ import org.mockito.Mock;
 import com.revature.koality.dao.CustomerDAOImpl;
 
 public class PurchaseServiceImplTest {
-	
+
 	@Mock
 	CustomerDAOImpl customerDAOMock;
 
@@ -30,74 +30,74 @@ public class PurchaseServiceImplTest {
 
 	@Test
 	public void testPurchaseTrack() {
-		
-		int customerId = 1; 
-		
-		int trackId = 21; 
-		
+
+		int customerId = 1;
+
+		int trackId = 21;
+
 		customerDAOMock = mock(CustomerDAOImpl.class);
 
 		ps = new PurchaseServiceImpl(customerDAOMock);
 
-		when(customerDAOMock.purchaseTrack(customerId, trackId)).thenReturn(true);  
+		when(customerDAOMock.purchaseTrack(customerId, trackId)).thenReturn(true);
 
-		boolean actual = ps.purchaseTrack(customerId, trackId); 
-		
-		assertTrue(actual); 
+		boolean actual = ps.purchaseTrack(customerId, trackId);
+
+		assertTrue(actual);
 	}
-	
+
 	@Test
 	public void testInvalidPurchaseTrack() {
-		
-		int customerId = 1; 
-		
-		int trackId = 21; 
-		
+
+		int customerId = 1;
+
+		int trackId = 21;
+
 		customerDAOMock = mock(CustomerDAOImpl.class);
 
 		ps = new PurchaseServiceImpl(customerDAOMock);
 
-		when(customerDAOMock.purchaseTrack(customerId, trackId)).thenReturn(true);  
+		when(customerDAOMock.purchaseTrack(customerId, trackId)).thenReturn(true);
 
-		boolean actual = ps.purchaseTrack(customerId, 0); 
-		
-		assertFalse(actual); 
+		boolean actual = ps.purchaseTrack(customerId, 0);
+
+		assertFalse(actual);
 	}
 
 	@Test
 	public void testPurchaseAlbum() {
-		
-		int customerId = 1; 
-		
-		int albumId = 21; 
-		
+
+		int customerId = 1;
+
+		int albumId = 21;
+
 		customerDAOMock = mock(CustomerDAOImpl.class);
 
 		ps = new PurchaseServiceImpl(customerDAOMock);
 
-		when(customerDAOMock.purchaseAlbum(customerId, albumId)).thenReturn(true);  
+		when(customerDAOMock.purchaseAlbum(customerId, albumId)).thenReturn(true);
 
-		boolean actual = ps.purchaseAlbum(customerId, albumId); 
-		
-		assertTrue(actual); 
+		boolean actual = ps.purchaseAlbum(customerId, albumId);
+
+		assertTrue(actual);
 	}
-	
+
 	@Test
 	public void testInvalidPurchaseAlbum() {
-		
-		int customerId = 1; 
-		
-		int albumId = 21; 
-		
+
+		int customerId = 1;
+
+		int albumId = 21;
+
 		customerDAOMock = mock(CustomerDAOImpl.class);
 
 		ps = new PurchaseServiceImpl(customerDAOMock);
 
-		when(customerDAOMock.purchaseAlbum(customerId, albumId)).thenReturn(true);  
+		when(customerDAOMock.purchaseAlbum(customerId, albumId)).thenReturn(true);
 
-		boolean actual = ps.purchaseAlbum(customerId, 0); 
-		
-		assertFalse(actual); 
+		boolean actual = ps.purchaseAlbum(customerId, 0);
+
+		assertFalse(actual);
 	}
 
 }

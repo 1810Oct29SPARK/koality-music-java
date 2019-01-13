@@ -180,13 +180,13 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Override
 	public boolean updatePublisherImage(int publisherId, String imageType, byte[] imageData) {
-		
-		Publisher publisher = pd.getPublisherById(publisherId); 
 
-		Image image = publisher.getImage(); 
-		
+		Publisher publisher = pd.getPublisherById(publisherId);
+
+		Image image = publisher.getImage();
+
 		image.setImageData(imageData);
-		
+
 		image.setImageType(imageType);
 
 		return pd.updatePublisherImage(publisherId, image);
@@ -194,13 +194,13 @@ public class ProfileServiceImpl implements ProfileService {
 
 	@Override
 	public boolean updateCustomerImage(int customerId, String imageType, byte[] imageData) {
-		
-		Customer customer = cd.getCustomerById(customerId); 
 
-		Image image = customer.getImage(); 
-		
+		Customer customer = cd.getCustomerById(customerId);
+
+		Image image = customer.getImage();
+
 		image.setImageData(imageData);
-		
+
 		image.setImageType(imageType);
 
 		return cd.updateCustomerImage(customerId, image);

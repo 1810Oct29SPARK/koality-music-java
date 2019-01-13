@@ -1,6 +1,6 @@
 package com.revature.koality.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -20,8 +20,6 @@ import com.revature.koality.bean.Image;
 import com.revature.koality.bean.Publisher;
 import com.revature.koality.bean.Track;
 import com.revature.koality.dao.AlbumDAOImpl;
-import com.revature.koality.dao.CustomerDAOImpl;
-import com.revature.koality.dao.PublisherDAOImpl;
 import com.revature.koality.dao.TrackDAOImpl;
 import com.revature.koality.utility.MockUtility;
 
@@ -144,8 +142,6 @@ public class PublishServiceImplTest {
 		Publisher publisher = MockUtility.getMockPublisher();
 
 		Album album = MockUtility.getMockAlbum();
-
-		Integer[] trackIds = { 1, 2, 3, 4, 5 };
 
 		List<Integer> trackIdList = null;
 

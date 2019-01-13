@@ -3,13 +3,11 @@ package com.revature.koality.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -223,7 +221,7 @@ public class ProfileServiceImplTest {
 
 		assertTrue(actual);
 	}
-	
+
 	@Test
 	public void testInvalidUpdateCustomerDetails() {
 
@@ -298,10 +296,9 @@ public class ProfileServiceImplTest {
 		assertTrue(actual);
 	}
 
-	
 	@Test
 	public void testUpdateCustomerCredentials() {
-		
+
 		CustomerCredentials credentials = MockUtility.getMockCustomerCredentials();
 
 		String oldUsername = credentials.getUsername();
@@ -345,9 +342,9 @@ public class ProfileServiceImplTest {
 	@Test
 	public void testUpdatePublisherImage() {
 
-		Publisher publisher = MockUtility.getMockPublisher(); 
+		Publisher publisher = MockUtility.getMockPublisher();
 
-		Image image = publisher.getImage(); 
+		Image image = publisher.getImage();
 
 		String imageType = image.getImageType();
 
@@ -358,8 +355,8 @@ public class ProfileServiceImplTest {
 		publisherDAOMock = mock(PublisherDAOImpl.class);
 
 		ProfileService profileService = new ProfileServiceImpl(publisherDAOMock);
-		
-		when(publisherDAOMock.getPublisherById(publisherId)).thenReturn(publisher); 
+
+		when(publisherDAOMock.getPublisherById(publisherId)).thenReturn(publisher);
 
 		when(publisherDAOMock.updatePublisherImage(publisherId, image)).thenReturn(true);
 
@@ -367,13 +364,13 @@ public class ProfileServiceImplTest {
 
 		assertTrue(actual);
 	}
-	
+
 	@Test
 	public void testInvalidPublisherImage() {
 
-		Publisher publisher = MockUtility.getMockPublisher(); 
+		Publisher publisher = MockUtility.getMockPublisher();
 
-		Image image = publisher.getImage(); 
+		Image image = publisher.getImage();
 
 		String imageType = image.getImageType();
 
@@ -384,8 +381,8 @@ public class ProfileServiceImplTest {
 		publisherDAOMock = mock(PublisherDAOImpl.class);
 
 		ProfileService profileService = new ProfileServiceImpl(publisherDAOMock);
-		
-		when(publisherDAOMock.getPublisherById(publisherId)).thenReturn(publisher); 
+
+		when(publisherDAOMock.getPublisherById(publisherId)).thenReturn(publisher);
 
 		when(publisherDAOMock.updatePublisherImage(publisherId, image)).thenReturn(true);
 
@@ -393,14 +390,13 @@ public class ProfileServiceImplTest {
 
 		assertTrue(actual);
 	}
-	
 
 	@Test
 	public void testUpdateCustomerImage() {
-		
-		Customer customer = MockUtility.getMockCustomer(); 
 
-		Image image = customer.getImage(); 
+		Customer customer = MockUtility.getMockCustomer();
+
+		Image image = customer.getImage();
 
 		String imageType = image.getImageType();
 
@@ -413,8 +409,8 @@ public class ProfileServiceImplTest {
 		customerDAOMock = mock(CustomerDAOImpl.class);
 
 		ProfileService profileService = new ProfileServiceImpl(customerDAOMock);
-		
-		when(customerDAOMock.getCustomerById(customerId)).thenReturn(customer); 
+
+		when(customerDAOMock.getCustomerById(customerId)).thenReturn(customer);
 
 		when(customerDAOMock.updateCustomerImage(customerId, image)).thenReturn(true);
 
