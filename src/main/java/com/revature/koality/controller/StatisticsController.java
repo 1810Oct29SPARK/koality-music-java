@@ -8,6 +8,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +36,7 @@ public class StatisticsController {
 		this.dashboardService = dashboardService;
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/publisher-stats")
 	public void getPublisherStats(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -65,6 +67,7 @@ public class StatisticsController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/customer-stats")
 	public void getCustomerStats(HttpServletRequest request, HttpServletResponse response) throws IOException {
 

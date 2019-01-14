@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -52,6 +53,7 @@ public class ReviewController {
 		this.postReviewService = postReviewService;
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/reviews-track/{trackId}")
 	public void viewTrackReviews(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -86,6 +88,7 @@ public class ReviewController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/reviews-album/{albumId}")
 	public void viewAlbumReviews(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -120,6 +123,7 @@ public class ReviewController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/track-review/{trackId}")
 	public void getTrackReview(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -150,6 +154,7 @@ public class ReviewController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/album-review/{albumId}")
 	public void getAlbumReview(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -180,6 +185,7 @@ public class ReviewController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/track-review")
 	public void postTrackReview(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -219,6 +225,7 @@ public class ReviewController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/album-review")
 	public void postAlbumReview(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -258,6 +265,7 @@ public class ReviewController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@DeleteMapping("/track-review")
 	public void deleteTrackReview(HttpServletRequest request, HttpServletResponse response) {
 
@@ -289,6 +297,7 @@ public class ReviewController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@DeleteMapping("/album-review")
 	public void deleteAlbumReview(HttpServletRequest request, HttpServletResponse response) {
 

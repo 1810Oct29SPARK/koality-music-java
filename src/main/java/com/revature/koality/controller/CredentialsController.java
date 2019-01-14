@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,6 +35,7 @@ public class CredentialsController {
 		this.profileService = profileService;
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PutMapping("/credentials-publisher")
 	public void updatePublisherCredentials(HttpServletRequest request, HttpServletResponse response) {
 
@@ -70,6 +72,7 @@ public class CredentialsController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PutMapping("/credentials-customer")
 	public void updateCustomerCredentials(HttpServletRequest request, HttpServletResponse response) {
 

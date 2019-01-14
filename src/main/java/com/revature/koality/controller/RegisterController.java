@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,6 +36,7 @@ public class RegisterController {
 		this.registerService = registerService;
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/register-publisher")
 	public ResponseEntity<Integer> registerPublisher(HttpServletRequest request) {
 
@@ -70,6 +72,7 @@ public class RegisterController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/register-customer")
 	public ResponseEntity<Integer> registerCustomer(HttpServletRequest request) {
 

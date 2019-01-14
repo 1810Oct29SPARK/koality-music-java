@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +40,7 @@ public class StoreController {
 		this.purchaseService = purchaseService;
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/store-tracks-all")
 	public void displayAllTracks(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -58,6 +60,7 @@ public class StoreController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/store-albums-all")
 	public void displayAllAlbums(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -77,6 +80,7 @@ public class StoreController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/purchase-track")
 	public void purchaseTrack(HttpServletRequest request, HttpServletResponse response) {
 
@@ -109,6 +113,7 @@ public class StoreController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/purchase-album")
 	public void purchaseAlbum(HttpServletRequest request, HttpServletResponse response) {
 
@@ -141,6 +146,7 @@ public class StoreController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/tracks-recommended/{genre}")
 	public void displayRecommendedTracks(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -169,6 +175,7 @@ public class StoreController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/albums-recommended/{genre}")
 	public void displayRecommendedAlbums(HttpServletRequest request, HttpServletResponse response) throws IOException {
 

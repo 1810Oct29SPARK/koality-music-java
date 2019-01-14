@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -48,6 +49,7 @@ public class InventoryController {
 		this.playMusicService = playMusicService;
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/published-tracks")
 	public void getPublishedTracks(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -80,6 +82,7 @@ public class InventoryController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/published-albums")
 	public void getPublishedAlbums(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -112,6 +115,7 @@ public class InventoryController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/purchased-tracks")
 	public void getPurchasedTracks(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -144,6 +148,7 @@ public class InventoryController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/purchased-albums")
 	public void getPurchasedAlbums(HttpServletRequest request, HttpServletResponse response) throws IOException {
 

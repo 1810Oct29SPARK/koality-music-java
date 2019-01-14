@@ -9,6 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,6 +35,7 @@ public class ProfileImageController {
 		this.profileService = profileService;
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/image-publisher")
 	public void updatePublisherProfileImage(HttpServletRequest request, HttpServletResponse response) {
 
@@ -67,6 +69,7 @@ public class ProfileImageController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/image-customer")
 	public void updateCustomerProfileImage(HttpServletRequest request, HttpServletResponse response) {
 

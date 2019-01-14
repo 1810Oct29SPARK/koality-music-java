@@ -10,6 +10,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,6 +39,7 @@ public class ProfileController {
 		this.profileService = profileService;
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/profile-publisher")
 	public void getPublisherProfile(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -68,6 +70,7 @@ public class ProfileController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@GetMapping("/profile-customer")
 	public void getCustomerProfile(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -98,6 +101,7 @@ public class ProfileController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PutMapping("/profile-publisher")
 	public void updatePublisherDetail(HttpServletRequest request, HttpServletResponse response) {
 
@@ -133,6 +137,7 @@ public class ProfileController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PutMapping("/profile-customer")
 	public void updateCustomerDetail(HttpServletRequest request, HttpServletResponse response) {
 

@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,6 +40,7 @@ public class PublishController {
 		this.publishService = publishService;
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/publish-track")
 	public void publishTrack(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -82,6 +84,7 @@ public class PublishController {
 
 	}
 
+	@CrossOrigin(origins = "http://localhost:4200")
 	@PostMapping("/publish-album")
 	public void publishAlbum(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
