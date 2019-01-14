@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,27 +85,21 @@ public class StoreController {
 
 		int status = 418;
 
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			try (BufferedReader br = request.getReader()) {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
+		try (BufferedReader br = request.getReader()) {
+			String requestBody = CommonUtility.readRequest(br);
+			JSONObject jo = new JSONObject(requestBody);
 
-				String requestBody = CommonUtility.readRequest(br);
-				JSONObject jo = new JSONObject(requestBody);
+			int customerId = jo.getInt("customerId");
+			int trackId = jo.getInt("trackId");
 
-				int trackId = jo.getInt("trackId");
-
-				if (purchaseService.purchaseTrack(customerId, trackId)) {
-					status = 200;
-				} else {
-					status = 400;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (purchaseService.purchaseTrack(customerId, trackId)) {
+				status = 200;
+			} else {
 				status = 400;
 			}
-		} else {
-			status = 440;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = 400;
 		}
 
 		response.setStatus(status);
@@ -119,27 +112,21 @@ public class StoreController {
 
 		int status = 418;
 
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			try (BufferedReader br = request.getReader()) {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
+		try (BufferedReader br = request.getReader()) {
+			String requestBody = CommonUtility.readRequest(br);
+			JSONObject jo = new JSONObject(requestBody);
 
-				String requestBody = CommonUtility.readRequest(br);
-				JSONObject jo = new JSONObject(requestBody);
+			int customerId = jo.getInt("customerId");
+			int albumId = jo.getInt("albumId");
 
-				int albumId = jo.getInt("albumId");
-
-				if (purchaseService.purchaseAlbum(customerId, albumId)) {
-					status = 200;
-				} else {
-					status = 400;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (purchaseService.purchaseAlbum(customerId, albumId)) {
+				status = 200;
+			} else {
 				status = 400;
 			}
-		} else {
-			status = 440;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = 400;
 		}
 
 		response.setStatus(status);

@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -54,16 +53,17 @@ public class ReviewController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping("/reviews-track/{trackId}")
+	@PostMapping("/reviews-track/{trackId}")
 	public void viewTrackReviews(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
 		List<TrackReview> trackReviewList = null;
 
 		HttpSession session = request.getSession(false);
-		if (session != null) {
+		int publisherId = CommonUtility.getUserIdFromSessionOrBody(session, request, "publisherId");
+
+		if (publisherId != 0) {
 			try {
-				int publisherId = Integer.parseInt(session.getAttribute("publisherId").toString());
 				String uri = request.getRequestURI();
 				int trackId = Integer.parseInt(uri.substring(uri.lastIndexOf('/') + 1));
 
@@ -89,16 +89,17 @@ public class ReviewController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping("/reviews-album/{albumId}")
+	@PostMapping("/reviews-album/{albumId}")
 	public void viewAlbumReviews(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
 		List<AlbumReview> albumReviewList = null;
 
 		HttpSession session = request.getSession(false);
-		if (session != null) {
+		int publisherId = CommonUtility.getUserIdFromSessionOrBody(session, request, "publisherId");
+
+		if (publisherId != 0) {
 			try {
-				int publisherId = Integer.parseInt(session.getAttribute("publisherId").toString());
 				String uri = request.getRequestURI();
 				int albumId = Integer.parseInt(uri.substring(uri.lastIndexOf('/') + 1));
 
@@ -124,16 +125,17 @@ public class ReviewController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping("/track-review/{trackId}")
+	@PostMapping("/track-review/{trackId}")
 	public void getTrackReview(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
 		TrackReview trackReview = null;
 
 		HttpSession session = request.getSession(false);
-		if (session != null) {
+		int customerId = CommonUtility.getUserIdFromSessionOrBody(session, request, "customerId");
+
+		if (customerId != 0) {
 			try {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
 				String uri = request.getRequestURI();
 				int trackId = Integer.parseInt(uri.substring(uri.lastIndexOf('/') + 1));
 
@@ -155,16 +157,17 @@ public class ReviewController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping("/album-review/{albumId}")
+	@PostMapping("/album-review/{albumId}")
 	public void getAlbumReview(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
 		AlbumReview albumReview = null;
 
 		HttpSession session = request.getSession(false);
-		if (session != null) {
+		int customerId = CommonUtility.getUserIdFromSessionOrBody(session, request, "customerId");
+
+		if (customerId != 0) {
 			try {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
 				String uri = request.getRequestURI();
 				int albumId = Integer.parseInt(uri.substring(uri.lastIndexOf('/') + 1));
 
@@ -192,32 +195,26 @@ public class ReviewController {
 		int status = 418;
 		Integer id = -1;
 
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			try (BufferedReader br = request.getReader()) {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
+		try (BufferedReader br = request.getReader()) {
+			String requestBody = CommonUtility.readRequest(br);
+			JSONObject jo = new JSONObject(requestBody);
 
-				String requestBody = CommonUtility.readRequest(br);
-				JSONObject jo = new JSONObject(requestBody);
+			int customerId = jo.getInt("customerId");
+			int trackId = jo.getInt("trackId");
+			int rating = jo.getInt("rating");
+			String reviewComment = jo.getString("reviewComment");
 
-				int trackId = jo.getInt("trackId");
-				int rating = jo.getInt("rating");
-				String reviewComment = jo.getString("reviewComment");
-
-				id = postReviewService.postTrackReview(rating, reviewComment, trackId, customerId);
-				if (id == -1) {
-					status = 400;
-				} else if (id == 0) {
-					status = 401;
-				} else {
-					status = 200;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			id = postReviewService.postTrackReview(rating, reviewComment, trackId, customerId);
+			if (id == -1) {
 				status = 400;
+			} else if (id == 0) {
+				status = 401;
+			} else {
+				status = 200;
 			}
-		} else {
-			status = 440;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = 400;
 		}
 
 		response.setStatus(status);
@@ -232,32 +229,26 @@ public class ReviewController {
 		int status = 418;
 		Integer id = -1;
 
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			try (BufferedReader br = request.getReader()) {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
+		try (BufferedReader br = request.getReader()) {
+			String requestBody = CommonUtility.readRequest(br);
+			JSONObject jo = new JSONObject(requestBody);
 
-				String requestBody = CommonUtility.readRequest(br);
-				JSONObject jo = new JSONObject(requestBody);
+			int customerId = jo.getInt("customerId");
+			int albumId = jo.getInt("albumId");
+			int rating = jo.getInt("rating");
+			String reviewComment = jo.getString("reviewComment");
 
-				int albumId = jo.getInt("albumId");
-				int rating = jo.getInt("rating");
-				String reviewComment = jo.getString("reviewComment");
-
-				id = postReviewService.postAlbumReview(rating, reviewComment, albumId, customerId);
-				if (id == -1) {
-					status = 400;
-				} else if (id == 0) {
-					status = 401;
-				} else {
-					status = 200;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			id = postReviewService.postAlbumReview(rating, reviewComment, albumId, customerId);
+			if (id == -1) {
 				status = 400;
+			} else if (id == 0) {
+				status = 401;
+			} else {
+				status = 200;
 			}
-		} else {
-			status = 440;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = 400;
 		}
 
 		response.setStatus(status);
@@ -271,26 +262,20 @@ public class ReviewController {
 
 		int status = 418;
 
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			try (BufferedReader br = request.getReader()) {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
+		try (BufferedReader br = request.getReader()) {
+			String requestBody = CommonUtility.readRequest(br);
+			JSONObject jo = new JSONObject(requestBody);
 
-				String requestBody = CommonUtility.readRequest(br);
-				JSONObject jo = new JSONObject(requestBody);
-
-				int trackReviewId = jo.getInt("trackReviewId");
-				if (postReviewService.deleteTrackReview(trackReviewId, customerId)) {
-					status = 200;
-				} else {
-					status = 401;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				status = 400;
+			int customerId = jo.getInt("customerId");
+			int trackReviewId = jo.getInt("trackReviewId");
+			if (postReviewService.deleteTrackReview(trackReviewId, customerId)) {
+				status = 200;
+			} else {
+				status = 401;
 			}
-		} else {
-			status = 440;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = 400;
 		}
 
 		response.setStatus(status);
@@ -303,26 +288,20 @@ public class ReviewController {
 
 		int status = 418;
 
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			try (BufferedReader br = request.getReader()) {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
+		try (BufferedReader br = request.getReader()) {
+			String requestBody = CommonUtility.readRequest(br);
+			JSONObject jo = new JSONObject(requestBody);
 
-				String requestBody = CommonUtility.readRequest(br);
-				JSONObject jo = new JSONObject(requestBody);
-
-				int albumReviewId = jo.getInt("albumReviewId");
-				if (postReviewService.deleteAlbumReview(albumReviewId, customerId)) {
-					status = 200;
-				} else {
-					status = 401;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				status = 400;
+			int customerId = jo.getInt("customerId");
+			int albumReviewId = jo.getInt("albumReviewId");
+			if (postReviewService.deleteAlbumReview(albumReviewId, customerId)) {
+				status = 200;
+			} else {
+				status = 401;
 			}
-		} else {
-			status = 440;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = 400;
 		}
 
 		response.setStatus(status);

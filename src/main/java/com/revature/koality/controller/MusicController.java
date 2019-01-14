@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.koality.bean.Track;
@@ -64,16 +65,17 @@ public class MusicController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping("/track/{trackId}")
+	@PostMapping("/track/{trackId}")
 	public void playMusic(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
 		Track track = null;
 
 		HttpSession session = request.getSession(false);
-		if (session != null) {
+		int customerId = CommonUtility.getUserIdFromSessionOrBody(session, request, "customerId");
+
+		if (customerId != 0) {
 			try {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
 				String uri = request.getRequestURI();
 				int trackId = Integer.parseInt(uri.substring(uri.lastIndexOf('/') + 1));
 

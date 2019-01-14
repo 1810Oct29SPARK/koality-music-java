@@ -16,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,28 +50,22 @@ public class PlaylistController {
 		int status = 418;
 		Integer id = -1;
 
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			try (BufferedReader br = request.getReader()) {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
+		try (BufferedReader br = request.getReader()) {
+			String requestBody = CommonUtility.readRequest(br);
+			JSONObject jo = new JSONObject(requestBody);
 
-				String requestBody = CommonUtility.readRequest(br);
-				JSONObject jo = new JSONObject(requestBody);
+			int customerId = jo.getInt("customerId");
+			String playlistName = jo.getString("playlistName");
 
-				String playlistName = jo.getString("playlistName");
-
-				id = playlistService.createPlaylist(playlistName, customerId);
-				if (id != -1) {
-					status = 200;
-				} else {
-					status = 400;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			id = playlistService.createPlaylist(playlistName, customerId);
+			if (id != -1) {
+				status = 200;
+			} else {
 				status = 400;
 			}
-		} else {
-			status = 440;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = 400;
 		}
 
 		response.setStatus(status);
@@ -87,34 +80,28 @@ public class PlaylistController {
 		int status = 418;
 		Integer count = 0;
 
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			try (BufferedReader br = request.getReader()) {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
+		try (BufferedReader br = request.getReader()) {
+			String requestBody = CommonUtility.readRequest(br);
+			JSONObject jo = new JSONObject(requestBody);
 
-				String requestBody = CommonUtility.readRequest(br);
-				JSONObject jo = new JSONObject(requestBody);
-
-				int playlistId = jo.getInt("playlistId");
-				List<Integer> trackIdList = new ArrayList<>();
-				JSONArray trackIdArray = jo.getJSONArray("trackIdList");
-				Iterator<Object> iter = trackIdArray.iterator();
-				while (iter.hasNext()) {
-					trackIdList.add(Integer.parseInt(iter.next().toString()));
-				}
-
-				count = playlistService.addTracksToPlaylist(playlistId, trackIdList, customerId);
-				if (count == -1) {
-					status = 401;
-				} else {
-					status = 200;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				status = 400;
+			int customerId = jo.getInt("customerId");
+			int playlistId = jo.getInt("playlistId");
+			List<Integer> trackIdList = new ArrayList<>();
+			JSONArray trackIdArray = jo.getJSONArray("trackIdList");
+			Iterator<Object> iter = trackIdArray.iterator();
+			while (iter.hasNext()) {
+				trackIdList.add(Integer.parseInt(iter.next().toString()));
 			}
-		} else {
-			status = 440;
+
+			count = playlistService.addTracksToPlaylist(playlistId, trackIdList, customerId);
+			if (count == -1) {
+				status = 401;
+			} else {
+				status = 200;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = 400;
 		}
 
 		response.setStatus(status);
@@ -129,34 +116,28 @@ public class PlaylistController {
 		int status = 418;
 		Integer count = 0;
 
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			try (BufferedReader br = request.getReader()) {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
+		try (BufferedReader br = request.getReader()) {
+			String requestBody = CommonUtility.readRequest(br);
+			JSONObject jo = new JSONObject(requestBody);
 
-				String requestBody = CommonUtility.readRequest(br);
-				JSONObject jo = new JSONObject(requestBody);
-
-				int playlistId = jo.getInt("playlistId");
-				List<Integer> trackIdList = new ArrayList<>();
-				JSONArray trackIdArray = jo.getJSONArray("trackIdList");
-				Iterator<Object> iter = trackIdArray.iterator();
-				while (iter.hasNext()) {
-					trackIdList.add(Integer.parseInt(iter.next().toString()));
-				}
-
-				count = playlistService.removeTracksFromPlaylist(playlistId, trackIdList, customerId);
-				if (count == -1) {
-					status = 401;
-				} else {
-					status = 200;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-				status = 400;
+			int customerId = jo.getInt("customerId");
+			int playlistId = jo.getInt("playlistId");
+			List<Integer> trackIdList = new ArrayList<>();
+			JSONArray trackIdArray = jo.getJSONArray("trackIdList");
+			Iterator<Object> iter = trackIdArray.iterator();
+			while (iter.hasNext()) {
+				trackIdList.add(Integer.parseInt(iter.next().toString()));
 			}
-		} else {
-			status = 440;
+
+			count = playlistService.removeTracksFromPlaylist(playlistId, trackIdList, customerId);
+			if (count == -1) {
+				status = 401;
+			} else {
+				status = 200;
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = 400;
 		}
 
 		response.setStatus(status);
@@ -165,17 +146,17 @@ public class PlaylistController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping("/playlists-all")
+	@PostMapping("/playlists-all")
 	public void viewAllPlaylists(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
 		List<Playlist> playlistList = null;
 
 		HttpSession session = request.getSession(false);
-		if (session != null) {
-			try {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
+		int customerId = CommonUtility.getUserIdFromSessionOrBody(session, request, "customerId");
 
+		if (customerId != 0) {
+			try {
 				playlistList = playlistService.getAllPlaylists(customerId);
 				if (playlistList == null || playlistList.isEmpty()) {
 					status = 404;
@@ -196,16 +177,17 @@ public class PlaylistController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping("/playlist/{playlistId}")
+	@PostMapping("/playlist/{playlistId}")
 	public void viewPlaylistDetail(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
 		List<Track> trackList = null;
 
 		HttpSession session = request.getSession(false);
-		if (session != null) {
+		int customerId = CommonUtility.getUserIdFromSessionOrBody(session, request, "customerId");
+
+		if (customerId != 0) {
 			try {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
 				String uri = request.getRequestURI();
 				int playlistId = Integer.parseInt(uri.substring(uri.lastIndexOf('/') + 1));
 
@@ -237,9 +219,10 @@ public class PlaylistController {
 		int status = 418;
 
 		HttpSession session = request.getSession(false);
-		if (session != null) {
+		int customerId = CommonUtility.getUserIdFromSessionOrBody(session, request, "customerId");
+
+		if (customerId != 0) {
 			try {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
 				String uri = request.getRequestURI();
 				int playlistId = Integer.parseInt(uri.substring(uri.lastIndexOf('/') + 1));
 

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.koality.bean.CustomerData;
@@ -37,17 +37,17 @@ public class StatisticsController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping("/publisher-stats")
+	@PostMapping("/publisher-stats")
 	public void getPublisherStats(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
 		PublisherData publisherData = null;
 
 		HttpSession session = request.getSession(false);
-		if (session != null) {
-			try {
-				int publisherId = Integer.parseInt(session.getAttribute("publisherId").toString());
+		int publisherId = CommonUtility.getUserIdFromSessionOrBody(session, request, "publisherId");
 
+		if (publisherId != 0) {
+			try {
 				publisherData = dashboardService.getPublisherStats(publisherId);
 				if (publisherData == null) {
 					status = 401;
@@ -68,17 +68,17 @@ public class StatisticsController {
 	}
 
 	@CrossOrigin(origins = "http://localhost:4200")
-	@GetMapping("/customer-stats")
+	@PostMapping("/customer-stats")
 	public void getCustomerStats(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		int status = 418;
 		CustomerData customerData = null;
 
 		HttpSession session = request.getSession(false);
-		if (session != null) {
-			try {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
+		int customerId = CommonUtility.getUserIdFromSessionOrBody(session, request, "customerId");
 
+		if (customerId != 0) {
+			try {
 				customerData = dashboardService.getCustomerStats(customerId);
 				if (customerData == null) {
 					status = 401;

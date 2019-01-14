@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,31 +40,25 @@ public class CredentialsController {
 
 		int status = 418;
 
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			try (BufferedReader br = request.getReader()) {
-				int publisherId = Integer.parseInt(session.getAttribute("publisherId").toString());
+		try (BufferedReader br = request.getReader()) {
+			String requestBody = CommonUtility.readRequest(br);
+			JSONObject jo = new JSONObject(requestBody);
 
-				String requestBody = CommonUtility.readRequest(br);
-				JSONObject jo = new JSONObject(requestBody);
+			int publisherId = jo.getInt("publisherId");
+			String oldUsername = jo.getString("oldUsername");
+			String newUsername = jo.getString("newUsername");
+			String oldPassword = jo.getString("oldPassword");
+			String newPassword = jo.getString("newPassword");
 
-				String oldUsername = jo.getString("oldUsername");
-				String newUsername = jo.getString("newUsername");
-				String oldPassword = jo.getString("oldPassword");
-				String newPassword = jo.getString("newPassword");
-
-				if (profileService.updatePublisherCredentials(publisherId, oldUsername, newUsername, oldPassword,
-						newPassword)) {
-					status = 200;
-				} else {
-					status = 400;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (profileService.updatePublisherCredentials(publisherId, oldUsername, newUsername, oldPassword,
+					newPassword)) {
+				status = 200;
+			} else {
 				status = 400;
 			}
-		} else {
-			status = 440;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = 400;
 		}
 
 		response.setStatus(status);
@@ -78,31 +71,25 @@ public class CredentialsController {
 
 		int status = 418;
 
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			try (BufferedReader br = request.getReader()) {
-				int customerId = Integer.parseInt(session.getAttribute("customerId").toString());
+		try (BufferedReader br = request.getReader()) {
+			String requestBody = CommonUtility.readRequest(br);
+			JSONObject jo = new JSONObject(requestBody);
 
-				String requestBody = CommonUtility.readRequest(br);
-				JSONObject jo = new JSONObject(requestBody);
+			int customerId = jo.getInt("customerId");
+			String oldUsername = jo.getString("oldUsername");
+			String newUsername = jo.getString("newUsername");
+			String oldPassword = jo.getString("oldPassword");
+			String newPassword = jo.getString("newPassword");
 
-				String oldUsername = jo.getString("oldUsername");
-				String newUsername = jo.getString("newUsername");
-				String oldPassword = jo.getString("oldPassword");
-				String newPassword = jo.getString("newPassword");
-
-				if (profileService.updateCustomerCredentials(customerId, oldUsername, newUsername, oldPassword,
-						newPassword)) {
-					status = 200;
-				} else {
-					status = 400;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			if (profileService.updateCustomerCredentials(customerId, oldUsername, newUsername, oldPassword,
+					newPassword)) {
+				status = 200;
+			} else {
 				status = 400;
 			}
-		} else {
-			status = 440;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = 400;
 		}
 
 		response.setStatus(status);

@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -47,36 +46,30 @@ public class PublishController {
 		int status = 418;
 		Integer id = -1;
 
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			try (BufferedReader br = request.getReader()) {
-				int publisherId = Integer.parseInt(session.getAttribute("publisherId").toString());
+		try (BufferedReader br = request.getReader()) {
+			String requestBody = CommonUtility.readRequest(br);
+			JSONObject jo = new JSONObject(requestBody);
 
-				String requestBody = CommonUtility.readRequest(br);
-				JSONObject jo = new JSONObject(requestBody);
+			int publisherId = jo.getInt("publisherId");
+			String trackName = jo.getString("trackName");
+			String genre = jo.getString("genre");
+			String composer = jo.getString("composer");
+			String artist = jo.getString("artist");
+			int trackLength = jo.getInt("trackLength");
+			float unitPrice = jo.getFloat("unitPrice");
+			String audioType = jo.getString("audioType");
+			byte[] audioData = CommonUtility.decodeBlobUrl(jo.getString("audioData"));
 
-				String trackName = jo.getString("trackName");
-				String genre = jo.getString("genre");
-				String composer = jo.getString("composer");
-				String artist = jo.getString("artist");
-				int trackLength = jo.getInt("trackLength");
-				float unitPrice = jo.getFloat("unitPrice");
-				String audioType = jo.getString("audioType");
-				byte[] audioData = CommonUtility.decodeBlobUrl(jo.getString("audioData"));
-
-				id = publishService.publishTrack(publisherId, trackName, genre, composer, artist, trackLength,
-						unitPrice, audioType, audioData);
-				if (id != -1) {
-					status = 200;
-				} else {
-					status = 400;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			id = publishService.publishTrack(publisherId, trackName, genre, composer, artist, trackLength, unitPrice,
+					audioType, audioData);
+			if (id != -1) {
+				status = 200;
+			} else {
 				status = 400;
 			}
-		} else {
-			status = 440;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = 400;
 		}
 
 		response.setStatus(status);
@@ -91,40 +84,34 @@ public class PublishController {
 		int status = 418;
 		Integer id = -1;
 
-		HttpSession session = request.getSession(false);
-		if (session != null) {
-			try (BufferedReader br = request.getReader()) {
-				int publisherId = Integer.parseInt(session.getAttribute("publisherId").toString());
+		try (BufferedReader br = request.getReader()) {
+			String requestBody = CommonUtility.readRequest(br);
+			JSONObject jo = new JSONObject(requestBody);
 
-				String requestBody = CommonUtility.readRequest(br);
-				JSONObject jo = new JSONObject(requestBody);
+			int publisherId = jo.getInt("publisherId");
+			String albumName = jo.getString("albumName");
+			String genre = jo.getString("genre");
+			float unitPrice = jo.getFloat("unitPrice");
+			String imageType = jo.getString("imageType");
+			byte[] imageData = CommonUtility.decodeBlobUrl(jo.getString("imageData"));
 
-				String albumName = jo.getString("albumName");
-				String genre = jo.getString("genre");
-				float unitPrice = jo.getFloat("unitPrice");
-				String imageType = jo.getString("imageType");
-				byte[] imageData = CommonUtility.decodeBlobUrl(jo.getString("imageData"));
+			List<Integer> trackIdList = new ArrayList<>();
+			JSONArray trackIdArray = jo.getJSONArray("trackIdList");
+			Iterator<Object> iter = trackIdArray.iterator();
+			while (iter.hasNext()) {
+				trackIdList.add(Integer.parseInt(iter.next().toString()));
+			}
 
-				List<Integer> trackIdList = new ArrayList<>();
-				JSONArray trackIdArray = jo.getJSONArray("trackIdList");
-				Iterator<Object> iter = trackIdArray.iterator();
-				while (iter.hasNext()) {
-					trackIdList.add(Integer.parseInt(iter.next().toString()));
-				}
-
-				id = publishService.publishAlbum(publisherId, albumName, genre, unitPrice, imageType, imageData,
-						trackIdList);
-				if (id != -1) {
-					status = 200;
-				} else {
-					status = 400;
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
+			id = publishService.publishAlbum(publisherId, albumName, genre, unitPrice, imageType, imageData,
+					trackIdList);
+			if (id != -1) {
+				status = 200;
+			} else {
 				status = 400;
 			}
-		} else {
-			status = 440;
+		} catch (Exception e) {
+			e.printStackTrace();
+			status = 400;
 		}
 
 		response.setStatus(status);

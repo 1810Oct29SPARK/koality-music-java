@@ -7,7 +7,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Random;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang3.RandomStringUtils;
+import org.json.JSONObject;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -151,6 +155,28 @@ public class CommonUtility {
 
 		String blobData = blobUrl.substring(blobUrl.indexOf("base64,") + 7);
 		return Base64.getDecoder().decode(blobData);
+
+	}
+
+	public static int getUserIdFromSessionOrBody(HttpSession session, HttpServletRequest request, String property) {
+
+		if (session != null) {
+			try {
+				int userId = Integer.parseInt(session.getAttribute(property).toString());
+				return userId;
+			} catch (Exception e) {
+				return 0;
+			}
+		} else {
+			try (BufferedReader br = request.getReader()) {
+				String requestBody = CommonUtility.readRequest(br);
+				JSONObject jo = new JSONObject(requestBody);
+				int userId = jo.getInt(property);
+				return userId;
+			} catch (Exception e) {
+				return 0;
+			}
+		}
 
 	}
 
