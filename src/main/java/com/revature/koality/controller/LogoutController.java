@@ -21,7 +21,6 @@ public class LogoutController {
 	public void logoutUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		request.getSession().invalidate();
-		response.getWriter().write("logged out");
 
 	}
 

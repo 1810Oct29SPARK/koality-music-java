@@ -7,7 +7,7 @@
 		<property name="hibernate.dialect">org.hibernate.dialect.Oracle12cDialect</property>
 		<property name="hibernate.connection.driver_class">oracle.jdbc.driver.OracleDriver</property>
 		<property name="hibernate.show_sql">true</property>
-		<property name="hibernate.connection.pool_size">1</property>
+		<property name="hibernate.connection.pool_size">3</property>
 		<property name="hibernate.current_session_context_class">thread</property>
 		<property name="hibernate.connection.autocommit">false</property>
 		<property name="hibernate.hbm2ddl.auto">validate</property>
@@ -15,7 +15,8 @@
 		<mapping package="com.revature.koality.bean" />
 		<mapping class="com.revature.koality.bean.Image" />
 		<mapping class="com.revature.koality.bean.Audio" />
-		<mapping class="com.revature.koality.bean.PublisherCredentials" />
+		<mapping
+			class="com.revature.koality.bean.PublisherCredentials" />
 		<mapping class="com.revature.koality.bean.Publisher" />
 		<mapping class="com.revature.koality.bean.CustomerCredentials" />
 		<mapping class="com.revature.koality.bean.Customer" />
