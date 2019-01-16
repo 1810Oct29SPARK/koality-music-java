@@ -114,6 +114,7 @@ public class AlbumDAOImpl implements AlbumDAO {
 				session = this.sessionFactory.getCurrentSession();
 				session.beginTransaction();
 				albumList = session.createQuery(hql, Album.class).getResultList();
+				albumList.forEach(a -> a.loadImageUrl());
 				session.getTransaction().commit();
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -74,14 +74,14 @@ public class PurchaseServiceImpl implements PurchaseService {
 	@Override
 	public List<Track> viewAllTracks() {
 		List<Track> trackList = td.getAllTracks();
-		trackList.forEach(t -> t.truncate(true));
+		trackList.forEach(t -> t.truncate(false));
 		return trackList;
 	}
 
 	@Override
 	public List<Album> viewAllAlbums() {
 		List<Album> albumList = ad.getAllAlbums();
-		albumList.forEach(a -> a.truncate(true));
+		albumList.forEach(a -> a.truncate(false));
 		return albumList;
 	}
 

@@ -142,6 +142,8 @@ public class ReviewController {
 				trackReview = postReviewService.viewPostedTrackReview(trackId, customerId);
 				if (trackReview != null) {
 					status = 200;
+				} else {
+					status = 404;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -174,6 +176,8 @@ public class ReviewController {
 				albumReview = postReviewService.viewPostedAlbumReview(albumId, customerId);
 				if (albumReview != null) {
 					status = 200;
+				} else {
+					status = 404;
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
