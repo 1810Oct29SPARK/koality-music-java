@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -50,7 +51,12 @@ public class RegisterController {
 			String firstName = jo.getString("firstName");
 			String lastName = jo.getString("lastName");
 			String email = jo.getString("email");
-			String companyName = jo.getString("companyName");
+			String companyName = null;
+			try {
+				companyName = jo.getString("companyName");
+			} catch (JSONException e) {
+				companyName = null;
+			}
 			String username = jo.getString("username");
 			String password = jo.getString("password");
 
@@ -86,7 +92,12 @@ public class RegisterController {
 			String firstName = jo.getString("firstName");
 			String lastName = jo.getString("lastName");
 			String email = jo.getString("email");
-			String favoriteGenre = jo.getString("favoriteGenre");
+			String favoriteGenre = null;
+			try {
+				favoriteGenre = jo.getString("favoriteGenre");
+			} catch (JSONException e) {
+				favoriteGenre = null;
+			}
 			String username = jo.getString("username");
 			String password = jo.getString("password");
 
