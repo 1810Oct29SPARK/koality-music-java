@@ -55,9 +55,11 @@ public class LoggingAspect {
 		trace(logger, false, call, point, executionTime);
 
 		return point;
+
 	}
 
 	public void trace(Log logger, boolean entry, ProceedingJoinPoint call, Object retVal, long time) {
+
 		try {
 			if (entry) {
 				logger.debug(

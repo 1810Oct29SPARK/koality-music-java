@@ -44,6 +44,7 @@ public class PurchaseServiceImplTest {
 		boolean actual = ps.purchaseTrack(customerId, trackId);
 
 		assertTrue(actual);
+
 	}
 
 	@Test
@@ -62,6 +63,7 @@ public class PurchaseServiceImplTest {
 		boolean actual = ps.purchaseTrack(customerId, 0);
 
 		assertFalse(actual);
+
 	}
 
 	@Test
@@ -80,6 +82,7 @@ public class PurchaseServiceImplTest {
 		boolean actual = ps.purchaseAlbum(customerId, albumId);
 
 		assertTrue(actual);
+
 	}
 
 	@Test
@@ -98,6 +101,7 @@ public class PurchaseServiceImplTest {
 		boolean actual = ps.purchaseAlbum(customerId, 0);
 
 		assertFalse(actual);
+
 	}
 
 }

@@ -71,6 +71,7 @@ public class PublishServiceImplTest {
 				audioData);
 
 		assertEquals(1, actual);
+
 	}
 
 	@Test
@@ -104,6 +105,7 @@ public class PublishServiceImplTest {
 				audioData);
 
 		assertEquals(0, actual);
+
 	}
 
 	@Test
@@ -134,6 +136,7 @@ public class PublishServiceImplTest {
 		int actual = as.publishAlbum(publisherId, albumName, genre, unitPrice, imageType, imageData, trackIdList);
 
 		assertEquals(1, actual);
+
 	}
 
 	@Test
@@ -162,6 +165,7 @@ public class PublishServiceImplTest {
 		int actual = as.publishAlbum(publisherId, albumName, genre, unitPrice, imageType, imageData, null);
 
 		assertEquals(0, actual);
+
 	}
 
 	@Test
@@ -191,6 +195,7 @@ public class PublishServiceImplTest {
 		int actual = as.publishAlbum(publisherId, albumName, genre, unitPrice, imageType, imageData, null);
 
 		assertEquals(0, actual);
+
 	}
 
 }

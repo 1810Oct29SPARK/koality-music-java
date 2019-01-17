@@ -75,6 +75,7 @@ public class ProfileServiceImpl implements ProfileService {
 			publisher.truncate(false);
 		}
 		return publisher;
+
 	}
 
 	@Override
@@ -84,8 +85,8 @@ public class ProfileServiceImpl implements ProfileService {
 		if (customer != null) {
 			customer.truncate(false);
 		}
-
 		return customer;
+
 	}
 
 	@Override

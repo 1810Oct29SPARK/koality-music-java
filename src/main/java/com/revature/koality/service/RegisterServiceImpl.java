@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import com.revature.koality.bean.Customer;
 import com.revature.koality.bean.CustomerCredentials;
 import com.revature.koality.bean.CustomerDetail;
-import com.revature.koality.bean.Image;
 import com.revature.koality.bean.Publisher;
 import com.revature.koality.bean.PublisherCredentials;
 import com.revature.koality.bean.PublisherDetail;
@@ -68,9 +67,7 @@ public class RegisterServiceImpl implements RegisterService {
 
 		CustomerCredentials customerCredentials = new CustomerCredentials(username, hashSalt, passwordHash);
 
-		Image image = null;
-
-		Customer customer = new Customer(customerDetail, image, customerCredentials);
+		Customer customer = new Customer(customerDetail, null, customerCredentials);
 
 		return cd.addCustomer(customer);
 
@@ -79,8 +76,6 @@ public class RegisterServiceImpl implements RegisterService {
 	@Override
 	public int registerPublisher(String firstName, String lastName, String email, String companyName, String username,
 			String password) {
-		
-		Publisher publisher = new Publisher(); 
 
 		PublisherDetail publisherDetail = new PublisherDetail(firstName, lastName, email, companyName);
 		String hashSalt = CommonUtility.generateRandomString(4);
@@ -91,11 +86,7 @@ public class RegisterServiceImpl implements RegisterService {
 
 		PublisherCredentials publisherCredentials = new PublisherCredentials(username, hashSalt, passwordHash);
 
-		Image image = null;
-
-		publisher.setPublisherCredentials(publisherCredentials);
-		publisher.setPublisherDetail(publisherDetail);
-		publisher.setImage(image);
+		Publisher publisher = new Publisher(publisherDetail, null, publisherCredentials);
 
 		return pd.addPublisher(publisher);
 

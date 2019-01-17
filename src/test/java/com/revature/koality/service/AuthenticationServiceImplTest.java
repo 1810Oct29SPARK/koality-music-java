@@ -147,6 +147,7 @@ public class AuthenticationServiceImplTest {
 		Customer actual = authenticate.isValidCustomer(username, password);
 
 		assertEquals(customer, actual);
+
 	}
 
 	@Test

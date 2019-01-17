@@ -62,6 +62,7 @@ public class ProfileServiceImplTest {
 		Publisher actual = profileService.getPublisherProfile(publisherId);
 
 		assertEquals(publisher, actual);
+
 	}
 
 	@Test
@@ -82,6 +83,7 @@ public class ProfileServiceImplTest {
 		Publisher actual = profileService.getPublisherProfile(5);
 
 		assertEquals(null, actual);
+
 	}
 
 	@Test
@@ -102,6 +104,7 @@ public class ProfileServiceImplTest {
 		Customer actual = profileService.getCustomerProfile(customerId);
 
 		assertEquals(customer, actual);
+
 	}
 
 	@Test
@@ -122,6 +125,7 @@ public class ProfileServiceImplTest {
 		Customer actual = profileService.getCustomerProfile(21);
 
 		assertEquals(null, actual);
+
 	}
 
 	@Test
@@ -221,6 +225,7 @@ public class ProfileServiceImplTest {
 		boolean actual = profileService.updateCustomerDetails(customerId, firstName, lastName, email, favoriteGenre);
 
 		assertTrue(actual);
+
 	}
 
 	@Test
@@ -252,6 +257,7 @@ public class ProfileServiceImplTest {
 		boolean actual = profileService.updateCustomerDetails(0, firstName, lastName, email, favoriteGenre);
 
 		assertFalse(actual);
+
 	}
 
 	@Test
@@ -295,6 +301,7 @@ public class ProfileServiceImplTest {
 				newPassword);
 
 		assertTrue(actual);
+
 	}
 
 	@Test
@@ -338,6 +345,7 @@ public class ProfileServiceImplTest {
 				newPassword);
 
 		assertTrue(actual);
+
 	}
 
 	@Ignore
@@ -365,6 +373,7 @@ public class ProfileServiceImplTest {
 		boolean actual = profileService.updatePublisherImage(publisherId, imageType, imageData);
 
 		assertTrue(actual);
+
 	}
 
 	@Ignore
@@ -392,6 +401,7 @@ public class ProfileServiceImplTest {
 		boolean actual = profileService.updatePublisherImage(publisherId, imageType, imageData);
 
 		assertTrue(actual);
+
 	}
 
 	@Ignore
@@ -421,6 +431,7 @@ public class ProfileServiceImplTest {
 		boolean actual = profileService.updateCustomerImage(customerId, imageType, imageData);
 
 		assertTrue(actual);
+
 	}
 
 }

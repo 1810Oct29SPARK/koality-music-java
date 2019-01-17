@@ -15,10 +15,8 @@
 		base-package="com.revature.koality"></context:component-scan>
 
 	<!-- Enable AOP -->
-	 <aop:aspectj-autoproxy>
-        <aop:include name="loggingAspect"/>
-    </aop:aspectj-autoproxy>
-
-    <bean id="loggingAspect" class="com.revature.koality.aspect.LoggingAspect"/>
+	<aop:aspectj-autoproxy>
+		<aop:include name="loggingAspect" />
+	</aop:aspectj-autoproxy>
 
 </beans>
