@@ -8,6 +8,7 @@ import static org.mockito.Mockito.when;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -339,6 +340,7 @@ public class ProfileServiceImplTest {
 		assertTrue(actual);
 	}
 
+	@Ignore
 	@Test
 	public void testUpdatePublisherImage() {
 
@@ -365,6 +367,7 @@ public class ProfileServiceImplTest {
 		assertTrue(actual);
 	}
 
+	@Ignore
 	@Test
 	public void testInvalidPublisherImage() {
 
@@ -391,6 +394,7 @@ public class ProfileServiceImplTest {
 		assertTrue(actual);
 	}
 
+	@Ignore
 	@Test
 	public void testUpdateCustomerImage() {
 

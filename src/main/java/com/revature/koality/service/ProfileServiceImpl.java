@@ -70,14 +70,21 @@ public class ProfileServiceImpl implements ProfileService {
 	@Override
 	public Publisher getPublisherProfile(int publisherId) {
 		Publisher publisher = pd.getPublisherById(publisherId);
-		publisher.truncate(false);
+
+		if (publisher != null) {
+			publisher.truncate(false);
+		}
 		return publisher;
 	}
 
 	@Override
 	public Customer getCustomerProfile(int customerId) {
 		Customer customer = cd.getCustomerById(customerId);
-		customer.truncate(false);
+
+		if (customer != null) {
+			customer.truncate(false);
+		}
+
 		return customer;
 	}
 
