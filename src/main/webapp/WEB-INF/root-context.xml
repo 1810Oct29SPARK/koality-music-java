@@ -3,15 +3,22 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop
+		http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+		http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 
 	<!-- Enable scanning for components -->
 	<context:component-scan
 		base-package="com.revature.koality"></context:component-scan>
 
 	<!-- Enable AOP -->
-	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>
+	 <aop:aspectj-autoproxy>
+        <aop:include name="loggingAspect"/>
+    </aop:aspectj-autoproxy>
+
+    <bean id="loggingAspect" class="com.revature.koality.aspect.LoggingAspect"/>
 
 </beans>

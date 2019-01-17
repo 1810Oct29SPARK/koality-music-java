@@ -79,6 +79,8 @@ public class RegisterServiceImpl implements RegisterService {
 	@Override
 	public int registerPublisher(String firstName, String lastName, String email, String companyName, String username,
 			String password) {
+		
+		Publisher publisher = new Publisher(); 
 
 		PublisherDetail publisherDetail = new PublisherDetail(firstName, lastName, email, companyName);
 		String hashSalt = CommonUtility.generateRandomString(4);
@@ -91,7 +93,9 @@ public class RegisterServiceImpl implements RegisterService {
 
 		Image image = null;
 
-		Publisher publisher = new Publisher(publisherDetail, image, publisherCredentials);
+		publisher.setPublisherCredentials(publisherCredentials);
+		publisher.setPublisherDetail(publisherDetail);
+		publisher.setImage(image);
 
 		return pd.addPublisher(publisher);
 
