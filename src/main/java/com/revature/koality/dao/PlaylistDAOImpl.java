@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import com.revature.koality.bean.Customer;
 import com.revature.koality.bean.Playlist;
 import com.revature.koality.bean.Track;
 import com.revature.koality.utility.HibernateUtility;
 
+@Repository("playlistDAOImpl")
 public class PlaylistDAOImpl implements PlaylistDAO {
 
 	private SessionFactory sessionFactory;
@@ -83,6 +85,31 @@ public class PlaylistDAOImpl implements PlaylistDAO {
 		}
 
 		return playlist;
+
+	}
+
+	@Override
+	public List<Track> getTracksFromPlaylist(int playlistId) {
+
+		List<Track> trackList = null;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				trackList = session.get(Playlist.class, playlistId).getTrackList();
+				trackList.forEach(t -> t.loadAudioUrl());
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().commit();
+			} finally {
+				session.close();
+			}
+		}
+
+		return trackList;
 
 	}
 
@@ -187,6 +214,33 @@ public class PlaylistDAOImpl implements PlaylistDAO {
 		}
 
 		return false;
+
+	}
+
+	@Override
+	public boolean isOwner(int playlistId, int customerId) {
+
+		boolean owner = false;
+		Session session = null;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				Playlist playlist = session.get(Playlist.class, playlistId);
+				if (playlist.getCustomer().getCustomerId() == customerId) {
+					owner = true;
+				}
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return owner;
 
 	}
 

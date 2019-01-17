@@ -91,7 +91,14 @@ public class PublisherDAOImplTest {
 
 	@Test
 	public void testGetAllAlbumsByPublisherId() {
-		assertEquals(2, pd.getAllAlbumsByPublisherId(2));
+		assertEquals(2, pd.getAllAlbumsByPublisherId(2).size());
+	}
+
+	@Test
+	public void testGetPublisherDataById() {
+		assertEquals(6, pd.getPublisherDataById(2).getNumberOfTracksSold());
+		assertEquals(1, pd.getPublisherDataById(2).getNumberOfAlbumsSold());
+		assertEquals(1, pd.getPublisherDataById(2).getNumberOfSubscribers());
 	}
 
 }

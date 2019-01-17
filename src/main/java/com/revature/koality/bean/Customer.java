@@ -174,6 +174,7 @@ public class Customer implements Serializable {
 		this.trackList = null;
 		this.albumList = null;
 		this.image = null;
+		this.customerCredentials = null;
 		if (all) {
 			this.imageUrl = null;
 		}

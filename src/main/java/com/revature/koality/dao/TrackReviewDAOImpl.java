@@ -3,6 +3,7 @@ package com.revature.koality.dao;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 
 import com.revature.koality.bean.Customer;
 import com.revature.koality.bean.ReviewContent;
@@ -10,6 +11,7 @@ import com.revature.koality.bean.Track;
 import com.revature.koality.bean.TrackReview;
 import com.revature.koality.utility.HibernateUtility;
 
+@Repository("trackReviewDAOImpl")
 public class TrackReviewDAOImpl implements TrackReviewDAO {
 
 	private SessionFactory sessionFactory;
@@ -138,6 +140,33 @@ public class TrackReviewDAOImpl implements TrackReviewDAO {
 		}
 
 		return false;
+
+	}
+
+	@Override
+	public boolean isOwner(int trackReviewId, int customerId) {
+
+		Session session = null;
+		boolean owner = false;
+
+		if (this.sessionFactory != null) {
+			try {
+				session = this.sessionFactory.getCurrentSession();
+				session.beginTransaction();
+				TrackReview trackReview = session.get(TrackReview.class, trackReviewId);
+				if (trackReview.getCustomer().getCustomerId() == customerId) {
+					owner = true;
+				}
+				session.getTransaction().commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				session.getTransaction().rollback();
+			} finally {
+				session.close();
+			}
+		}
+
+		return owner;
 
 	}
 

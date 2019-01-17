@@ -1,6 +1,7 @@
 package com.revature.koality.dao;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
@@ -82,6 +83,26 @@ public class AlbumDAOImplTest {
 	@Test
 	public void testGetAlbumPurchaseCount() {
 		assertEquals(1, ad.getAlbumPurchaseCount(8));
+	}
+
+	@Test
+	public void testHasAccessAsPublisherValid() {
+		assertTrue(ad.hasAccessAsPublisher(5, 2));
+	}
+
+	@Test
+	public void testHasAccessAsPublisherInvalid() {
+		assertFalse(ad.hasAccessAsPublisher(6, 1));
+	}
+
+	@Test
+	public void testHasAccessAsCustomerValid() {
+		assertTrue(ad.hasAccessAsCustomer(8, 1));
+	}
+
+	@Test
+	public void testHasAccessAsCustomerInvalid() {
+		assertFalse(ad.hasAccessAsCustomer(8, 2));
 	}
 
 }

@@ -7,6 +7,7 @@ import com.revature.koality.bean.Customer;
 import com.revature.koality.bean.Image;
 import com.revature.koality.bean.Publisher;
 import com.revature.koality.bean.PublisherCredentials;
+import com.revature.koality.bean.PublisherData;
 import com.revature.koality.bean.PublisherDetail;
 import com.revature.koality.bean.Track;
 
@@ -31,5 +32,7 @@ public interface PublisherDAO {
 	List<Track> getAllTracksByPublisherId(int publisherId);
 
 	List<Album> getAllAlbumsByPublisherId(int publisherId);
+
+	PublisherData getPublisherDataById(int publisherId);
 
 }

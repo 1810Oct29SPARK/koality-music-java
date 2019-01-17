@@ -122,4 +122,10 @@ public class CustomerDAOImplTest {
 		assertTrue(cd.purchaseAlbum(2, 7));
 	}
 
+	public void testGetCustomerDataById() {
+		assertEquals(4, cd.getCustomerDataById(2).getNumberOfTracksBought());
+		assertEquals(2, cd.getCustomerDataById(2).getNumberOfAlbumsBought());
+		assertEquals(2, cd.getCustomerDataById(2).getNumberOfSubscribees());
+	}
+
 }

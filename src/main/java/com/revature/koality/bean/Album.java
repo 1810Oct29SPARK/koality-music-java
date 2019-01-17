@@ -173,6 +173,28 @@ public class Album implements Serializable {
 		return "Album [albumId=" + albumId + ", albumName=" + albumName + "]";
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + albumId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Album other = (Album) obj;
+		if (albumId != other.albumId)
+			return false;
+		return true;
+	}
+
 	public void truncate(boolean all) {
 		if (this.publisher != null) {
 			try {
@@ -185,6 +207,10 @@ public class Album implements Serializable {
 			this.trackList.forEach(t -> t.truncate(all));
 		} catch (LazyInitializationException e) {
 			this.trackList = null;
+		}
+		this.image = null;
+		if (all) {
+			this.imageUrl = null;
 		}
 	}
 
