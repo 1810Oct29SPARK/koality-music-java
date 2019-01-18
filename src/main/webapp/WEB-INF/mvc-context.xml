@@ -18,4 +18,11 @@
 	<!-- Enable D.I. through stereotype annotations -->
 	<mvc:annotation-driven />
 
+	<mvc:cors>
+		<mvc:mapping path="/**"
+			allowed-origins="http://localhost:4200, http://esoma-public.s3-website.us-east-2.amazonaws.com"
+			allowed-methods="POST, GET, PUT, OPTIONS, DELETE" allowed-headers="*"
+			max-age="4800" />
+	</mvc:cors>
+
 </beans>
